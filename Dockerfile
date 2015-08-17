@@ -1,0 +1,37 @@
+FROM linuxserver/baseimage
+MAINTAINER Mark Burford <sparklyballs@gmail.com>
+
+ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
+
+# Set the locale
+RUN locale-gen en_US.UTF-8
+
+# install the packages required for kodi installation
+RUN apt-get update && \
+apt-get install \
+gdebi-core \
+wget -qy && \
+apt-get clean -y && \
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# get kodi .deb and install it.
+RUN wget -nd -nH -P /tmp https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST && \
+LATEST=$(cat /tmp/LATEST) && \
+wget -nd -nH -O /tmp/kodi-headless.deb  https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST?raw=true && \
+apt-get update -q && \
+gdebi -n /tmp/kodi-headless.deb && \
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# give user abc a home folder
+RUN usermod -d /config abc
+
+# set the volume
+VOLUME /config/.kodi
+
+# adding custom files
+RUN mkdir -p /defaults
+ADD defaults/ /defaults/
+ADD services/ /etc/service/
+ADD init/ /etc/my_init.d/
+RUN chmod -v +x /etc/service/*/run
+RUN chmod -v +x /etc/my_init.d/*.sh
