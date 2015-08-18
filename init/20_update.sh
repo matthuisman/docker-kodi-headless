@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# clean up any potential files in /tmp that may interfere with this script
+# clean up any potential files in /tmp that may interfere with execution of this script
 if [ -f "/tmp/LATEST" ]; then
 rm /tmp/LATEST
 fi
@@ -24,20 +24,24 @@ cat > $WARN_SET <<-WARNSIGN
 WARNSIGN
 
 
+# test if we are downgrading/upgrading depending on variable $VERSION
+if [ -z "$VERSION" ]; then
+FETCH_VER=${INSTALLED%.*}
+else
+FETCH_VER=$VERSION
+fi
+
+
 # check what version we currently have installed
 INSTALLED=`dpkg-query -W -f='${Version}' kodi-headless`
-
-
-FETCH_VER=${INSTALLED%.*}
-
 
 # get file containing latest build of our chosen main version
 wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$FETCH_VER
 LATEST=$(cat /tmp/LATEST)
-VERSION=$(sed 's/.*kodi-headless//' /tmp/LATEST | sed 's/amd64.deb//g' | sed 's/_//g')
+REMOTE_VERSION=$(sed 's/.*kodi-headless//' /tmp/LATEST | sed 's/amd64.deb//g' | sed 's/_//g')
 
 # decide if we need to update local version, if not exit from script gracefully
-if [ "$VERSION" == "$INSTALLED" ]; then
+if [ "$REMOTE_VERSION" == "$INSTALLED" ]; then
 echo "No Update Required"
 exit 0;
 fi
