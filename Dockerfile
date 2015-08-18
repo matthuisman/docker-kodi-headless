@@ -20,7 +20,7 @@ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # get kodi .deb and install it.
 RUN wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$KODI_VER  && \
 LATEST=$(cat /tmp/LATEST) && \
-wget -nd -nH -O /tmp/kodi-headless.deb  https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST?raw=true && \
+wget -nd -nH -O /tmp/kodi-headless.deb  https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.deb?raw=true && \
 apt-get update -q && \
 gdebi -n /tmp/kodi-headless.deb && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

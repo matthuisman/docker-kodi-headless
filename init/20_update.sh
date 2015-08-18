@@ -1,14 +1,20 @@
 #!/bin/bash
 
 # clean up any potential files in /tmp that may interfere with execution of this script
-if [ -f "/tmp/LATEST" ]; then
-rm /tmp/LATEST
+if [ -f "/tmp/"*LATEST* ]; then
+rm /tmp/*LATEST*
 fi
+
 if [ -f "/tmp/"*.deb ]; then
 rm /tmp/*.deb
 fi
-if [ -f "/tmp/warn.nfo" ]; then
-rm /tmp/warn.nfo
+
+if [ -f "/tmp/"*.md5 ]; then
+rm /tmp/*.md5
+fi
+
+if [ -f "/tmp/"*.nfo ]; then
+rm /tmp/*.nfo
 fi
 
 # check what version we currently have installed
@@ -45,9 +51,18 @@ echo "No Update Required"
 exit 0;
 fi
 
-# install latest build of our chosen main version
+# fetch latest build and checksum it, if checksum fails then keep current version
+wget -nd -nH -O /tmp/kodi-headless.md5 https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.md5
+wget -nd -nH -O /tmp/kodi-headless.deb https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.deb?raw=true
+cd /tmp
+CHECK_PASS=$(md5sum -c kodi-headless.md5)
+
+
+
+
+# if checksum passed, install latest build of our chosen main version
+cd /
 apt-get remove --purge -y kodi-headless
-wget -nd -nH -O /tmp/kodi-headless.deb  https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST?raw=true
 apt-get update -qq
 gdebi -n /tmp/kodi-headless.deb
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
