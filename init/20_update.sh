@@ -11,6 +11,9 @@ if [ -f "/tmp/warn.nfo" ]; then
 rm /tmp/warn.nfo
 fi
 
+# check what version we currently have installed
+INSTALLED=`dpkg-query -W -f='${Version}' kodi-headless`
+
 # set what to display if we are going to upgrade/downgrade main version
 WARN_SET='/tmp/warn.nfo'
 cat > $WARN_SET <<-WARNSIGN
@@ -30,10 +33,6 @@ FETCH_VER=${INSTALLED%.*}
 else
 FETCH_VER=$VERSION
 fi
-
-
-# check what version we currently have installed
-INSTALLED=`dpkg-query -W -f='${Version}' kodi-headless`
 
 # get file containing latest build of our chosen main version
 wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$FETCH_VER
