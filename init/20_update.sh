@@ -40,7 +40,7 @@ else
 FETCH_VER=$VERSION
 fi
 
-# get file containing latest build of our chosen main version
+# get file with informaton on latest build of our chosen main version
 wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$FETCH_VER
 LATEST=$(cat /tmp/LATEST)
 REMOTE_VERSION=$(sed 's/.*kodi-headless//' /tmp/LATEST | sed 's/amd64.deb//g' | sed 's/_//g')
