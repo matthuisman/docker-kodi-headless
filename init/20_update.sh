@@ -55,9 +55,14 @@ fi
 wget -nd -nH -O /tmp/kodi-headless.md5 https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.md5
 wget -nd -nH -O /tmp/kodi-headless.deb https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.deb?raw=true
 cd /tmp
+
 CHECK_PASS=$(md5sum -c kodi-headless.md5)
-
-
+if [ $CHECK_PASS == "kodi-headless.deb: OK" ]; then
+echo "Checksum Passed"
+else
+echo "Checksum Failed, falling back to original version , try again by restarting the container"
+exit 0;
+fi
 
 
 # if checksum passed, install latest build of our chosen main version
@@ -65,4 +70,5 @@ cd /
 apt-get remove --purge -y kodi-headless
 apt-get update -qq
 gdebi -n /tmp/kodi-headless.deb
+apt-get autoremove -y
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
