@@ -24,9 +24,9 @@ INSTALLED=`dpkg-query -W -f='${Version}' kodi-headless`
 WARN_SET='/tmp/warn.nfo'
 cat > $WARN_SET <<-WARNSIGN
 ##########################################################################
-# You have set the version variable to a different main version than is  #
-# locally installed, this script will downgrade/upgrade to the version   #
-# you have chosen, make sure you have set the variable correctly and all #
+# You set the VERSION variable to a different main version no. than was  #
+# locally installed, this script downgraded/upgraded kodi version to     #
+# what you chose, make sure you have set the variable correctly and all  #
 # your local kodi installs are at the same main version if you want to   #
 # share libraries with them.                                             #
 ##########################################################################
@@ -64,11 +64,16 @@ echo "Checksum Failed, falling back to original version , try again by restartin
 exit 0;
 fi
 
-
 # if checksum passed, install latest build of our chosen main version
 cd /
 apt-get remove --purge -y kodi-headless
 apt-get update -qq
 gdebi -n /tmp/kodi-headless.deb
 apt-get autoremove -y
+
+# display warning about version change
+if [ "$FETCH_VER" -ne "${INSTALLED%.*}" ]; then
+echo >&2 "$(cat /tmp/warn.nfo)"
+sleep 5s
+fi
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
