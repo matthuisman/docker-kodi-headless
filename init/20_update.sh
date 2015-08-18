@@ -43,7 +43,7 @@ fi
 # get file with informaton on latest build of our chosen main version
 wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$FETCH_VER
 LATEST=$(cat /tmp/LATEST)
-REMOTE_VERSION=$(sed 's/.*kodi-headless//' /tmp/LATEST | sed 's/amd64.deb//g' | sed 's/_//g')
+REMOTE_VERSION=$(sed 's/.*kodi-headless//' /tmp/LATEST | sed 's/amd64//g' | sed 's/_//g')
 
 # decide if we need to update local version, if not exit from script gracefully
 if [ "$REMOTE_VERSION" == "$INSTALLED" ]; then
