@@ -3,6 +3,9 @@ MAINTAINER Mark Burford <sparklyballs@gmail.com>
 
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
+# set the initial install main version for kodi
+ENV KODI_VER 15
+
 # Set the locale
 RUN locale-gen en_US.UTF-8
 
@@ -15,7 +18,7 @@ apt-get clean -y && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # get kodi .deb and install it.
-RUN wget -nd -nH -P /tmp https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST && \
+RUN wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$KODI_VER  && \
 LATEST=$(cat /tmp/LATEST) && \
 wget -nd -nH -O /tmp/kodi-headless.deb  https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST?raw=true && \
 apt-get update -q && \
