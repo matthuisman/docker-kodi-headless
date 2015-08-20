@@ -25,7 +25,7 @@ apt-get update -q && \
 gdebi -n /tmp/kodi-headless.deb && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# give user abc a home folder
+# give user abc a home folder (needed for kodi to save files in /config/.kodi)
 RUN usermod -d /config abc
 
 # set the volume
