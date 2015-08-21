@@ -9,7 +9,7 @@ A headless install of kodi in a docker format, most useful for a mysql setup of 
 ## Usage
 
 ```
-docker create --name=<container-name> -v /etc/localtime:/etc/localtime:ro -v <path to data>:/config/.kodi -e PGID=<gid> -e PUID=<uid> -e VERSION=<version>  -p 8080:8080 -p 9777:9777 linuxserver/kodi-headless
+docker create --name=<container-name> -v /etc/localtime:/etc/localtime:ro -v <path to data>:/config/.kodi -e PGID=<gid> -e PUID=<uid> -e VERSION=<version> -e TZ=<timezone> -p 8080:8080 -p 9777:9777 linuxserver/kodi-headless
 ```
 
 **Parameters**
@@ -20,6 +20,7 @@ docker create --name=<container-name> -v /etc/localtime:/etc/localtime:ro -v <pa
 * `-v /config/.kodi` - path for kodi configuration files
 * `-e PGID` for GroupID - see below for explanation
 * `-e PUID` for UserID - see below for explanation
+* `-e TZ` - for timezone information *eg Europe/London, etc*
 * `-e VERSION` - Main version of kodi *optional* - see below for explanation
 
 It is based on phusion-baseimage with ssh removed, for shell access whilst the container is running do `docker exec -it kodi-headless /bin/bash`.
