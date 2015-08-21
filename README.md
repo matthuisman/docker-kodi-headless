@@ -9,7 +9,7 @@ A headless install of kodi in a docker format, most useful for a mysql setup of 
 ## Usage
 
 ```
-docker create --name=<container-name> -v /etc/localtime:/etc/localtime:ro -v <path to data>:/config -e PGID=<gid> -e PUID=<uid> -e VERSION=<version>  -p 8080:8080 -p 9777:9777 linuxserver/kodi-headless
+docker create --name=<container-name> -v /etc/localtime:/etc/localtime:ro -v <path to data>:/config/.kodi -e PGID=<gid> -e PUID=<uid> -e VERSION=<version>  -p 8080:8080 -p 9777:9777 linuxserver/kodi-headless
 ```
 
 **Parameters**
@@ -17,10 +17,10 @@ docker create --name=<container-name> -v /etc/localtime:/etc/localtime:ro -v <pa
 * `-p 8080` - webui port
 * `-p 9777` - esall interface port
 * `-v /etc/localhost` for timesync - *optional*
-* `-v /config` -
+* `-v /config/.kodi` - path for kodi configuration files
 * `-e PGID` for GroupID - see below for explanation
 * `-e PUID` for UserID - see below for explanation
-* `-e VERSION` - Main version of kodi - see below for explanation
+* `-e VERSION` - Main version of kodi *optional* - see below for explanation
 
 It is based on phusion-baseimage with ssh removed, for shell access whilst the container is running do `docker exec -it kodi-headless /bin/bash`.
 
@@ -30,9 +30,13 @@ It is based on phusion-baseimage with ssh removed, for shell access whilst the c
 
 Part of what makes our containers work so well is by allowing you to specify your own `PUID` and `PGID`. This avoids nasty permissions errors with relation to data volumes (`-v` flags). When an application is installed on the host OS it is normally added to the common group called users, Docker apps due to the nature of the technology can't be added to this group. So we added this feature to let you easily choose when running your containers.
 
-## Setting up the application 
+## Setting up the application
+Set the optional VERSION variable to use an earlier release than what is current from kodi (use only the main version number, 14 , 15 etc, not point releases). Not setting or removing the VERSION variable will cause the container to update only releases within the same main version number you have installed.
 
-<Insert a basic user guide here to get a n00b up and running with the software inside the container.> DELETE ME
+Mysql/mariadb settings are entered by editing the file advancedsettings.xml which is found in the userdata folder of your /config/.kodi mapping. Many other settings are within this file also.
+
+The default user/password for the web interface and for apps like couchpotato etc to send updates is xbmc/xbmc.  
+
 
 
 ## Updates
@@ -45,5 +49,4 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
-+ **21.08.2015:** Initial Release. 
-
++ **21.08.2015:** Initial Release.
