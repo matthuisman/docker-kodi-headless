@@ -40,4 +40,4 @@ RUN chmod -v +x /etc/my_init.d/*.sh
 
 # set the volume
 VOLUME /config/.kodi
-EXPOSE [ "8080", "9777"]
+EXPOSE 8080 9777/udp
