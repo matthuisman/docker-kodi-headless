@@ -28,8 +28,7 @@ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # give user abc a home folder (needed for kodi to save files in /config/.kodi)
 RUN usermod -d /config abc
 
-# set the volume
-VOLUME /config/.kodi
+
 
 # adding custom files
 RUN mkdir -p /defaults
@@ -38,3 +37,6 @@ ADD services/ /etc/service/
 ADD init/ /etc/my_init.d/
 RUN chmod -v +x /etc/service/*/run
 RUN chmod -v +x /etc/my_init.d/*.sh
+
+# set the volume
+VOLUME /config/.kodi
