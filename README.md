@@ -38,6 +38,8 @@ Mysql/mariadb settings are entered by editing the file advancedsettings.xml whic
 
 The default user/password for the web interface and for apps like couchpotato etc to send updates is xbmc/xbmc.  
 
+If you intend to use this kodi instance to perform library tasks other than merely updating, eg. library cleaning etc, it is important to copy over the sources.xml from the host machine that you performed the initial library scan on to the userdata folder of this instance, otherwise database loss can and most likely will occur.
+
 
 
 ## Updates
