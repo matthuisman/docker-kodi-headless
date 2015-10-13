@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # clean up any potential files in /tmp that may interfere with execution of this script
-if [ -f "/tmp/"*LATEST* ]; then rm -f /tmp/*LATEST*; fi
-if [ -f "/tmp/"*.deb ]; then rm -f /tmp/*.deb; fi
-if [ -f "/tmp/"*.md5 ]; then rm -f /tmp/*.md5; fi
-if [ -f "/tmp/"*.nfo ]; then rm -f /tmp/*.nfo; fi
+[[ -f /tmp/*LATEST* ]] && rm -f /tmp/*LATEST*
+[[ -f /tmp/*.deb ]] && rm -f /tmp/*.deb
+[[ -f /tmp/*.md5 ]] && rm -f /tmp/*.md5
+[[ -f /tmp/*.nfo ]] && rm -f /tmp/*.nfo
 
 # check what version we currently have installed
 INSTALLED=`dpkg-query -W -f='${Version}' kodi-headless`
