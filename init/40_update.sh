@@ -4,8 +4,7 @@
 rm -rf /tmp/*
 
 # check what version we currently have installed
-INSTALLED=(dpkg-query -W -f="${Version}" kodi-headless)
-
+INSTALLED=$(dpkg-query -W -f='${Version}' kodi-headless)
 # set what to display if we are going to upgrade/downgrade main version
 WARN_SET='/tmp/warn.nfo'
 cat > $WARN_SET <<-WARNSIGN
@@ -27,7 +26,7 @@ FETCH_VER=$VERSION
 fi
 
 # get file with informaton on latest build of our chosen main version
-wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$FETCH_VER
+wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST"$FETCH_VER"
 LATEST=$(cat /tmp/LATEST)
 REMOTE_VERSION=$(sed 's/.*kodi-headless//' /tmp/LATEST | sed 's/amd64//g' | sed 's/_//g')
 
@@ -38,8 +37,8 @@ exit 0;
 fi
 
 # fetch latest build and checksum it, if checksum fails then keep current version
-wget -nd -nH -O /tmp/kodi-headless.md5 https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.md5?raw=true
-wget -nd -nH -O /tmp/kodi-headless.deb https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.deb?raw=true
+wget -nd -nH -O /tmp/kodi-headless.md5 https://github.com/linuxserver/misc-files/blob/master/kodi/"$LATEST".md5?raw=true
+wget -nd -nH -O /tmp/kodi-headless.deb https://github.com/linuxserver/misc-files/blob/master/kodi/"$LATEST".deb?raw=true
 
 cd /tmp
 CHECK_PASS=$(md5sum -c kodi-headless.md5)
