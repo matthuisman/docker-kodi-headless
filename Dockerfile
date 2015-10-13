@@ -1,10 +1,11 @@
 FROM linuxserver/baseimage
-MAINTAINER Mark Burford <sparklyballs@gmail.com>
+MAINTAINER Sparklyballs <sparklyballs@linuxserver.io>
 
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
 # set the initial install main version for kodi
 ENV KODI_VER 15
+ENV APTLIST="gdebi-core wget"
 
 # Set the locale
 RUN locale-gen en_US.UTF-8
@@ -12,8 +13,7 @@ RUN locale-gen en_US.UTF-8
 # install the packages required for kodi installation
 RUN apt-get update && \
 apt-get install \
-gdebi-core \
-wget -qy && \
+$APTLIST -qy && \
 apt-get clean -y && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -25,19 +25,16 @@ apt-get update -q && \
 gdebi -n /tmp/kodi-headless.deb && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# give user abc a home folder (needed for kodi to save files in /config/.kodi)
-RUN usermod -d /config abc
-
-
-
 # adding custom files
-RUN mkdir -p /defaults
 ADD defaults/ /defaults/
 ADD services/ /etc/service/
 ADD init/ /etc/my_init.d/
-RUN chmod -v +x /etc/service/*/run
-RUN chmod -v +x /etc/my_init.d/*.sh
+RUN chmod -v +x /etc/service/*/run /etc/my_init.d/*.sh && \
 
-# set the volume
+# give user abc a home folder (needed for kodi to save files in /config/.kodi)
+usermod -d /config abc
+
+# set the volume and ports
 VOLUME /config/.kodi
 EXPOSE 8080 9777/udp
+
