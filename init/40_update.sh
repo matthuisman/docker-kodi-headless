@@ -59,7 +59,7 @@ apt-get autoremove -y
 
 # display warning about version change
 if [ "$FETCH_VER" -ne "${INSTALLED%.*}" ]; then
-echo >&2 "$(cat /tmp/warn.nfo)"
+less /tmp/warn.nfo
 sleep 5s
 fi
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
