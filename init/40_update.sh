@@ -4,7 +4,7 @@
 rm -rf /tmp/*
 
 # check what version we currently have installed
-INSTALLED=`dpkg-query -W -f='${Version}' kodi-headless`
+INSTALLED=(dpkg-query -W -f="${Version}" kodi-headless)
 
 # set what to display if we are going to upgrade/downgrade main version
 WARN_SET='/tmp/warn.nfo'
