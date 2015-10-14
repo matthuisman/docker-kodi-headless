@@ -17,7 +17,7 @@ $APTLIST -qy && \
 apt-get clean -y && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# get kodi .deb and install it.
+# fetch kodi .deb and install it.
 RUN wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$KODI_VER  && \
 LATEST=$(cat /tmp/LATEST) && \
 wget -nd -nH -O /tmp/kodi-headless.deb  https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.deb?raw=true && \
