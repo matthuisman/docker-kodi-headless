@@ -3,8 +3,10 @@ MAINTAINER Sparklyballs <sparklyballs@linuxserver.io>
 
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
-# set the initial install main version for kodi
+# set the initial install main version and root download path for kodi
 ENV KODI_VER 15
+ENV ROOT_PATH="https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi"
+
 ENV APTLIST="gdebi-core wget"
 
 # Set the locale
@@ -18,9 +20,9 @@ apt-get clean -y && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # fetch kodi .deb and install it.
-RUN wget -nd -nH -O /tmp/LATEST https://raw.githubusercontent.com/linuxserver/misc-files/master/kodi/LATEST$KODI_VER  && \
+RUN wget -nd -nH -O /tmp/LATEST "$ROOT_PATH"/LATEST"$KODI_VER"  && \
 LATEST=$(cat /tmp/LATEST) && \
-wget -nd -nH -O /tmp/kodi-headless.deb  https://github.com/linuxserver/misc-files/blob/master/kodi/$LATEST.deb?raw=true && \
+wget -nd -nH -O /tmp/kodi-headless.deb  "$ROOT_PATH"/"$LATEST".deb?raw=true && \
 apt-get update -q && \
 gdebi -n /tmp/kodi-headless.deb && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
