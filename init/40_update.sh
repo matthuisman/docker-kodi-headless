@@ -37,8 +37,8 @@ exit 0;
 fi
 
 # fetch latest build and checksum it, if checksum fails then keep current version
-wget -nd -nH -O "$ROOT_PATH"/"$LATEST".md5?raw=true
-wget -nd -nH -O /tmp/kodi-headless.deb "$ROOT_PATH"/"$LATEST".deb?raw=true
+wget -nd -nH -O "$ROOT_PATH"/"$LATEST".md5
+wget -nd -nH -O /tmp/kodi-headless.deb "$ROOT_PATH"/"$LATEST".deb
 
 cd /tmp
 CHECK_PASS=$(md5sum -c kodi-headless.md5)
