@@ -73,7 +73,7 @@
 <ac3passthrough>false</ac3passthrough>
 <dtspassthrough>false</dtspassthrough>
 <multichannellpcm>false</multichannellpcm>
-<truehdpassthrough>false></truehdpassthrough>
+<truehdpassthrough>false</truehdpassthrough>
 <dtshdpassthrough>false</dtshdpassthrough>
 <mode>2</mode>
 </audiooutput>
