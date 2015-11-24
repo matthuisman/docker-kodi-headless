@@ -23,6 +23,10 @@ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN wget -nd -nH -O /tmp/LATEST "$ROOT_PATH"/LATEST"$KODI_VER"  && \
 LATEST=$(cat /tmp/LATEST) && \
 wget -nd -nH -O /tmp/kodi-headless.deb  "$ROOT_PATH"/"$LATEST".deb && \
+wget -nd -nH -O /tmp/kodi-headless.md5 "$ROOT_PATH"/"$LATEST".md5 && \
+cd /tmp && \
+CHECK_PASS=$(md5sum -c kodi-headless.md5) && \
+if [ "$CHECK_PASS" != "kodi-headless.deb: OK" ] ; then (echo "checksum failed" && exit 1) ; fi && \
 apt-get update -q && \
 gdebi -n /tmp/kodi-headless.deb && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
