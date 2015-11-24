@@ -5,6 +5,26 @@ rm -rf /tmp/*
 
 # check what version we currently have installed
 INSTALLED=$(dpkg-query -W -f='${Version}' kodi-headless)
+
+# if $VERSION is set, strip any whitespace and everything after any "."
+if [ -z "$VERSION" ]; then
+FETCH_VER="${INSTALLED%%\.*}"
+else
+SANEDVERSION0="$VERSION"
+SANEDVERSION1="${SANEDVERSION0#"${SANEDVERSION0%%[![:space:]]*}"}"
+SANEDVERSION="${SANEDVERSION1%"${SANEDVERSION1##*[![:space:]]}"}"
+FETCH_TEMP="${SANEDVERSION%%\.*}"
+fi
+
+# check VERSION is in range, fall back to current version installed if not
+if (($FETCH_TEMP < $OLDEST_VERSION)) || (($FETCH_TEMP > $CURR_LATEST)); then
+echo "You've entered a version that is not currently available, keeping currently installed version"
+FETCH_VER="${INSTALLED%%\.*}"
+else
+FETCH_VER="${FETCH_TEMP%%\.*}"
+fi
+
+
 # set what to display if we are going to upgrade/downgrade main version
 WARN_SET='/tmp/warn.nfo'
 cat > $WARN_SET <<-WARNSIGN
@@ -16,14 +36,6 @@ cat > $WARN_SET <<-WARNSIGN
 # share libraries with them.                                             #
 ##########################################################################
 WARNSIGN
-
-
-# test if we are downgrading/upgrading depending on variable $VERSION
-if [ -z "$VERSION" ]; then
-FETCH_VER=${INSTALLED%.*}
-else
-FETCH_VER=$VERSION
-fi
 
 # get file with informaton on latest build of our chosen main version
 wget -nd -nH -O /tmp/LATEST "$ROOT_PATH"/LATEST"$FETCH_VER"

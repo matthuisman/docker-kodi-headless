@@ -3,8 +3,10 @@ MAINTAINER Sparklyballs <sparklyballs@linuxserver.io>
 
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
-# set the initial install main version and root download path for kodi
-ENV KODI_VER 15
+# set the initial install main version, current latest version (possibly a beta, etc)  
+# oldest version, and root download path for kodi
+ENV KODI_VER 15 
+ENV OLDEST_VERSION="14" CURR_LATEST="16"
 ENV ROOT_PATH="https://files.linuxserver.io/kodi"
 
 ENV APTLIST="gdebi-core wget"
