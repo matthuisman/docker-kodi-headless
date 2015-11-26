@@ -17,7 +17,7 @@ FETCH_VER="${INSTALLED%%\.*}"
 fi
 
 # check VERSION is in range.
-if (($FETCH_VER < $OLDEST_VERSION)) || (($FETCH_VER > $CURR_LATEST)); then
+if ((FETCH_VER < OLDEST_VERSION)) || ((FETCH_VER > CURR_LATEST)); then
 echo "Version not available , keeping currently installed version"
 FETCH_VER="${INSTALLED%%\.*}"
 fi
