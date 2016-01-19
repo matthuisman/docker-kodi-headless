@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# opt out for autoupdates
+[ "$ADVANCED_DISABLEUPDATES" ] && exit 0
+
 # clean up any potential files in /tmp that may interfere with execution of this script
 rm -rf /tmp/*
 
