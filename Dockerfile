@@ -15,7 +15,8 @@ ENV APTLIST="gdebi-core wget"
 RUN locale-gen en_US.UTF-8
 
 # install the packages required for kodi installation
-RUN apt-get update && \
+RUN add-apt-repository ppa:team-xbmc/ppa && \
+apt-get update && \
 apt-get install \
 $APTLIST -qy && \
 apt-get clean -y && \
