@@ -12,7 +12,10 @@ ENV ROOT_PATH="https://files.linuxserver.io/kodi"
 ENV APTLIST="gdebi-core wget"
 
 # Set the locale
-RUN locale-gen en_US.UTF-8
+RUN locale-gen en_US.UTF-8 && \
+
+# change user abc home folder (needed for kodi to save files in /config/.kodi)
+usermod -d /config abc
 
 # install the packages required for kodi installation
 RUN add-apt-repository ppa:team-xbmc/ppa && \
@@ -38,10 +41,7 @@ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ADD defaults/ /defaults/
 ADD services/ /etc/service/
 ADD init/ /etc/my_init.d/
-RUN chmod -v +x /etc/service/*/run /etc/my_init.d/*.sh && \
-
-# give user abc a home folder (needed for kodi to save files in /config/.kodi)
-usermod -d /config abc
+RUN chmod -v +x /etc/service/*/run /etc/my_init.d/*.sh
 
 # set the volume and ports
 VOLUME /config/.kodi
