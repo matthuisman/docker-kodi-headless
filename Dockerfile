@@ -38,9 +38,9 @@ gdebi -n /tmp/kodi-headless.deb && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # adding custom files
-ADD defaults/ /defaults/
-ADD services/ /etc/service/
-ADD init/ /etc/my_init.d/
+COPY defaults/ /defaults/
+COPY services/ /etc/service/
+COPY init/ /etc/my_init.d/
 RUN chmod -v +x /etc/service/*/run /etc/my_init.d/*.sh
 
 # set the volume and ports
