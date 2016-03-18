@@ -53,7 +53,7 @@ fi
 wget -nd -nH -O /tmp/kodi-headless.md5 "$ROOT_PATH"/"$LATEST".md5
 wget -nd -nH -O /tmp/kodi-headless.deb "$ROOT_PATH"/"$LATEST".deb
 
-cd /tmp
+cd /tmp || exit
 CHECK_PASS=$(md5sum -c kodi-headless.md5)
 if [ "$CHECK_PASS" = "kodi-headless.deb: OK" ]; then
 echo "Checksum Passed"
@@ -63,7 +63,7 @@ exit 0;
 fi
 
 # if checksum passed, install latest build of our chosen main version
-cd /
+cd / || exit
 apt-get remove --purge -y kodi-headless
 apt-get update -qq
 gdebi -n /tmp/kodi-headless.deb
