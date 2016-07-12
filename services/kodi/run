@@ -1,2 +1,0 @@
-#!/bin/bash
-/sbin/setuser abc /usr/local/lib/kodi/kodi.bin --headless
