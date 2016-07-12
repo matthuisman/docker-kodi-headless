@@ -7,7 +7,7 @@ The [LinuxServer.io](https://linuxserver.io) team brings you another container r
 
 # linuxserver/kodi-headless
 
-A headless install of kodi isengard (v15) in a docker format, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on. You can choose between (at the time of writing),using tags, 3 main versions of kodi. 14 helix, 15 isengard and 16 jarvis.
+A headless install of kodi jarvis (v16) in a docker format, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on. You can choose between (at the time of writing),using tags, 3 main versions of kodi. 14 helix, 15 isengard and 16 jarvis.
 
 ## Usage
 
