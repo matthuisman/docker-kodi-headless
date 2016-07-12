@@ -1,0 +1,94 @@
+<advancedsettings>
+
+<!-- 
+#####################################################
+# For more information on the settings available in #
+# this file, refer to the kodi wiki at              #
+# http://kodi.wiki/view/Advancedsettings.xml        #
+#####################################################
+-->
+
+<videodatabase>
+<type>mysql</type> <!-- don't change this value -->  
+<host></host> <!-- change this to the IP address of your mysql/mariadb server  -->
+<port>3306</port> <!-- change this to the port of your mysql/mariadb server  -->
+<user></user> <!-- change this to the user for your database, not root  --> 
+<pass></pass> <!-- change this to the password for your database -->
+</videodatabase>
+<musicdatabase>
+<type>mysql</type> <!-- don't change this value -->
+<host></host> <!-- change this to the IP address of your mysql/mariadb server  -->
+<port>3306</port> <!-- change this to the port of your mysql/mariadb server  -->
+<user></user> <!-- change this to the user for your database, not root  -->
+<pass></pass> <!-- change this to the password for your database -->
+</musicdatabase>
+
+<services>
+<devicename>XBMC Server</devicename>
+<esallinterfaces>true</esallinterfaces> <!-- don't change this value -->
+<escontinuousdelay>25</escontinuousdelay>
+<esenabled>true</esenabled> <!-- don't change this value -->
+<esinitialdelay>750</esinitialdelay>
+<esmaxclients>20</esmaxclients>
+<esport>9777</esport> <!-- don't change this value -->
+<esportrange>10</esportrange>
+<upnpannounce>true</upnpannounce>
+<upnprenderer>false</upnprenderer>
+<upnpserver>true</upnpserver>
+<webserver>true</webserver> <!-- don't change this value -->
+<webserverpassword>xbmc</webserverpassword>
+<webserverport>8080</webserverport> <!-- don't change this value -->
+<webserverusername>xbmc</webserverusername>
+<webskin>webinterface.default</webskin>
+<zeroconf>true</zeroconf>
+</services>
+
+
+<videolibrary>
+<importresumepoint>true</importresumepoint>    <!-- import previously exported resume point from .nfo files -->
+<importwatchedstate>true</importwatchedstate>  <!-- import previously exported playdate and playcount from .nfo files -->
+<backgroundupdate>true</backgroundupdate>
+<dateadded>1</dateadded> <!-- 0 results in using the current datetime when adding a video;
+                              1 (default) results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid;
+                              2 results in using the newer datetime of the file's mtime and ctime -->
+
+</videolibrary>
+<musiclibrary>
+<backgroundupdate>true</backgroundupdate> <!-- don't change this value -->
+</musiclibrary>
+<videoscanner>
+<ignoreerrors>true</ignoreerrors> <!-- Set to true to silently ignore errors while scanning videos. This prevents the error dialogue box, so you don't have to keep hitting "yes" to keep scanning.-->
+</videoscanner>
+<splash>false</splash>
+<bginfoloadermaxthreads>2</bginfoloadermaxthreads>
+<myvideos>
+<extractflags>false</extractflags>
+<extractthumb>false</extractthumb>
+</myvideos>
+<lookandfeel>
+<enablerssfeeds>false</enablerssfeeds>
+</lookandfeel>
+<audiooutput>
+<guisoundmode>0</guisoundmode>
+<ac3passthrough>false</ac3passthrough>
+<dtspassthrough>false</dtspassthrough>
+<multichannellpcm>false</multichannellpcm>
+<truehdpassthrough>false</truehdpassthrough>
+<dtshdpassthrough>false</dtshdpassthrough>
+<mode>2</mode>
+</audiooutput>
+<videoscreen>
+<vsync>2</vsync>
+</videoscreen>
+<input>
+<enablemouse>false</enablemouse>
+<remoteaskeyboard>false</remoteaskeyboard>
+</input>
+<general>
+<addonnotifications>false</addonnotifications>
+</general>
+<skinsettings>
+<setting type="bool" name="skin.confluence.FirstTimeRun">false</setting>
+</skinsettings>
+</advancedsettings>
+
