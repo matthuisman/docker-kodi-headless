@@ -2,8 +2,8 @@ FROM lsiobase/xenial
 MAINTAINER sparklyballs
 
 # package version
-ARG KODI_NAME="Isengard"
-ARG KODI_VER="15.2"
+ARG KODI_NAME="Jarvis"
+ARG KODI_VER="16.1"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -93,6 +93,12 @@ RUN \
  cd "${KODI_SRC}" && \
  git apply \
 	/patches/"${KODI_NAME}"/headless.patch && \
+
+# compile crossguid
+ make -C \
+	tools/depends/target/crossguid PREFIX=/usr && \
+ make -C \
+	tools/depends/target/libdcadec PREFIX=/usr && \
 
 # configure source
  ./bootstrap && \
