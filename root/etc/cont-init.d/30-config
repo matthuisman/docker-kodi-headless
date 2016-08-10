@@ -1,7 +1,13 @@
 #!/usr/bin/with-contenv bash
 
-if [ ! -f "/config/.kodi/userdata/advancedsettings.xml" ]; then
-mkdir -p /config/.kodi/userdata
-cp /defaults/advancedsettings.xml /config/.kodi/userdata/advancedsettings.xml
-fi
-chown -R abc:abc /config
+# make folders
+mkdir -p \
+	/config/.kodi/userdata
+
+# copy config
+[[ ! -e /config/.kodi/userdata/advancedsettings.xml ]] && \
+	cp /defaults/advancedsettings.xml /config/.kodi/userdata/advancedsettings.xml
+
+# permissions
+chown -R abc:abc \
+	/config

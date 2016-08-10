@@ -5,7 +5,7 @@ The [LinuxServer.io](https://linuxserver.io) team brings you another container r
 * [IRC](https://www.linuxserver.io/index.php/irc/) on freenode at `#linuxserver.io`
 * [Podcast](https://www.linuxserver.io/index.php/category/podcast/) covers everything to do with getting the most from your Linux Server plus a focus on all things Docker and containerisation!
 
-# linuxserver/kodi-headless
+# linuxserver/kodi-headless:jarvis
 
 A headless install of kodi jarvis (v16) in a docker format, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on. You can choose between (at the time of writing),using tags, 3 main versions of kodi. 14 helix, 15 isengard and 16 jarvis.
 
@@ -28,6 +28,8 @@ linuxserver/kodi-headless:jarvis
 * `-e PGID` for GroupID - see below for explanation
 * `-e PUID` for UserID - see below for explanation
 * `-e TZ` - for timezone information *eg Europe/London, etc*
+
+It is based on alpine linux with s6 overlay, for shell access whilst the container is running do `docker exec -it kodi-headless /bin/bash`.
 
 ### User / Group Identifiers
 
@@ -57,7 +59,6 @@ If you intend to use this kodi instance to perform library tasks other than mere
 Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
-+ **12.07.16:** Rebase to xenial, split versions into separate tags.
++ **10.08.16:** Rebase to alpine linux.
 + **13.03.16:** Make kodi 16 (jarvis) default installed version.
 + **21.08.15:** Initial Release.
-
