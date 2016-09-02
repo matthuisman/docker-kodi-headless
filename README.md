@@ -35,7 +35,7 @@ Add one of the tags,  if required,  to the linuxserver/kodi-headless line of the
 + **Helix**
 + **Isengard**
 + **Jarvis** : current default branch
-+ **Krypton** : currently in beta.
++ **Krypton** : currently in beta and using ubuntu xenial.
 
 
 **Parameters**
