@@ -16,15 +16,6 @@ The [LinuxServer.io][linuxserverurl] team brings you another container release f
 
 A headless install of kodi in a docker container, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on.
 
-You can choose between ,using tags, various main versions of kodi. Add one of the following to the linuxserver/kodi-headless line of the run/create command in the following format, linuxserver/kodi-headless:Jarvis
-
-#### Tags
-+ **latest** : default, currently Jarvis
-+ **Helix**
-+ **Isengard**
-+ **Jarvis**
-+ **Krypton** : currently in beta.
-
 ## Usage
 
 ```
@@ -35,6 +26,17 @@ docker create --name=kodi-headless \
 -p 8080:8080 -p 9777:9777/udp \
 linuxserver/kodi-headless
 ```
+
+You can choose between ,using tags, various main versions of kodi.
+Add one of the following to the linuxserver/kodi-headless line of the run/create command in the following format, linuxserver/kodi-headless:Jarvis
+
+#### Tags
++ **latest** : default, currently Jarvis
++ **Helix**
++ **Isengard**
++ **Jarvis**
++ **Krypton** : currently in beta.
+
 
 **Parameters**
 
