@@ -28,13 +28,13 @@ linuxserver/kodi-headless
 ```
 
 You can choose between ,using tags, various main versions of kodi.
-Add one of the following to the linuxserver/kodi-headless line of the run/create command in the following format, linuxserver/kodi-headless:Jarvis
+
+Add one of the tags,  if required,  to the linuxserver/kodi-headless line of the run/create command in the following format, linuxserver/kodi-headless:Jarvis
 
 #### Tags
-+ **latest** : default, currently Jarvis
 + **Helix**
 + **Isengard**
-+ **Jarvis**
++ **Jarvis** : current default branch
 + **Krypton** : currently in beta.
 
 
