@@ -14,7 +14,9 @@ The [LinuxServer.io][linuxserverurl] team brings you another container release f
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/kodi-headless.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/kodi-headless.svg)][hub][![Build Status](http://jenkins.linuxserver.io:8080/buildStatus/icon?job=Dockers/LinuxServer.io/linuxserver-kodi-headless)](http://jenkins.linuxserver.io:8080/job/Dockers/job/LinuxServer.io/job/linuxserver-kodi-headless/)
 [hub]: https://hub.docker.com/r/linuxserver/kodi-headless/
 
-A headless install of kodi in a docker container, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on. You can choose between ,using tags, various main versions of kodi.
+A headless install of kodi in a docker container, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on.
+
+You can choose between ,using tags, various main versions of kodi.
 
 #### Tags
 + **latest** : default, currently Jarvis
