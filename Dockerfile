@@ -1,50 +1,228 @@
-FROM linuxserver/baseimage.python
-MAINTAINER Sparklyballs <sparklyballs@linuxserver.io>
+FROM lsiobase/alpine
+MAINTAINER sparklyballs
 
-ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
+# package version
+ARG KODI_NAME=Jarvis
+ARG KODI_VER=16.1
 
-# set the initial install main version, current latest version (possibly a beta, etc)  
-# oldest version, and root download path for kodi
-ENV KODI_VER 16 
-ENV OLDEST_VERSION="14" CURR_LATEST="16"
-ENV ROOT_PATH="https://files.linuxserver.io/kodi"
+# environment settings
+ENV HOME="/config"
 
-ENV APTLIST="gdebi-core wget"
+# copy patches and excludes
+COPY patches/ /patches/
 
-# Set the locale
-RUN locale-gen en_US.UTF-8 && \
+# install build dependencies
+RUN \
+ apk add --no-cache --virtual=build-dependencies \
+	afpfs-ng-dev \
+	alsa-lib-dev \
+	autoconf \
+	automake \
+	avahi-dev \
+	bluez-dev \
+	boost-dev \
+	boost-thread \
+	bsd-compat-headers \
+	bzip2-dev \
+	cmake \
+	coreutils \
+	curl \
+	curl-dev \
+	dbus-dev \
+	eudev-dev \
+	faac-dev \
+	findutils \
+	flac-dev \
+	freetype-dev \
+	fribidi-dev \
+	g++ \
+	gawk \
+	gcc \
+	gettext-dev \
+	giflib-dev \
+	git \
+	glew-dev \
+	glu-dev \
+	gnutls-dev \
+	gperf \
+	hicolor-icon-theme \
+	jasper-dev \
+	lame-dev \
+	libass-dev \
+	libbluray-dev \
+	libcap-dev \
+	libcdio-dev \
+	libcec-dev \
+	libgcrypt-dev \
+	libjpeg-turbo-dev \
+	libmad-dev \
+	libmicrohttpd-dev \
+	libmodplug-dev \
+	libmpeg2-dev \
+	libnfs-dev \
+	libogg-dev \
+	libplist-dev \
+	libpng-dev \
+	libsamplerate-dev \
+	libshairport-dev \
+	libssh-dev \
+	libtool \
+	libva-dev \
+	libvorbis-dev \
+	libxmu-dev \
+	libxrandr-dev \
+	libxslt-dev \
+	libxt-dev \
+	lzo-dev \
+	m4 \
+	make \
+	mariadb \
+	mariadb-dev \
+	mesa-demos \
+	mesa-dev \
+	nasm \
+	openjdk7-jre-base \
+	pcre-dev \
+	py-bluez \
+	py-pillow \
+	py-simplejson \
+	python \
+	python-dev \
+	rtmpdump-dev \
+	samba-dev \
+	sdl-dev \
+	sdl_image-dev \
+	sqlite-dev \
+	swig \
+	taglib-dev \
+	tar \
+	tiff-dev \
+	tinyxml-dev \
+	udisks2-dev \
+	wget \
+	x264-dev \
+	x265-dev \
+	xdpyinfo \
+	yajl-dev \
+	yasm-dev \
+	zip && \
 
-# change user abc home folder (needed for kodi to save files in /config/.kodi)
-usermod -d /config abc
+# fetch kodi source
+ curl -o \
+ /tmp/kodi.tar.gz -L \
+	https://github.com/xbmc/xbmc/archive/$KODI_VER-$KODI_NAME.tar.gz && \
+ mkdir -p \
+	/tmp/kodi-source && \
+ tar xf /tmp/kodi.tar.gz -C \
+	/tmp/kodi-source --strip-components=1 && \
 
-# install the packages required for kodi installation
-RUN add-apt-repository ppa:team-xbmc/ppa && \
-apt-get update && \
-apt-get install \
-$APTLIST -qy && \
-apt-get clean -y && \
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# compile crossguid and libdcadec
+ cd /tmp/kodi-source && \
+	make -C tools/depends/target/crossguid PREFIX=/usr && \
+	make -C tools/depends/target/libdcadec PREFIX=/usr && \
 
-# fetch kodi .deb and install it.
-RUN wget -nd -nH -O /tmp/LATEST "$ROOT_PATH"/LATEST"$KODI_VER"  && \
-LATEST=$(cat /tmp/LATEST) && \
-wget -nd -nH -O /tmp/kodi-headless.deb  "$ROOT_PATH"/"$LATEST".deb && \
-wget -nd -nH -O /tmp/kodi-headless.md5 "$ROOT_PATH"/"$LATEST".md5 && \
-cd /tmp && \
-CHECK_PASS=$(md5sum -c kodi-headless.md5) && \
-if [ "$CHECK_PASS" != "kodi-headless.deb: OK" ] ; then (echo "checksum failed" && exit 1) ; fi && \
-apt-get update -q && \
-gdebi -n /tmp/kodi-headless.deb && \
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# apply patches
+ git apply \
+	/patches/"${KODI_NAME}"/fix-musl.patch && \
+ git apply \
+	/patches/"${KODI_NAME}"/fix-fileemu.patch && \
+ git apply \
+	/patches/"${KODI_NAME}"/fortify-source-fix.patch && \
+ git apply \
+	/patches/"${KODI_NAME}"/remove-filewrap.patch && \
+ git apply \
+	/patches/"${KODI_NAME}"/add-missing-includes.patch && \
+ git apply \
+	/patches/"${KODI_NAME}"/set-default-stacksize.patch && \
+ git apply \
+	/patches/"${KODI_NAME}"/headless.patch && \
 
-# adding custom files
-COPY defaults/ /defaults/
-COPY services/ /etc/service/
-COPY init/ /etc/my_init.d/
-RUN chmod -v +x /etc/service/*/run /etc/my_init.d/*.sh
+# bootstrap and configure kodi
+ MAKEFLAGS="-j1" ./bootstrap && \
+	./configure \
+		--build=$CBUILD \
+		--disable-airplay \
+		--disable-airtunes \
+		--disable-alsa \
+		--disable-asap-codec \
+		--disable-avahi \
+		--disable-dbus \
+		--disable-debug \
+		--disable-dvdcss \
+		--disable-goom \
+		--disable-joystick \
+		--disable-libcap \
+		--disable-libcec \
+		--disable-libusb \
+		--disable-non-free \
+		--disable-openmax \
+		--disable-optical-drive \
+		--disable-projectm \
+		--disable-pulse \
+		--disable-rsxs \
+		--disable-rtmp \
+		--disable-spectrum \
+		--disable-udev \
+		--disable-vaapi \
+		--disable-vdpau \
+		--disable-vtbdecoder \
+		--disable-waveform \
+		--enable-libbluray \
+		--enable-nfs \
+		--enable-ssh \
+		--enable-static=no \
+		--enable-upnp \
+		--host=$CHOST \
+		--infodir=/usr/share/info \
+		--localstatedir=/var \
+		--mandir=/usr/share/man \
+		--prefix=/usr \
+		--sysconfdir=/etc && \
 
-# set the volume and ports
+# compile kodi
+ make && \
+ make install && \
+
+# cleanup build dependencies
+ apk del --purge \
+	build-dependencies && \
+
+# install runtime dependencies
+ apk add --no-cache \
+	curl \
+	ffmpeg-libs \
+	freetype \
+	fribidi \
+	glew \
+	glu \
+	jasper \
+	libmicrohttpd \
+	libpcrecpp \
+	libpng \
+	libsmbclient \
+	libssh \
+	libuuid \
+	libxml2 \
+	libxslt \
+	lzo \
+	mariadb-client-libs \
+	mariadb-libs \
+	py-bluez \
+	python \
+	taglib \
+	tiff \
+	tinyxml \
+	wget \
+	xrandr \
+	yajl && \
+
+# clean up
+ rm -rf \
+	/tmp/*
+
+# copy local files for runtime
+COPY root/ /
+
+# ports and volumes
 VOLUME /config/.kodi
 EXPOSE 8080 9777/udp
-
-
