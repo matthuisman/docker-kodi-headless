@@ -1,13 +1,20 @@
-![https://linuxserver.io](https://www.linuxserver.io/wp-content/uploads/2015/06/linuxserver_medium.png)
+[linuxserverurl]: https://linuxserver.io
+[forumurl]: https://forum.linuxserver.io
+[ircurl]: https://www.linuxserver.io/index.php/irc/
+[podcasturl]: https://www.linuxserver.io/index.php/category/podcast/
 
-The [LinuxServer.io](https://linuxserver.io) team brings you another container release featuring easy user mapping and community support. Find us for support at:
-* [forum.linuxserver.io](https://forum.linuxserver.io)
-* [IRC](https://www.linuxserver.io/index.php/irc/) on freenode at `#linuxserver.io`
-* [Podcast](https://www.linuxserver.io/index.php/category/podcast/) covers everything to do with getting the most from your Linux Server plus a focus on all things Docker and containerisation!
+[![linuxserver.io](https://www.linuxserver.io/wp-content/uploads/2015/06/linuxserver_medium.png)][linuxserverurl]
 
-# linuxserver/kodi-headless:jarvis
+The [LinuxServer.io][linuxserverurl] team brings you another container release featuring easy user mapping and community support. Find us for support at:
+* [forum.linuxserver.io][forumurl]
+* [IRC][ircurl] on freenode at `#linuxserver.io`
+* [Podcast][podcasturl] covers everything to do with getting the most from your Linux Server plus a focus on all things Docker and containerisation!
 
-A headless install of kodi jarvis (v16) in a docker format, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on. You can choose between (at the time of writing),using tags, 3 main versions of kodi. 14 helix, 15 isengard and 16 jarvis.
+# linuxserver/kodi-headless
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/kodi-headless.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/kodi-headless.svg)][hub][![Build Status](http://jenkins.linuxserver.io:8080/buildStatus/icon?job=Dockers/LinuxServer.io/linuxserver-kodi-headless)](http://jenkins.linuxserver.io:8080/job/Dockers/job/LinuxServer.io/job/linuxserver-kodi-headless/)
+[hub]: https://hub.docker.com/r/linuxserver/kodi-headless/
+
+A headless install of kodi in a docker container, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on.
 
 ## Usage
 
@@ -17,8 +24,19 @@ docker create --name=kodi-headless \
 -e PGID=<gid> -e PUID=<uid> \
 -e TZ=<timezone> \
 -p 8080:8080 -p 9777:9777/udp \
-linuxserver/kodi-headless:jarvis
+linuxserver/kodi-headless
 ```
+
+You can choose between ,using tags, various main versions of kodi.
+
+Add one of the tags,  if required,  to the linuxserver/kodi-headless line of the run/create command in the following format, linuxserver/kodi-headless:Jarvis
+
+#### Tags
++ **Helix**
++ **Isengard**
++ **Jarvis** : current default branch
++ **Krypton** : currently in beta and using ubuntu xenial.
+
 
 **Parameters**
 
@@ -46,7 +64,7 @@ In this instance `PUID=1001` and `PGID=1001`. To find yours use `id user` as bel
 
 Mysql/mariadb settings are entered by editing the file advancedsettings.xml which is found in the userdata folder of your /config/.kodi mapping. Many other settings are within this file also.
 
-The default user/password for the web interface and for apps like couchpotato etc to send updates is xbmc/xbmc.  
+The default user/password for the web interface and for apps like couchpotato etc to send updates is xbmc/xbmc.
 
 If you intend to use this kodi instance to perform library tasks other than merely updating, eg. library cleaning etc, it is important to copy over the sources.xml from the host machine that you performed the initial library scan on to the userdata folder of this instance, otherwise database loss can and most likely will occur.
 
@@ -59,6 +77,6 @@ If you intend to use this kodi instance to perform library tasks other than mere
 Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
-+ **10.08.16:** Rebase to alpine linux.
++ **02.09.16:** Rebase to alpine linux.
 + **13.03.16:** Make kodi 16 (jarvis) default installed version.
 + **21.08.15:** Initial Release.
