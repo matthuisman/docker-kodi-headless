@@ -11,11 +11,13 @@ The [LinuxServer.io][linuxserverurl] team brings you another container release f
 * [Podcast][podcasturl] covers everything to do with getting the most from your Linux Server plus a focus on all things Docker and containerisation!
 
 # linuxserver/kodi-headless
-[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/kodi-headless.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/kodi-headless.svg)][hub][![Build Status](http://jenkins.linuxserver.io:8080/buildStatus/icon?job=Dockers/LinuxServer.io/linuxserver-kodi-headless)](http://jenkins.linuxserver.io:8080/job/Dockers/job/LinuxServer.io/job/linuxserver-kodi-headless/)
+[![](https://images.microbadger.com/badges/image/linuxserver/kodi-headless.svg)](http://microbadger.com/images/linuxserver/kodi-headless "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/kodi-headless.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/kodi-headless.svg)][hub][![Build Status](http://jenkins.linuxserver.io:8080/buildStatus/icon?job=Dockers/LinuxServer.io/linuxserver-kodi-headless)](http://jenkins.linuxserver.io:8080/job/Dockers/job/LinuxServer.io/job/linuxserver-kodi-headless/)
 [hub]: https://hub.docker.com/r/linuxserver/kodi-headless/
 
 A headless install of kodi in a docker container, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on.
 
+[![kodi](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/kodi-banner.png)][kodiurl]
+[kodiurl]: https://kodi.tv/
 ## Usage
 
 ```
@@ -58,7 +60,7 @@ In this instance `PUID=1001` and `PGID=1001`. To find yours use `id user` as bel
 ```
   $ id <dockeruser>
     uid=1001(dockeruser) gid=1001(dockergroup) groups=1001(dockergroup)
-```    
+```
 
 ## Setting up the application
 
@@ -77,6 +79,8 @@ If you intend to use this kodi instance to perform library tasks other than mere
 Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
+
++ **10.09.16:** Add layer badge to README..
 + **02.09.16:** Rebase to alpine linux.
 + **13.03.16:** Make kodi 16 (jarvis) default installed version.
 + **21.08.15:** Initial Release.
