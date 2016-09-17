@@ -197,6 +197,7 @@ RUN \
 	glu \
 	jasper \
 	libmicrohttpd \
+	libnfs \
 	libpcrecpp \
 	libpng \
 	libsmbclient \
@@ -226,3 +227,4 @@ COPY root/ /
 # ports and volumes
 VOLUME /config/.kodi
 EXPOSE 8080 9777/udp
+
