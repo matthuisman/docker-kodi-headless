@@ -197,6 +197,7 @@ RUN \
 	glu \
 	jasper \
 	libmicrohttpd \
+	libnfs \
 	libpcrecpp \
 	libpng \
 	libsmbclient \
