@@ -115,9 +115,9 @@ RUN \
 	/tmp/kodi-source && \
  tar xf /tmp/kodi.tar.gz -C \
 	/tmp/kodi-source --strip-components=1 && \
+ cd /tmp/kodi-source && \
 
 # compile crossguid and libdcadec
- cd /tmp/kodi-source && \
 	make -C tools/depends/target/crossguid PREFIX=/usr && \
 	make -C tools/depends/target/libdcadec PREFIX=/usr && \
 
@@ -182,6 +182,14 @@ RUN \
 # compile kodi
  make && \
  make install && \
+
+# install kodi-send
+ install -Dm644 \
+	/tmp/kodi-source/tools/EventClients/Clients/Kodi\ Send/kodi-send.py \
+	/usr/bin/kodi-send && \
+ install -Dm644 \
+	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
+	/usr/share/kodi/system/python/xbmcclient.py && \
 
 # cleanup build dependencies
  apk del --purge \
