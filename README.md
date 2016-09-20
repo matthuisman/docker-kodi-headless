@@ -80,6 +80,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **20.09.16:** Add kodi-send and fix var cache samba permissions.
 + **10.09.16:** Add layer badge to README..
 + **02.09.16:** Rebase to alpine linux.
 + **13.03.16:** Make kodi 16 (jarvis) default installed version.

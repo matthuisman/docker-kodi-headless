@@ -184,12 +184,12 @@ RUN \
  make install && \
 
 # install kodi-send
- install -Dm644 \
+ install -Dm755 \
 	/tmp/kodi-source/tools/EventClients/Clients/Kodi\ Send/kodi-send.py \
 	/usr/bin/kodi-send && \
  install -Dm644 \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
-	/usr/share/kodi/system/python/xbmcclient.py && \
+	/usr/lib/python2.7/xbmcclient.py && \
 
 # cleanup build dependencies
  apk del --purge \
@@ -235,4 +235,3 @@ COPY root/ /
 # ports and volumes
 VOLUME /config/.kodi
 EXPOSE 8080 9777/udp
-
