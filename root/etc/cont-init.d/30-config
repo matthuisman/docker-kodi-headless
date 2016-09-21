@@ -2,7 +2,8 @@
 
 # make folders
 mkdir -p \
-	/config/.kodi/userdata
+	/config/.kodi/userdata \
+	/var/cache/samba
 
 # copy config
 [[ ! -e /config/.kodi/userdata/advancedsettings.xml ]] && \
@@ -10,5 +11,5 @@ mkdir -p \
 
 # permissions
 chown -R abc:abc \
-	/config
-	
+	/config \
+	/var/cache/samba
