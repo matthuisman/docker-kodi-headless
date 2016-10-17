@@ -40,7 +40,13 @@ Add one of the tags,  if required,  to the linuxserver/kodi-headless line of the
 + **Krypton** : currently in beta and using ubuntu xenial.
 
 
-**Parameters**
+## Parameters
+
+`The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side. 
+For example with a port -p external:internal - what this shows is the port mapping from internal to external of the container.
+So -p 8080:80 would expose port 80 from inside the container to be accessible from the host's IP on port 8080
+http://192.168.x.x:8080 would show you what's running INSIDE the container on port 80.`
+
 
 * `-p 8080` - webui port
 * `-p 9777/udp` - esall interface port
