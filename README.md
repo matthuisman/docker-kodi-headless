@@ -81,6 +81,14 @@ If you intend to use this kodi instance to perform library tasks other than mere
 * Shell access whilst the container is running: `docker exec -it kodi-headless /bin/bash`
 * To monitor the logs of the container in realtime: `docker logs -f kodi-headless`
 
+* container build-date 
+
+`docker inspect -f '{{ index .Config.Labels "build_version" }}' kodi-headless`
+
+* image build-date
+
+`docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/kodi-headless`
+
 ## Credits
 Various members of the xbmc/kodi community for patches and advice.
 
