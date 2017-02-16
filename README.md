@@ -1,7 +1,7 @@
 [linuxserverurl]: https://linuxserver.io
 [forumurl]: https://forum.linuxserver.io
-[ircurl]: https://www.linuxserver.io/irc/
-[podcasturl]: https://www.linuxserver.io/podcast/
+[ircurl]: https://www.linuxserver.io/index.php/irc/
+[podcasturl]: https://www.linuxserver.io/index.php/category/podcast/
 
 [![linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)][linuxserverurl]
 
@@ -31,22 +31,16 @@ linuxserver/kodi-headless
 
 You can choose between ,using tags, various main versions of kodi.
 
-Add one of the tags,  if required,  to the linuxserver/kodi-headless line of the run/create command in the following format, linuxserver/kodi-headless:Jarvis
+Add one of the tags,  if required,  to the linuxserver/kodi-headless line of the run/create command in the following format, linuxserver/kodi-headless:Krypton
 
 #### Tags
 + **Helix**
 + **Isengard**
-+ **Jarvis** : current default branch
-+ **Krypton** : currently in beta and using ubuntu xenial.
++ **Jarvis**
++ **Krypton** : current default branch.
 
 
-## Parameters
-
-`The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side. 
-For example with a port -p external:internal - what this shows is the port mapping from internal to external of the container.
-So -p 8080:80 would expose port 80 from inside the container to be accessible from the host's IP on port 8080
-http://192.168.x.x:8080 would show you what's running INSIDE the container on port 80.`
-
+**Parameters**
 
 * `-p 8080` - webui port
 * `-p 9777/udp` - esall interface port
@@ -81,19 +75,12 @@ If you intend to use this kodi instance to perform library tasks other than mere
 * Shell access whilst the container is running: `docker exec -it kodi-headless /bin/bash`
 * To monitor the logs of the container in realtime: `docker logs -f kodi-headless`
 
-* container build-date 
-
-`docker inspect -f '{{ index .Config.Labels "build_version" }}' kodi-headless`
-
-* image build-date
-
-`docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/kodi-headless`
-
 ## Credits
 Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **05.02.17:** Move Krypton to default branch.
 + **20.09.16:** Add kodi-send and fix var cache samba permissions.
 + **10.09.16:** Add layer badge to README..
 + **02.09.16:** Rebase to alpine linux.
