@@ -80,6 +80,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **22.02.17:** Change default webui user/pw to kodi/kodi.
 + **05.02.17:** Move Krypton to default branch.
 + **20.09.16:** Add kodi-send and fix var cache samba permissions.
 + **10.09.16:** Add layer badge to README..
