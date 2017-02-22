@@ -24,7 +24,7 @@
 </musicdatabase>
 
 <services>
-<devicename>XBMC Server</devicename>
+<devicename>KODI Server</devicename>
 <esallinterfaces>true</esallinterfaces> <!-- don't change this value -->
 <escontinuousdelay>25</escontinuousdelay>
 <esenabled>true</esenabled> <!-- don't change this value -->
@@ -36,9 +36,9 @@
 <upnprenderer>false</upnprenderer>
 <upnpserver>true</upnpserver>
 <webserver>true</webserver> <!-- don't change this value -->
-<webserverpassword>xbmc</webserverpassword>
+<webserverpassword>kodi</webserverpassword>
 <webserverport>8080</webserverport> <!-- don't change this value -->
-<webserverusername>xbmc</webserverusername>
+<webserverusername>kodi</webserverusername>
 <webskin>webinterface.default</webskin>
 <zeroconf>true</zeroconf>
 </services>
