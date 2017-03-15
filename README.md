@@ -2,6 +2,8 @@
 [forumurl]: https://forum.linuxserver.io
 [ircurl]: https://www.linuxserver.io/index.php/irc/
 [podcasturl]: https://www.linuxserver.io/index.php/category/podcast/
+[appurl]: https://kodi.tv/
+[hub]: https://hub.docker.com/r/linuxserver/kodi-headless/
 
 [![linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)][linuxserverurl]
 
@@ -12,12 +14,11 @@ The [LinuxServer.io][linuxserverurl] team brings you another container release f
 
 # linuxserver/kodi-headless
 [![](https://images.microbadger.com/badges/image/linuxserver/kodi-headless.svg)](http://microbadger.com/images/linuxserver/kodi-headless "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/kodi-headless.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/kodi-headless.svg)][hub][![Build Status](http://jenkins.linuxserver.io:8080/buildStatus/icon?job=Dockers/LinuxServer.io/linuxserver-kodi-headless)](http://jenkins.linuxserver.io:8080/job/Dockers/job/LinuxServer.io/job/linuxserver-kodi-headless/)
-[hub]: https://hub.docker.com/r/linuxserver/kodi-headless/
 
 A headless install of kodi in a docker container, most useful for a mysql setup of kodi to allow library updates to be sent without the need for a player system to be permanently on.
 
-[![kodi](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/kodi-banner.png)][kodiurl]
-[kodiurl]: https://kodi.tv/
+[![kodi](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/kodi-banner.png)][appurl]
+
 ## Usage
 
 ```
