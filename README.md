@@ -81,6 +81,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **22.02.17:** Switch to using cmake build system.
 + **22.02.17:** Bump Krypton to 17.1.
 + **22.02.17:** Change default webui user/pw to kodi/kodi.
 + **05.02.17:** Move Krypton to default branch.

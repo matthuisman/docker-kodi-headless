@@ -51,6 +51,7 @@ ARG BUILD_DEPENDENCIES="\
 	libiso9660-dev \
 	libjasper-dev \
 	libjpeg-dev \
+	liblcms2-dev \
 	liblzo2-dev \
 	libmicrohttpd-dev \
 	libmpeg2-4-dev \
@@ -80,12 +81,14 @@ ARG BUILD_DEPENDENCIES="\
 
 # runtime packages variable
 ARG RUNTIME_DEPENDENCIES="\
+	libcdio13 \
 	libcurl3 \
 	libegl1-mesa \
 	libfreetype6 \
 	libfribidi0 \
 	libglew1.13 \
 	libjpeg8 \
+	liblcms2-2 \
 	liblzo2-2 \
 	libmicrohttpd10 \
 	libmysqlclient20 \
@@ -120,51 +123,33 @@ RUN \
  git apply \
 	/patches/"${KODI_NAME}"/headless.patch && \
 
-# compile crossguid
- make -C \
-	tools/depends/target/crossguid PREFIX=/usr && \
-
 # configure source
  ./bootstrap && \
-	./configure \
-		--build=$CBUILD \
-		--disable-airplay \
-		--disable-airtunes \
-		--disable-alsa \
-		--disable-asap-codec \
-		--disable-avahi \
-		--disable-dbus \
-		--disable-debug \
-		--disable-dvdcss \
-		--disable-goom \
-		--disable-joystick \
-		--disable-libcap \
-		--disable-libcec \
-		--disable-libusb \
-		--disable-non-free \
-		--disable-openmax \
-		--disable-optical-drive \
-		--disable-projectm \
-		--disable-pulse \
-		--disable-rsxs \
-		--disable-rtmp \
-		--disable-spectrum \
-		--disable-udev \
-		--disable-vaapi \
-		--disable-vdpau \
-		--disable-vtbdecoder \
-		--disable-waveform \
-		--enable-libbluray \
-		--enable-nfs \
-		--enable-ssh \
-		--enable-static=no \
-		--enable-upnp \
-		--host=$CHOST \
-		--infodir=/usr/share/info \
-		--localstatedir=/var \
-		--mandir=/usr/share/man \
-		--prefix=/usr \
-		--sysconfdir=/etc && \
+ mkdir -p \
+	/tmp/kodi-source/build && \
+ cd /tmp/kodi-source/build && \
+ cmake \
+	../project/cmake/ \
+		-DCMAKE_INSTALL_LIBDIR=/usr/lib \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DENABLE_AIRTUNES=OFF \
+		-DENABLE_ALSA=OFF \
+		-DENABLE_AVAHI=OFF \
+		-DENABLE_BLUETOOTH=OFF \
+		-DENABLE_BLURAY=ON \
+		-DENABLE_CAP=OFF \
+		-DENABLE_DBUS=OFF \
+		-DENABLE_DVDCSS=OFF \
+		-DENABLE_LIBUSB=OFF \
+		-DENABLE_NFS=ON \
+		-DENABLE_NONFREE=OFF \
+		-DENABLE_OPTICAL=OFF \
+		-DENABLE_PULSEAUDIO=OFF \
+		-DENABLE_SSH=ON \
+		-DENABLE_UDEV=OFF \
+		-DENABLE_UPNP=ON \
+		-DENABLE_VAAPI=OFF \
+		-DENABLE_VDPAU=OFF && \
 
 # compile and install kodi
  make && \
