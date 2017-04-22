@@ -126,45 +126,43 @@ RUN \
 
 # configure source
  ./bootstrap && \
-	./configure \
-		--build=$CBUILD \
-		--disable-airplay \
-		--disable-airtunes \
-		--disable-alsa \
-		--disable-asap-codec \
-		--disable-avahi \
-		--disable-dbus \
-		--disable-debug \
-		--disable-dvdcss \
-		--disable-goom \
-		--disable-joystick \
-		--disable-libcap \
-		--disable-libcec \
-		--disable-libusb \
-		--disable-non-free \
-		--disable-openmax \
-		--disable-optical-drive \
-		--disable-projectm \
-		--disable-pulse \
-		--disable-rsxs \
-		--disable-rtmp \
-		--disable-spectrum \
-		--disable-udev \
-		--disable-vaapi \
-		--disable-vdpau \
-		--disable-vtbdecoder \
-		--disable-waveform \
-		--enable-libbluray \
-		--enable-nfs \
-		--enable-ssh \
-		--enable-static=no \
-		--enable-upnp \
-		--host=$CHOST \
-		--infodir=/usr/share/info \
-		--localstatedir=/var \
-		--mandir=/usr/share/man \
-		--prefix=/usr \
-		--sysconfdir=/etc && \
+ mkdir -p \
+	/tmp/kodi-source/build && \
+ cd /tmp/kodi-source/build && \
+ cmake \
+	../project/cmake/ \
+		-DCMAKE_INSTALL_LIBDIR=/usr/lib \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DENABLE_AIRPLAY=OFF \
+		-DENABLE_AIRTUNES=OFF \
+		-DENABLE_ALSA=OFF \
+		-DENABLE_ASAP_CODEC=OFF \
+		-DENABLE_AVAHI=OFF \
+		-DENABLE_DBUS=OFF \
+		-DENABLE_DEBUG=OFF \
+		-DENABLE_DVDCSS=OFF \
+		-DENABLE_GOOM=OFF  \
+		-DENABLE_JOYSTICK=OFF \
+		-DENABLE_LIBBLURAY=ON \
+		-DENABLE_LIBCAP=OFF \
+		-DENABLE_LIBCEC=OFF \
+		-DENABLE_LIBUSB=OFF \
+		-DENABLE_NFS=ON \
+		-DENABLE_NON-FREE=OFF \
+		-DENABLE_OPENMAX=OFF \
+		-DENABLE_OPTICAL-DRIVE=OFF \
+		-DENABLE_PROJECTM=OFF \
+		-DENABLE_PULSE=OFF \
+		-DENABLE_RSXS=OFF \
+		-DENABLE_RTMP=OFF \
+		-DENABLE_SPECTRUM=OFF \
+		-DENABLE_SSH=ON \
+		-DENABLE_UDEV=OFF \
+		-DENABLE_UPNP=ON \
+		-DENABLE_VAAPI=OFF \
+		-DENABLE_VDPAU=OFF \
+		-DENABLE_VTBDECODER=OFF \
+		-DENABLE_WAVEFORM=OFF && \
 
 # compile and install kodi
  make && \
