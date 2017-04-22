@@ -123,10 +123,6 @@ RUN \
  git apply \
 	/patches/"${KODI_NAME}"/headless.patch && \
 
-# compile crossguid
- make -C \
-	tools/depends/target/crossguid PREFIX=/usr && \
-
 # configure source
  ./bootstrap && \
  mkdir -p \
