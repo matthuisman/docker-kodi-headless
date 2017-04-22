@@ -123,6 +123,10 @@ RUN \
  git apply \
 	/patches/"${KODI_NAME}"/headless.patch && \
 
+# compile crossguid
+ make -C \
+	tools/depends/target/crossguid PREFIX=/usr && \
+
 # configure source
  ./bootstrap && \
  mkdir -p \
@@ -135,10 +139,16 @@ RUN \
 		-DENABLE_AIRTUNES=OFF \
 		-DENABLE_ALSA=OFF \
 		-DENABLE_AVAHI=OFF \
+		-DENABLE_BLUETOOTH=OFF \
+		-DENABLE_BLURAY=ON \
+		-DENABLE_CAP=OFF \
 		-DENABLE_DBUS=OFF \
 		-DENABLE_DVDCSS=OFF \
 		-DENABLE_LIBUSB=OFF \
 		-DENABLE_NFS=ON \
+		-DENABLE_NONFREE=OFF \
+		-DENABLE_OPTICAL=OFF \
+		-DENABLE_PULSEAUDIO=OFF \
 		-DENABLE_SSH=ON \
 		-DENABLE_UDEV=OFF \
 		-DENABLE_UPNP=ON \
