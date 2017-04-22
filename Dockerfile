@@ -51,6 +51,7 @@ ARG BUILD_DEPENDENCIES="\
 	libiso9660-dev \
 	libjasper-dev \
 	libjpeg-dev \
+	liblcms2-dev \
 	liblzo2-dev \
 	libmicrohttpd-dev \
 	libmpeg2-4-dev \
@@ -80,12 +81,14 @@ ARG BUILD_DEPENDENCIES="\
 
 # runtime packages variable
 ARG RUNTIME_DEPENDENCIES="\
+	libcdio13 \
 	libcurl3 \
 	libegl1-mesa \
 	libfreetype6 \
 	libfribidi0 \
 	libglew1.13 \
 	libjpeg8 \
+	liblcms2-2 \
 	liblzo2-2 \
 	libmicrohttpd10 \
 	libmysqlclient20 \
@@ -119,10 +122,6 @@ RUN \
  cd /tmp/kodi-source && \
  git apply \
 	/patches/"${KODI_NAME}"/headless.patch && \
-
-# compile crossguid
- make -C \
-	tools/depends/target/crossguid PREFIX=/usr && \
 
 # configure source
  ./bootstrap && \
