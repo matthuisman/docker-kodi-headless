@@ -81,6 +81,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **23.04.17:** Refine cmake, use cmake ppa and take out uneeded bootstrap line.
 + **22.02.17:** Switch to using cmake build system.
 + **22.02.17:** Bump Krypton to 17.1.
 + **22.02.17:** Change default webui user/pw to kodi/kodi.
