@@ -25,7 +25,6 @@ ARG BUILD_DEPENDENCIES="\
 	automake \
 	autopoint \
 	binutils \
-	ccache \
 	cmake \
 	curl \
 	default-jdk \
