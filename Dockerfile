@@ -25,6 +25,7 @@ ARG BUILD_DEPENDENCIES="\
 	automake \
 	autopoint \
 	binutils \
+	ccache \
 	cmake \
 	curl \
 	default-jdk \
@@ -58,6 +59,7 @@ ARG BUILD_DEPENDENCIES="\
 	libmysqlclient-dev \
 	libnfs-dev \
 	libpcre3-dev \
+	libplist-dev \
 	libsmbclient-dev \
 	libsqlite3-dev \
 	libssh-dev \
@@ -94,6 +96,7 @@ ARG RUNTIME_DEPENDENCIES="\
 	libmysqlclient20 \
 	libnfs8 \
 	libpcrecpp0v5 \
+	libplist3 \
 	libpython2.7 \
 	libsmbclient \
 	libssh-4 \
@@ -107,6 +110,11 @@ ARG RUNTIME_DEPENDENCIES="\
 
 # install build packages
 RUN \
+ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 828AB726 && \
+ echo "deb http://ppa.launchpad.net/george-edison55/cmake-3.x/ubuntu xenial main" >> \
+	/etc/apt/sources.list.d/cmake.list && \
+ echo "deb-src http://ppa.launchpad.net/george-edison55/cmake-3.x/ubuntu xenial main" >> \
+	/etc/apt/sources.list.d/cmake.list && \
  apt-get update && \
  apt-get install -y \
  	$BUILD_DEPENDENCIES && \
@@ -124,7 +132,6 @@ RUN \
 	/patches/"${KODI_NAME}"/headless.patch && \
 
 # configure source
- ./bootstrap && \
  mkdir -p \
 	/tmp/kodi-source/build && \
  cd /tmp/kodi-source/build && \
@@ -138,6 +145,7 @@ RUN \
 		-DENABLE_BLUETOOTH=OFF \
 		-DENABLE_BLURAY=ON \
 		-DENABLE_CAP=OFF \
+		-DENABLE_CEC=OFF \
 		-DENABLE_DBUS=OFF \
 		-DENABLE_DVDCSS=OFF \
 		-DENABLE_LIBUSB=OFF \
@@ -145,6 +153,7 @@ RUN \
 		-DENABLE_NONFREE=OFF \
 		-DENABLE_OPTICAL=OFF \
 		-DENABLE_PULSEAUDIO=OFF \
+		-DENABLE_SDL=OFF \
 		-DENABLE_SSH=ON \
 		-DENABLE_UDEV=OFF \
 		-DENABLE_UPNP=ON \
