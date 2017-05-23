@@ -3,7 +3,7 @@ MAINTAINER sparklyballs
 
 # package version
 ARG KODI_NAME="Krypton"
-ARG KODI_VER="17.1"
+ARG KODI_VER="17.2"
 
 # set version label
 ARG BUILD_DATE
