@@ -50,7 +50,7 @@ Add one of the tags,  if required,  to the linuxserver/kodi-headless line of the
 * `-e PUID` for UserID - see below for explanation
 * `-e TZ` - for timezone information *eg Europe/London, etc*
 
-It is based on alpine linux with s6 overlay, for shell access whilst the container is running do `docker exec -it kodi-headless /bin/bash`.
+It is based on ubuntu xenial with s6 overlay, for shell access whilst the container is running do `docker exec -it kodi-headless /bin/bash`.
 
 ### User / Group Identifiers
 
