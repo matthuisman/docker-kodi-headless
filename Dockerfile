@@ -1,14 +1,14 @@
 FROM lsiobase/xenial
 MAINTAINER sparklyballs
 
-# package version
-ARG KODI_NAME="Krypton"
-ARG KODI_VER="17.3"
-
 # set version label
 ARG BUILD_DATE
 ARG VERSION
-LABEL build_version="Build-date:- ${BUILD_DATE}"
+LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+
+# package version
+ARG KODI_NAME="Krypton"
+ARG KODI_VER="17.3"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
