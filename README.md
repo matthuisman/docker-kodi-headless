@@ -81,6 +81,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **23.08.17:** Bump Krypton to 17.4.
 + **25.05.17:** Bump Krypton to 17.3.
 + **23.05.17:** Bump Krypton to 17.2.
 + **23.04.17:** Refine cmake, use cmake ppa and take out uneeded bootstrap line.
