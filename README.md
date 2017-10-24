@@ -81,6 +81,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **24.10.17:** Bump Krypton to 17.5.
 + **22.08.17:** Bump Krypton to 17.4.
 + **25.05.17:** Bump Krypton to 17.3.
 + **23.05.17:** Bump Krypton to 17.2.
