@@ -8,7 +8,7 @@ LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DA
 
 # package version
 ARG KODI_NAME="Krypton"
-ARG KODI_VER="17.5"
+ARG KODI_VER="17.6"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
