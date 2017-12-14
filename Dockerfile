@@ -1,12 +1,12 @@
 FROM lsiobase/xenial
-MAINTAINER sparklyballs
 
 # set version label
 ARG BUILD_DATE
 ARG VERSION
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="sparklyballs"
 
-# package version
+# package versions
 ARG KODI_NAME="Krypton"
 ARG KODI_VER="17.6"
 
@@ -107,18 +107,18 @@ ARG RUNTIME_DEPENDENCIES="\
 	libxslt1.1 \
 	libyajl2"
 
-# install build packages
 RUN \
+ echo "**** add cmake  repository ****" && \
  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 828AB726 && \
  echo "deb http://ppa.launchpad.net/george-edison55/cmake-3.x/ubuntu xenial main" >> \
 	/etc/apt/sources.list.d/cmake.list && \
  echo "deb-src http://ppa.launchpad.net/george-edison55/cmake-3.x/ubuntu xenial main" >> \
 	/etc/apt/sources.list.d/cmake.list && \
+ echo "**** install build packages ****" && \
  apt-get update && \
  apt-get install -y \
  	$BUILD_DEPENDENCIES && \
-
-# fetch, unpack  and patch source
+ echo "**** compile kodi ****" && \
  mkdir -p \
 	/tmp/kodi-source && \
  curl -o \
@@ -129,8 +129,6 @@ RUN \
  cd /tmp/kodi-source && \
  git apply \
 	/patches/"${KODI_NAME}"/headless.patch && \
-
-# configure source
  mkdir -p \
 	/tmp/kodi-source/build && \
  cd /tmp/kodi-source/build && \
@@ -158,8 +156,7 @@ RUN \
 		-DENABLE_UPNP=ON \
 		-DENABLE_VAAPI=OFF \
 		-DENABLE_VDPAU=OFF && \
-
-# attempt to set number of cores available for make to use
+ echo "**** attempt to set number of cores available for make to use ****" && \
  set -ex && \
  CPU_CORES=$( < /proc/cpuinfo grep -c processor ) || echo "failed cpu look up" && \
  if echo $CPU_CORES | grep -E  -q '^[0-9]+$'; then \
@@ -171,31 +168,25 @@ RUN \
  elif [ "$CPU_CORES" -gt 3 ]; then \
 	CPU_CORES=$(( CPU_CORES  - 1 )); fi \
  else CPU_CORES="1"; fi && \
-
-# compile and install kodi
  make -j $CPU_CORES && \
+ set +ex && \
  make install && \
-
-# install kodi-send
+ echo "**** install kodi-send ****" && \
  install -Dm755 \
 	/tmp/kodi-source/tools/EventClients/Clients/Kodi\ Send/kodi-send.py \
 	/usr/bin/kodi-send && \
  install -Dm644 \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
 	/usr/lib/python2.7/xbmcclient.py && \
-
-# uninstall build packages
- set +ex && \
+ echo "**** uninstall build packages ****" && \
  apt-get purge -y --auto-remove \
 	$BUILD_DEPENDENCIES && \
-
-# install runtime packages
+ echo "**** install runtime packages ****" && \
  apt-get update && \
  apt-get install -y \
 	--no-install-recommends \
 	$RUNTIME_DEPENDENCIES && \
-
-# cleanup
+ echo "**** cleanup ****" && \
  apt-get clean && \
  rm -rf \
 	/tmp/* \

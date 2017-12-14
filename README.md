@@ -81,6 +81,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **14.12.17:** Fix continuation lines.
 + **17.11.17:** Bump Krypton to 17.6.
 + **24.10.17:** Bump Krypton to 17.5.
 + **22.08.17:** Bump Krypton to 17.4.
