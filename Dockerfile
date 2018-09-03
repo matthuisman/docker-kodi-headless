@@ -158,6 +158,7 @@ RUN \
 	liblzo2-2 \
 	libmicrohttpd12 \
 	libmysqlclient20 \
+	libnfs11 \
 	libpcrecpp0v5 \
 	libpython2.7 \
 	libsmbclient \

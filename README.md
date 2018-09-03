@@ -84,6 +84,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **03.09.18:** Add back libnfs dependency.
 + **31.08.18:** Rebase to ubuntu bionic, use buildstage and add info about websockets port.
 + **04.01.18:** Deprecate cpu_core routine lack of scaling.
 + **14.12.17:** Fix continuation lines.
