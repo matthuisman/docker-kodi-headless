@@ -41,6 +41,7 @@ Add one of the tags,  if required,  to the linuxserver/kodi-headless line of the
 + **Isengard**
 + **Jarvis**
 + **Krypton** : current default branch.
++ **Leia**
 
 
 **Parameters**
@@ -84,6 +85,7 @@ Various members of the xbmc/kodi community for patches and advice.
 
 ## Versions
 
++ **30.01.19:** Bump Leia branch to release ppa.
 + **03.09.18:** Add back libnfs dependency.
 + **31.08.18:** Rebase to ubuntu bionic, use buildstage and add info about websockets port.
 + **04.01.18:** Deprecate cpu_core routine lack of scaling.
