@@ -1,2 +1,4 @@
 #!/usr/bin/with-contenv bash
-s6-setuidgid abc /usr/lib/kodi/kodi.bin --headless
+
+	s6-setuidgid abc \
+	/usr/bin/kodi --headless

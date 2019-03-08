@@ -1,22 +1,21 @@
-FROM lsiobase/ubuntu:bionic as buildstage
+ARG UBUNTU_VER="bionic"
+FROM lsiobase/ubuntu:${UBUNTU_VER} as buildstage
 ############## build stage ##############
 
-# package versions
-ARG KODI_NAME="Krypton"
-ARG KODI_VER="17.6"
+# package versions
+ARG KODI_NAME="Leia"
+ARG KODI_VER="18.1"
 
-# environment settings
+# environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
 
-# copy patches and excludes
+# copy patches and excludes
 COPY patches/ /patches/
-COPY excludes /etc/dpkg/dpkg.cfg.d/excludes
 
 RUN \
  echo "**** install build packages ****" && \
  apt-get update && \
  apt-get install -y \
-	ant \
 	autoconf \
 	automake \
 	autopoint \
@@ -24,7 +23,6 @@ RUN \
 	cmake \
 	curl \
 	default-jdk \
-	doxygen \
 	g++ \
 	gawk \
 	gcc \
@@ -41,8 +39,8 @@ RUN \
 	libflac-dev \
 	libfmt-dev \
 	libfreetype6-dev \
+	libfstrcmp-dev \
 	libgif-dev \
-	libgle3-dev \
 	libglew-dev \
 	libiso9660-dev \
 	libjpeg-dev \
@@ -55,31 +53,27 @@ RUN \
 	libpcre3-dev \
 	libplist-dev \
 	libsmbclient-dev \
-	libsndio-dev \
 	libsqlite3-dev \
 	libssh-dev \
 	libtag1-dev \
 	libtiff5-dev \
 	libtinyxml-dev \
 	libtool \
-	libva-dev \
-	libvdpau-dev \
 	libvorbis-dev \
 	libxml2-dev \
 	libxrandr-dev \
 	libxslt-dev \
 	libyajl-dev \
-	m4 \
 	make \
+	nasm \
 	python-dev \
 	rapidjson-dev \
 	swig \
 	uuid-dev \
 	yasm \
 	zip
-
 RUN \
- echo "**** fetch source and apply any patches if required ****" && \
+ echo "**** fetch source ****" && \
  mkdir -p \
 	/tmp/kodi-source/build && \
  curl -o \
@@ -94,7 +88,7 @@ RUN \
 RUN \
  echo "**** compile kodi ****" && \
  cd /tmp/kodi-source/build && \
- cmake ../project/cmake/ \
+ cmake ../. \
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DENABLE_AIRTUNES=OFF \
@@ -106,13 +100,14 @@ RUN \
 	-DENABLE_CEC=OFF \
 	-DENABLE_DBUS=OFF \
 	-DENABLE_DVDCSS=OFF \
+	-DENABLE_GLX=OFF \
+	-DENABLE_INTERNAL_FLATBUFFERS=ON \
 	-DENABLE_LIBUSB=OFF \
 	-DENABLE_NFS=ON \
-	-DENABLE_NONFREE=OFF \
+	-DENABLE_OPENGL=OFF \
 	-DENABLE_OPTICAL=OFF \
 	-DENABLE_PULSEAUDIO=OFF \
-	-DENABLE_SDL=OFF \
-	-DENABLE_SSH=ON \
+	-DENABLE_SNDIO=OFF \
 	-DENABLE_UDEV=OFF \
 	-DENABLE_UPNP=ON \
 	-DENABLE_VAAPI=OFF \
@@ -123,14 +118,15 @@ RUN \
 RUN \
  echo "**** install kodi-send ****" && \
  install -Dm755 \
-	/tmp/kodi-source/tools/EventClients/Clients/Kodi\ Send/kodi-send.py \
+	/tmp/kodi-source/tools/EventClients/Clients/KodiSend/kodi-send.py \
 	/usr/bin/kodi-send && \
  install -Dm644 \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
 	/usr/lib/python2.7/xbmcclient.py
 
+FROM lsiobase/ubuntu:${UBUNTU_VER}
+
 ############## runtime stage ##############
-FROM lsiobase/ubuntu:bionic
 
 # set version label
 ARG BUILD_DATE
@@ -138,22 +134,19 @@ ARG VERSION
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="sparklyballs"
 
-# environment settings
+# environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/config"
 
 RUN \
- echo "**** install runtime packages ****" && \
  apt-get update && \
  apt-get install -y \
 	--no-install-recommends \
 	libass9 \
 	libbluray2 \
-	libcurl4 \
-	libegl1-mesa \
-	libfreetype6 \
-	libfribidi0 \
-	libglew2.0 \
+	libegl1 \
+	libfstrcmp0 \
+	libgl1 \
 	liblcms2-2 \
 	liblzo2-2 \
 	libmicrohttpd12 \
@@ -162,26 +155,17 @@ RUN \
 	libpcrecpp0v5 \
 	libpython2.7 \
 	libsmbclient \
-	libsndio6.1 \
-	libssh-4 \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
-	libva-drm2 \
-	libva-x11-2 \
-	libvdpau1 \
-	libxml2 \
 	libxrandr2 \
-	libxslt1.1 \
-	libyajl2 \
-	python && \
+	libxslt1.1 && \
  echo "**** cleanup ****" && \
- apt-get clean && \
  rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
 	/var/tmp/*
 
-# copy local files and buildstage artifacts
+# copy local files and buildstage artifacts
 COPY root/ /
 COPY --from=buildstage /tmp/kodi-build/usr/ /usr/
 COPY --from=buildstage /usr/bin/kodi-send /usr/bin/kodi-send
@@ -189,4 +173,4 @@ COPY --from=buildstage /usr/lib/python2.7/xbmcclient.py /usr/lib/python2.7/xbmcc
 
 # ports and volumes
 VOLUME /config/.kodi
-EXPOSE 8080 9090 9777/udp
+EXPOSE 8080 9777/udp
