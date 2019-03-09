@@ -116,6 +116,14 @@ RUN \
  make DESTDIR=/tmp/kodi-build install
 
 RUN \
+ echo "**** compile addons ****" && \
+ cd /tmp/kodi-source && \
+ make \
+	-C tools/depends/target/binary-addons \
+	PREFIX=/tmp/kodi-build/usr \
+	ADDONS="vfs.libarchive vfs.rar"
+
+RUN \
  echo "**** install kodi-send ****" && \
  install -Dm755 \
 	/tmp/kodi-source/tools/EventClients/Clients/KodiSend/kodi-send.py \

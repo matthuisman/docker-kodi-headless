@@ -75,6 +75,9 @@ The default user/password for the web interface and for apps like couchpotato et
 
 If you intend to use this kodi instance to perform library tasks other than merely updating, eg. library cleaning etc, it is important to copy over the sources.xml from the host machine that you performed the initial library scan on to the userdata folder of this instance, otherwise database loss can and most likely will occur.
 
+Rar integration with the Leia branch is now handled by an addon,
+it is compiled with this build, but you will need to enable it, if required, in the settings section of the webui.
+
 ## Info
 
 * Shell access whilst the container is running: `docker exec -it kodi-headless /bin/bash`
@@ -91,6 +94,7 @@ Various other members of the xbmc/kodi community for advice.
 
 ## Versions
 
++ **09.03.19:** Build vfs.libarchive and vfs.rar addons.
 + **08.03.19:** Make Leia default branch, using patched "headless" build.
 + **30.01.19:** Bump Leia branch to release ppa.
 + **03.09.18:** Add back libnfs dependency.
