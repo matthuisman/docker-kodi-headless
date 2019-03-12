@@ -6,14 +6,17 @@ FROM lsiobase/ubuntu:${UBUNTU_VER} as buildstage
 ARG KODI_NAME="Leia"
 ARG KODI_VER="18.1"
 
+# defines which addons to build
+ARG KODI_ADDONS="vfs.libarchive vfs.rar"
+
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
 
 # copy patches and excludes
 COPY patches/ /patches/
 
+# install build packages
 RUN \
- echo "**** install build packages ****" && \
  apt-get update && \
  apt-get install -y \
 	autoconf \
@@ -22,18 +25,17 @@ RUN \
 	binutils \
 	cmake \
 	curl \
-	default-jdk \
+	default-jre \
 	g++ \
 	gawk \
 	gcc \
-	git-core \
+	git \
 	gperf \
 	libass-dev \
-	libavahi-core-dev\
+	libavahi-client-dev \
+	libavahi-common-dev \
 	libbluray-dev \
-	libboost1.65-dev \
-	libbz2-ocaml-dev \
-	libcap-dev \
+	libbz2-dev \
 	libcurl4-openssl-dev \
 	libegl1-mesa-dev \
 	libflac-dev \
@@ -47,23 +49,20 @@ RUN \
 	liblcms2-dev \
 	liblzo2-dev \
 	libmicrohttpd-dev \
-	libmpeg2-4-dev \
 	libmysqlclient-dev \
 	libnfs-dev \
 	libpcre3-dev \
 	libplist-dev \
 	libsmbclient-dev \
 	libsqlite3-dev \
-	libssh-dev \
+	libssl-dev \
 	libtag1-dev \
 	libtiff5-dev \
 	libtinyxml-dev \
 	libtool \
 	libvorbis-dev \
-	libxml2-dev \
 	libxrandr-dev \
 	libxslt-dev \
-	libyajl-dev \
 	make \
 	nasm \
 	python-dev \
@@ -71,9 +70,12 @@ RUN \
 	swig \
 	uuid-dev \
 	yasm \
-	zip
+	zip \
+	zlib1g-dev
+
+# fetch source and apply any required patches
 RUN \
- echo "**** fetch source ****" && \
+ set -ex && \
  mkdir -p \
 	/tmp/kodi-source/build && \
  curl -o \
@@ -85,10 +87,17 @@ RUN \
  git apply \
 	/patches/"${KODI_NAME}"/headless.patch
 
+# build package
 RUN \
- echo "**** compile kodi ****" && \
  cd /tmp/kodi-source/build && \
  cmake ../. \
+# this block is only for armhf builds
+#	-DCMAKE_C_FLAGS="-march=armv7-a \
+#		-mtune=cortex-a7 \
+#		-mfpu=neon-vfpv4 \
+#		-mvectorize-with-neon-quad \
+#		-mfloat-abi=hard" \
+# comment everything out in the block for non-armhf builds
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DENABLE_AIRTUNES=OFF \
@@ -112,19 +121,20 @@ RUN \
 	-DENABLE_UPNP=ON \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
- make && \
+ make -j3 && \
  make DESTDIR=/tmp/kodi-build install
 
+# build kodi addons
 RUN \
- echo "**** compile addons ****" && \
+ set -ex && \
  cd /tmp/kodi-source && \
- make \
+ make -j3 \
 	-C tools/depends/target/binary-addons \
-	PREFIX=/tmp/kodi-build/usr \
-	ADDONS="vfs.libarchive vfs.rar"
+	ADDONS="$KODI_ADDONS" \
+	PREFIX=/tmp/kodi-build/usr
 
+# install kodi send
 RUN \
- echo "**** install kodi-send ****" && \
  install -Dm755 \
 	/tmp/kodi-source/tools/EventClients/Clients/KodiSend/kodi-send.py \
 	/usr/bin/kodi-send && \
@@ -146,6 +156,7 @@ LABEL maintainer="sparklyballs"
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV HOME="/config"
 
+# install runtime packages
 RUN \
  apt-get update && \
  apt-get install -y \
@@ -167,13 +178,15 @@ RUN \
 	libtinyxml2.6.2v5 \
 	libxrandr2 \
 	libxslt1.1 && \
- echo "**** cleanup ****" && \
+	\
+# cleanup 
+	\
  rm -rf \
 	/tmp/* \
 	/var/lib/apt/lists/* \
 	/var/tmp/*
 
-# copy local files and buildstage artifacts
+# copy local files and artifacts of build stages.
 COPY root/ /
 COPY --from=buildstage /tmp/kodi-build/usr/ /usr/
 COPY --from=buildstage /usr/bin/kodi-send /usr/bin/kodi-send
