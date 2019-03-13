@@ -92,11 +92,8 @@ RUN \
  cd /tmp/kodi-source/build && \
  cmake ../. \
 # this block is only for armhf builds
-#	-DCMAKE_C_FLAGS="-march=armv7-a \
-#		-mtune=cortex-a7 \
-#		-mfpu=neon-vfpv4 \
-#		-mvectorize-with-neon-quad \
-#		-mfloat-abi=hard" \
+#	-DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
+#	-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
 # comment everything out in the block for non-armhf builds
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
