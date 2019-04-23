@@ -4,7 +4,7 @@ FROM lsiobase/ubuntu:${UBUNTU_VER} as buildstage
 
 # package versions
 ARG KODI_NAME="Leia"
-ARG KODI_VER="18.1"
+ARG KODI_VER="18.2"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar"
