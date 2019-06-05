@@ -1,4 +1,4 @@
-FROM lsiobase/ubuntu:bionic as buildstage
+FROM lsiobase/ubuntu:arm32v7-bionic as buildstage
 
 ############## build stage ##############
 
@@ -93,8 +93,8 @@ RUN \
  cd /tmp/kodi-source/build && \
  cmake ../. \
 ############################ uncomment following block only for armhf builds ###########################
-#	-DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
-#	-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
+	-DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
+	-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
 ############################ end of block ##############################################################
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
@@ -140,7 +140,7 @@ RUN \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
 	/tmp/kodi-build/usr/lib/python2.7/xbmcclient.py
 
-FROM lsiobase/ubuntu:bionic
+FROM lsiobase/ubuntu:arm32v7-bionic
 
 ############## runtime stage ##############
 
