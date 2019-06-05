@@ -1,4 +1,4 @@
-FROM lsiobase/ubuntu:bionic as buildstage
+FROM lsiobase/ubuntu:arm64v8-bionic as buildstage
 
 ############## build stage ##############
 
@@ -140,7 +140,7 @@ RUN \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
 	/tmp/kodi-build/usr/lib/python2.7/xbmcclient.py
 
-FROM lsiobase/ubuntu:bionic
+FROM lsiobase/ubuntu:arm64v8-bionic
 
 ############## runtime stage ##############
 
