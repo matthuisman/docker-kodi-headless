@@ -94,6 +94,7 @@ Various other members of the xbmc/kodi community for advice.
 
 ## Versions
 
++ **23.06.19:** Bump Leia to 18.3.
 + **23.04.19:** Bump Leia to 18.2.
 + **09.03.19:** Build vfs.libarchive and vfs.rar addons.
 + **08.03.19:** Make Leia default branch, using patched "headless" build.
