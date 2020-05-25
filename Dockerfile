@@ -4,7 +4,7 @@ FROM lsiobase/ubuntu:bionic as buildstage
 
 # package versions
 ARG KODI_NAME="Leia"
-ARG KODI_VER="18.6"
+ARG KODI_VER="18.7"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar"
