@@ -3,8 +3,8 @@ FROM lsiobase/ubuntu:bionic as buildstage
 ############## build stage ##############
 
 # package versions
-ARG KODI_NAME="Leia"
-ARG KODI_VER="18.9"
+ARG KODI_NAME="Matrix"
+ARG KODI_VER="19.0"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar"
@@ -66,7 +66,7 @@ RUN \
 	libxslt-dev \
 	make \
 	nasm \
-	python-dev \
+	python3-dev \
 	rapidjson-dev \
 	swig \
 	uuid-dev \
@@ -98,6 +98,8 @@ RUN \
 ############################ end of block ##############################################################
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DAPP_RENDER_SYSTEM=gl \
+	-DCORE_PLATFORM_NAME=x11 \
 	-DENABLE_AIRTUNES=OFF \
 	-DENABLE_ALSA=OFF \
 	-DENABLE_AVAHI=OFF \
@@ -109,9 +111,11 @@ RUN \
 	-DENABLE_DVDCSS=OFF \
 	-DENABLE_GLX=OFF \
 	-DENABLE_INTERNAL_FLATBUFFERS=ON \
+	-DENABLE_INTERNAL_FMT=ON \
+	-DENABLE_INTERNAL_SPDLOG=ON \
+	-DENABLE_INTERNAL_GTEST=ON \
 	-DENABLE_LIBUSB=OFF \
 	-DENABLE_NFS=ON \
-	-DENABLE_OPENGL=OFF \
 	-DENABLE_OPTICAL=OFF \
 	-DENABLE_PULSEAUDIO=OFF \
 	-DENABLE_SNDIO=OFF \
@@ -138,7 +142,7 @@ RUN \
 	/tmp/kodi-build/usr/bin/kodi-send && \
  install -Dm644 \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
-	/tmp/kodi-build/usr/lib/python2.7/xbmcclient.py
+	/tmp/kodi-build/usr/lib/python3.6/xbmcclient.py
 
 FROM lsiobase/ubuntu:bionic
 
@@ -159,6 +163,7 @@ RUN \
  apt-get update && \
  apt-get install -y \
 	--no-install-recommends \
+	samba-common-bin \
 	libass9 \
 	libbluray2 \
 	libegl1 \
@@ -170,14 +175,15 @@ RUN \
 	libmysqlclient20 \
 	libnfs11 \
 	libpcrecpp0v5 \
-	libpython2.7 \
+	libpython3.6 \
 	libsmbclient \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
 	libxrandr2 \
-	libxslt1.1 && \
+	libxslt1.1 \
+	libplist3 && \
 	\
-# cleanup 
+# cleanup
 	\
  rm -rf \
 	/tmp/* \

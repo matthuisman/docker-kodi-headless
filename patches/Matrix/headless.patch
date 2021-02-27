@@ -1,0 +1,260 @@
+diff --git a/xbmc/Application.cpp b/xbmc/Application.cpp
+index daf96d7be1..782475d4c9 100644
+--- a/xbmc/Application.cpp
++++ b/xbmc/Application.cpp
+@@ -348,7 +348,7 @@ bool CApplication::Create(const CAppParamParser &params)
+   m_bPlatformDirectories = params.m_platformDirectories;
+   m_bTestMode = params.m_testmode;
+   m_bStandalone = params.m_standAlone;
+-  m_windowing = params.m_windowing;
++  m_windowing = "headless";
+ 
+   CServiceBroker::CreateLogging();
+ 
+@@ -526,7 +526,8 @@ bool CApplication::Create(const CAppParamParser &params)
+   }
+ 
+   m_pActiveAE.reset(new ActiveAE::CActiveAE());
+-  m_pActiveAE->Start();
++  if (m_windowing != "headless")
++    m_pActiveAE->Start();
+   CServiceBroker::RegisterAE(m_pActiveAE.get());
+ 
+   // restore AE's previous volume state
+@@ -573,7 +574,7 @@ bool CApplication::CreateGUI()
+ {
+   m_frameMoveGuard.lock();
+ 
+-  m_renderGUI = true;
++  m_renderGUI = m_windowing != "headless";
+ 
+   auto windowSystems = KODI::WINDOWING::CWindowSystemFactory::GetWindowSystems();
+ 
+@@ -764,7 +765,7 @@ bool CApplication::Initialize()
+ 
+   bool uiInitializationFinished = false;
+ 
+-  if (CServiceBroker::GetGUI()->GetWindowManager().Initialized())
++  if (m_windowing != "headless" && CServiceBroker::GetGUI()->GetWindowManager().Initialized())
+   {
+     const std::shared_ptr<CSettings> settings = CServiceBroker::GetSettingsComponent()->GetSettings();
+ 
+@@ -899,9 +900,12 @@ bool CApplication::Initialize()
+ 
+   CLog::Log(LOGINFO, "initialize done");
+ 
+-  CheckOSScreenSaverInhibitionSetting();
+-  // reset our screensaver (starts timers etc.)
+-  ResetScreenSaver();
++  if (m_windowing != "headless")
++  {
++    CheckOSScreenSaverInhibitionSetting();
++    // reset our screensaver (starts timers etc.)
++    ResetScreenSaver();
++  }
+ 
+   // if the user interfaces has been fully initialized let everyone know
+   if (uiInitializationFinished)
+diff --git a/xbmc/platform/linux/PlatformLinux.cpp b/xbmc/platform/linux/PlatformLinux.cpp
+index 3f66962112..ba980e3954 100644
+--- a/xbmc/platform/linux/PlatformLinux.cpp
++++ b/xbmc/platform/linux/PlatformLinux.cpp
+@@ -12,6 +12,8 @@
+ 
+ #include "platform/linux/powermanagement/LinuxPowerSyscall.h"
+ 
++#include "windowing/WinSystemHeadless.h"
++
+ // clang-format off
+ #if defined(HAS_GLES)
+ #if defined(HAVE_WAYLAND)
+@@ -52,6 +54,8 @@ bool CPlatformLinux::Init()
+ 
+   setenv("OS", "Linux", true); // for python scripts that check the OS
+ 
++  CWinSystemHeadless::RegisterMe();
++
+ #if defined(HAS_GLES)
+ #if defined(HAVE_WAYLAND)
+   KODI::WINDOWING::WAYLAND::CWinSystemWaylandEGLContextGLES::Register();
+diff --git a/xbmc/windowing/CMakeLists.txt b/xbmc/windowing/CMakeLists.txt
+index 21c7611912..1e58f1b6d1 100644
+--- a/xbmc/windowing/CMakeLists.txt
++++ b/xbmc/windowing/CMakeLists.txt
+@@ -2,6 +2,7 @@ set(SOURCES GraphicContext.cpp
+             OSScreenSaver.cpp
+             Resolution.cpp
+             WindowSystemFactory.cpp
++            WinSystemHeadless.cpp
+             WinSystem.cpp)
+ 
+ set(HEADERS GraphicContext.h
+@@ -9,6 +10,7 @@ set(HEADERS GraphicContext.h
+             Resolution.h
+             WinEvents.h
+             WindowSystemFactory.h
++            WinSystemHeadless.h
+             WinSystem.h
+             XBMC_events.h
+             VideoSync.h)
+diff --git a/xbmc/windowing/WinSystemHeadless.cpp b/xbmc/windowing/WinSystemHeadless.cpp
+new file mode 100644
+index 0000000000..b3d7ae5417
+--- /dev/null
++++ b/xbmc/windowing/WinSystemHeadless.cpp
+@@ -0,0 +1,69 @@
++/*
++ *  Copyright (C) 2005-2018 Team Kodi
++ *  This file is part of Kodi - https://kodi.tv
++ *
++ *  SPDX-License-Identifier: GPL-2.0-or-later
++ *  See LICENSES/README.md for more information.
++ */
++
++#include "WinSystemHeadless.h"
++
++#include "windowing/WindowSystemFactory.h"
++
++#include "utils/log.h"
++
++#include <vector>
++#include <string>
++
++//using namespace KODI::MESSAGING;
++using namespace KODI::WINDOWING;
++
++#define EGL_NO_CONFIG (EGLConfig)0
++
++void CWinSystemHeadless::RegisterMe()
++{
++  KODI::WINDOWING::CWindowSystemFactory::RegisterWindowSystem(CreateWinSystem, "headless");
++}
++
++std::unique_ptr<CWinSystemBase> CWinSystemHeadless::CreateWinSystem()
++{
++  return std::make_unique<CWinSystemHeadless>();
++}
++
++CWinSystemHeadless::CWinSystemHeadless() : CWinSystemBase(), CRenderSystemBase()
++{
++}
++
++CWinSystemHeadless::~CWinSystemHeadless() = default;
++
++// bool CWinSystemHeadless::MessagePump()
++// {
++//   return m_winEvents->MessagePump();
++// }
++
++bool CWinSystemHeadless::InitWindowSystem() {return true;};
++bool CWinSystemHeadless::DestroyWindowSystem() {return true;};
++bool CWinSystemHeadless::CreateNewWindow(const std::string& name, bool fullScreen, RESOLUTION_INFO& res) {return true;};
++bool CWinSystemHeadless::DestroyWindow() {return true;};
++bool CWinSystemHeadless::ResizeWindow(int newWidth, int newHeight, int newLeft, int newTop) {return true;};
++void CWinSystemHeadless::FinishWindowResize(int newWidth, int newHeight) {};
++bool CWinSystemHeadless::SetFullScreen(bool fullScreen, RESOLUTION_INFO& res, bool blankOtherDisplays) {return true;};
++void CWinSystemHeadless::UpdateResolutions() {};
++void CWinSystemHeadless::ShowOSMouse(bool show) {};
++
++void CWinSystemHeadless::NotifyAppActiveChange(bool bActivated) {};
++void CWinSystemHeadless::NotifyAppFocusChange(bool bGaining) {};
++
++bool CWinSystemHeadless::Minimize() {return true;};
++bool CWinSystemHeadless::Restore() {return true;};
++bool CWinSystemHeadless::Hide() {return true;};
++bool CWinSystemHeadless::Show(bool raise) {return true;};
++void CWinSystemHeadless::Register(IDispResource *resource) {};
++void CWinSystemHeadless::Unregister(IDispResource *resource) {};
++bool CWinSystemHeadless::HasCalibration(const RESOLUTION_INFO &resInfo) {return true;};
++bool CWinSystemHeadless::UseLimitedColor() {return true;};
++
++void CWinSystemHeadless::ShowSplash(const std::string& message)
++{
++  CLog::Log(LOGDEBUG, message.c_str());
++};
+diff --git a/xbmc/windowing/WinSystemHeadless.h b/xbmc/windowing/WinSystemHeadless.h
+new file mode 100644
+index 0000000000..b7708ccbdf
+--- /dev/null
++++ b/xbmc/windowing/WinSystemHeadless.h
+@@ -0,0 +1,80 @@
++/*
++ *  Copyright (C) 2005-2018 Team Kodi
++ *  This file is part of Kodi - https://kodi.tv
++ *
++ *  SPDX-License-Identifier: GPL-2.0-or-later
++ *  See LICENSES/README.md for more information.
++ */
++
++#pragma once
++
++#include "rendering/RenderSystem.h"
++#include "WinSystem.h"
++
++#include <string>
++#include <vector>
++
++class CWinSystemHeadless : public CWinSystemBase, public CRenderSystemBase
++{
++public:
++  CWinSystemHeadless();
++  ~CWinSystemHeadless() override;
++
++  static void RegisterMe();
++  static std::unique_ptr<CWinSystemBase> CreateWinSystem();
++
++  // CWinSystemBase
++  CRenderSystemBase *GetRenderSystem() override { return this; }
++  bool InitWindowSystem() override;
++  bool DestroyWindowSystem() override;
++  bool CreateNewWindow(const std::string& name, bool fullScreen, RESOLUTION_INFO& res) override;
++  bool DestroyWindow() override;
++  bool ResizeWindow(int newWidth, int newHeight, int newLeft, int newTop) override;
++  void FinishWindowResize(int newWidth, int newHeight) override;
++  bool SetFullScreen(bool fullScreen, RESOLUTION_INFO& res, bool blankOtherDisplays) override;
++  void UpdateResolutions() override;
++  void ShowOSMouse(bool show) override;
++
++  void NotifyAppActiveChange(bool bActivated) override;
++  void NotifyAppFocusChange(bool bGaining) override;
++
++  bool Minimize() override;
++  bool Restore() override;
++  bool Hide() override;
++  bool Show(bool raise = true) override;
++  void Register(IDispResource *resource) override;
++  void Unregister(IDispResource *resource) override;
++  bool HasCalibration(const RESOLUTION_INFO &resInfo) override;
++  bool UseLimitedColor() override;
++
++  // winevents override
++  //bool MessagePump() override;
++
++  // render
++  bool InitRenderSystem() override { return true;} ;
++  bool DestroyRenderSystem() override { return true;} ;
++  bool ResetRenderSystem(int width, int height) override { return true;} ;
++
++  bool BeginRender() override { return true;} ;
++  bool EndRender() override { return true;} ;
++  void PresentRender(bool rendered, bool videoLayer) override {} ;
++  bool ClearBuffers(UTILS::Color color) override { return true;} ;
++  bool IsExtSupported(const char* extension) const override { return false;} ;
++
++  void SetViewPort(const CRect& viewPort) override {} ;
++  void GetViewPort(CRect& viewPort) override {} ;
++
++  void SetScissors(const CRect &rect) override {} ;
++  void ResetScissors() override {} ;
++
++  void CaptureStateBlock() override {} ;
++  void ApplyStateBlock() override {} ;
++
++  void SetCameraPosition(const CPoint &camera, int screenWidth, int screenHeight, float stereoFactor = 0.f) override {} ;
++  void ShowSplash(const std::string& message) override;
++
++protected:
++
++private:
++
++};
