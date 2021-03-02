@@ -40,7 +40,6 @@
 <webserverusername>kodi</webserverusername>
 <webserverpassword>kodi</webserverpassword>
 <webserverauthentication>false</webserverauthentication>
-<webskin>webinterface.default</webskin>
 <zeroconf>true</zeroconf>
 </services>
 
