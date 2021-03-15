@@ -55,6 +55,19 @@ index daf96d7be1..782475d4c9 100644
  
    // if the user interfaces has been fully initialized let everyone know
    if (uiInitializationFinished)
+diff --git a/xbmc/addons/AddonDatabase.cpp b/xbmc/addons/AddonDatabase.cpp
+index 6de470a9a0..aba1e09d1b 100644
+--- a/xbmc/addons/AddonDatabase.cpp
++++ b/xbmc/addons/AddonDatabase.cpp
+@@ -416,7 +416,7 @@ void CAddonDatabase::SyncInstalled(const std::set<std::string>& ids,
+     BeginTransaction();
+     for (const auto& id : added)
+     {
+-      int enable = 0;
++      int enable = 1;
+ 
+       if (system.find(id) != system.end() || optional.find(id) != optional.end())
+         enable = 1;
 diff --git a/xbmc/platform/linux/PlatformLinux.cpp b/xbmc/platform/linux/PlatformLinux.cpp
 index 3f66962112..ba980e3954 100644
 --- a/xbmc/platform/linux/PlatformLinux.cpp
