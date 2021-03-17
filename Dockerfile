@@ -35,7 +35,6 @@ RUN \
 	libass-dev \
 	libavahi-client-dev \
 	libavahi-common-dev \
-	libbluray-dev \
 	libbz2-dev \
 	libcurl4-openssl-dev \
 	libegl1-mesa-dev \
@@ -105,7 +104,7 @@ RUN \
 	-DENABLE_ALSA=OFF \
 	-DENABLE_AVAHI=OFF \
 	-DENABLE_BLUETOOTH=OFF \
-	-DENABLE_BLURAY=ON \
+	-DENABLE_BLURAY=OFF \
 	-DENABLE_CAP=OFF \
 	-DENABLE_CEC=OFF \
 	-DENABLE_DBUS=OFF \
@@ -166,7 +165,6 @@ RUN \
 	--no-install-recommends \
 	samba-common-bin \
 	libass9 \
-	libbluray2 \
 	libegl1 \
 	libfstrcmp0 \
 	libgl1 \
