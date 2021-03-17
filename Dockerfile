@@ -46,7 +46,6 @@ RUN \
 	libglew-dev \
 	libiso9660-dev \
 	libjpeg-dev \
-	liblcms2-dev \
 	liblzo2-dev \
 	libmicrohttpd-dev \
 	libmysqlclient-dev \
@@ -121,6 +120,7 @@ RUN \
 	-DENABLE_SNDIO=OFF \
 	-DENABLE_UDEV=OFF \
 	-DENABLE_UPNP=ON \
+	-DENABLE_LCMS2=OFF \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
  make -j3 && \
@@ -168,7 +168,6 @@ RUN \
 	libegl1 \
 	libfstrcmp0 \
 	libgl1 \
-	liblcms2-2 \
 	liblzo2-2 \
 	libmicrohttpd12 \
 	libmysqlclient20 \
