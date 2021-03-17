@@ -85,8 +85,9 @@ RUN \
  tar xf /tmp/kodi.tar.gz -C \
 	/tmp/kodi-source --strip-components=1 && \
  cd /tmp/kodi-source && \
- git apply \
-	/patches/"${KODI_NAME}"/headless.patch
+ for i in /patches/"${KODI_NAME}"/*.patch; \
+	do git apply $i; \
+ done
 
 # build package
 RUN \
