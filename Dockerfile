@@ -15,6 +15,13 @@ ARG DEBIAN_FRONTEND="noninteractive"
 # copy patches and excludes
 COPY patches/ /patches/
 
+RUN /bin/bash -c 'set -ex && \
+    ARCH=`uname -m` && \
+    if [ "$ARCH" == "armv7l" ]; then \
+	   export CFLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" && \
+	   export CXXFLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad"; \
+    fi && sleep 10s;'
+
 # install build packages
 RUN \
  apt-get update && \
@@ -91,10 +98,6 @@ RUN \
 RUN \
  cd /tmp/kodi-source/build && \
  cmake ../. \
-############################ uncomment following block only for armhf builds ###########################
-#	-DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
-#	-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
-############################ end of block ##############################################################
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DAPP_RENDER_SYSTEM=gl \
