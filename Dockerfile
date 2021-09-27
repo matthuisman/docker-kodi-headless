@@ -83,7 +83,7 @@ RUN \
  tar xf /tmp/kodi.tar.gz -C \
 	/tmp/kodi-source --strip-components=1 && \
  cd /tmp/kodi-source && \
- for i in /patches/"${KODI_NAME}"/*.patch; \
+ for i in /patches/*.patch; \
 	do git apply $i; \
  done
 
