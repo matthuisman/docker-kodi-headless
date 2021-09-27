@@ -125,14 +125,14 @@ RUN \
 	-DENABLE_LIRCCLIENT=OFF \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
- make -j3 && \
+ make -j$(nproc) && \
  make DESTDIR=/tmp/kodi-build install
 
 # build kodi addons
 RUN \
  set -ex && \
  cd /tmp/kodi-source && \
- make -j3 \
+ make -j$(nproc) \
 	-C tools/depends/target/binary-addons \
 	ADDONS="$KODI_ADDONS" \
 	PREFIX=/tmp/kodi-build/usr
