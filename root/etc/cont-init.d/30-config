@@ -5,9 +5,28 @@ mkdir -p \
 	/config/.kodi/userdata \
 	/var/cache/samba
 
-# copy config
+# copy configs
 [[ ! -e /config/.kodi/userdata/advancedsettings.xml ]] && \
 	cp /defaults/advancedsettings.xml /config/.kodi/userdata/advancedsettings.xml
+
+[[ ! -e /config/.kodi/userdata/guisettings.xml ]] && \
+	cp /defaults/guisettings.xml /config/.kodi/userdata/guisettings.xml
+
+if [[ -v $MYSQL_HOST ]]; then
+	sed -i -E "s/<host>.*?<\/host>/<host>$MYSQL_HOST<\/host>/g" /config/.kodi/userdata/advancedsettings.xml
+fi
+
+if [[ -v $MYSQL_PORT ]]; then
+	sed -i -E "s/<port>.*?<\/port>/<port>$MYSQL_PORT<\/port>/g" /config/.kodi/userdata/advancedsettings.xml
+fi
+
+if [[ -v $MYSQL_USER ]]; then
+	sed -i -E "s/<user>.*?<\/user>/<user>$MYSQL_USER<\/user>/g" /config/.kodi/userdata/advancedsettings.xml
+fi
+
+if [[ -v $MYSQL_PASSWORD ]]; then
+	sed -i -E "s/<pass>.*?<\/pass>/<pass>$MYSQL_PASSWORD<\/pass>/g" /config/.kodi/userdata/advancedsettings.xml
+fi
 
 # permissions
 chown -R abc:abc \
