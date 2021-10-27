@@ -7,7 +7,7 @@ ARG KODI_NAME="Matrix"
 ARG KODI_VER="19.3"
 
 # defines which addons to build
-ARG KODI_ADDONS="vfs.libarchive vfs.rar"
+ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
