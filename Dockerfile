@@ -4,7 +4,7 @@ FROM lsiobase/ubuntu:bionic as buildstage
 
 # package versions
 ARG KODI_NAME="Matrix"
-ARG KODI_VER="19.2"
+ARG KODI_VER="19.3"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar"
