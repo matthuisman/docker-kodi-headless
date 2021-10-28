@@ -68,4 +68,5 @@ If you intend to use this kodi instance to perform library tasks other than mere
 
 ## Versions
 
++ **29.10.21:** Bump Matrix to 19.3
 + **10.10.21:** Bump Matrix to 19.2
