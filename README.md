@@ -66,6 +66,26 @@ If you intend to use this kodi instance to perform library tasks other than mere
 
 + [linuxserver](https://github.com/linuxserver/docker-kodi-headless/) (original headless container)
 
+## Fast Scanning
+The below works if your media is stored on the same machine as this docker container and your using smb:// to share that media on the network.
+
+First, mount your host media directory somewhere inside the container so Kodi can see it.  
+eg. ```--mount type=bind,source=/sharedfolders/pool,target=/media```
+
+Now, the below magic is done in Kodis advancedsettings.xml
+```
+<pathsubstitution>
+  <substitute>
+    <from>smb://192.168.20.3/sharedfolders/pool/</from>
+    <to>/media/</to>
+  </substitute>
+</pathsubstitution>
+```
+
+That's it. 
+Now instead of always needing to scan over smb://, it will replace that with /media and scan much quicker.
+When it does find new items, they are correctly stored in the SQL using their smb:// path
+
 ## Versions
 
 + **29.10.21:** Bump Matrix to 19.3
