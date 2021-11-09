@@ -1,7 +1,0 @@
-<settings version="2">
-    <setting id="smb.workgroup"></setting>
-    <setting id="smb.winsserver" default="true">0.0.0.0</setting>
-    <setting id="smb.minprotocol">2</setting>
-    <setting id="smb.maxprotocol" default="true">3</setting>
-    <setting id="smb.legacysecurity" default="true">false</setting>
-</settings>

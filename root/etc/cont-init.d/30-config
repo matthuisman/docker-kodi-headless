@@ -9,9 +9,6 @@ mkdir -p \
 [[ ! -e /config/.kodi/userdata/advancedsettings.xml ]] && \
 	cp /defaults/advancedsettings.xml /config/.kodi/userdata/advancedsettings.xml
 
-[[ ! -e /config/.kodi/userdata/guisettings.xml ]] && \
-	cp /defaults/guisettings.xml /config/.kodi/userdata/guisettings.xml
-
 if [ -n "$MYSQL_HOST" ]; then
 	sed -i -E "s/<host>.*?<\/host>/<host>$MYSQL_HOST<\/host>/g" /config/.kodi/userdata/advancedsettings.xml
 fi
