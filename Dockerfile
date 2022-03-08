@@ -2,9 +2,8 @@ FROM lsiobase/ubuntu:bionic as buildstage
 
 ############## build stage ##############
 
-# package versions
-ARG KODI_NAME="Matrix"
-ARG KODI_VER="19.4"
+# package source
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/19.4-Matrix.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
@@ -78,8 +77,7 @@ RUN \
  mkdir -p \
 	/tmp/kodi-source/build && \
  curl -o \
- /tmp/kodi.tar.gz -L \
-	"https://github.com/xbmc/xbmc/archive/${KODI_VER}-${KODI_NAME}.tar.gz" && \
+ /tmp/kodi.tar.gz -L "$SOURCE" && \
  tar xf /tmp/kodi.tar.gz -C \
 	/tmp/kodi-source --strip-components=1 && \
  cd /tmp/kodi-source && \
