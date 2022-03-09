@@ -88,5 +88,6 @@ When it does find new items, they are correctly stored in the SQL using their sm
 
 ## Versions
 
++ **10.03.22:** Bump Matrix to 19.4
 + **29.10.21:** Bump Matrix to 19.3
 + **10.10.21:** Bump Matrix to 19.2
