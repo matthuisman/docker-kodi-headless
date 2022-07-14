@@ -1,0 +1,14 @@
+diff --git a/tools/depends/target/ffmpeg/CMakeLists.txt b/tools/depends/target/ffmpeg/CMakeLists.txt
+index e358775..822df9b 100644
+--- a/tools/depends/target/ffmpeg/CMakeLists.txt
++++ b/tools/depends/target/ffmpeg/CMakeLists.txt
+@@ -93,6 +93,9 @@ if(EXTRA_FLAGS)
+   list(APPEND ffmpeg_conf ${EXTRA_FLAGS})
+ endif()
+ 
++set(CONFIGARCH --arch=${CPU})
++list(APPEND ffmpeg_conf ${CONFIGARCH})
++
+ message(STATUS "FFMPEG_CONF: ${ffmpeg_conf}")
+ 
+ set(MAKE_COMMAND $(MAKE))

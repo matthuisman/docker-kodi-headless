@@ -1,6 +1,5 @@
-FROM lsiobase/ubuntu:bionic as buildstage
-
 ############## build stage ##############
+FROM lsiobase/ubuntu:bionic as buildstage
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/19.4-Matrix.tar.gz"
@@ -10,9 +9,6 @@ ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
-
-# copy patches and excludes
-COPY patches/ /patches/
 
 # install build packages
 RUN \
@@ -34,6 +30,7 @@ RUN \
 	libass-dev \
 	libavahi-client-dev \
 	libavahi-common-dev \
+	libbluray-dev \
 	libbz2-dev \
 	libcurl4-openssl-dev \
 	libegl1-mesa-dev \
@@ -71,6 +68,9 @@ RUN \
 	zip \
 	zlib1g-dev
 
+# copy patches and excludes
+COPY patches/ /patches/
+
 # fetch source and apply any required patches
 RUN \
  set -ex && \
@@ -85,7 +85,7 @@ RUN \
 	do git apply $i; \
  done
 
-# build package
+# build package
 RUN \
  cd /tmp/kodi-source/build && \
  cmake ../. \
@@ -97,7 +97,7 @@ RUN \
 	-DENABLE_ALSA=OFF \
 	-DENABLE_AVAHI=OFF \
 	-DENABLE_BLUETOOTH=OFF \
-	-DENABLE_BLURAY=OFF \
+	-DENABLE_BLURAY=ON \
 	-DENABLE_CAP=OFF \
 	-DENABLE_CEC=OFF \
 	-DENABLE_DBUS=OFF \
@@ -119,19 +119,19 @@ RUN \
 	-DENABLE_LIRCCLIENT=OFF \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
- make -j$(nproc) && \
+ make -j4 && \
  make DESTDIR=/tmp/kodi-build install
 
-# build kodi addons
+# build kodi addons
 RUN \
  set -ex && \
  cd /tmp/kodi-source && \
- make -j$(nproc) \
+ make -j4 \
 	-C tools/depends/target/binary-addons \
 	ADDONS="$KODI_ADDONS" \
 	PREFIX=/tmp/kodi-build/usr
 
-# install kodi send
+# install kodi send
 RUN \
  install -Dm755 \
 	/tmp/kodi-source/tools/EventClients/Clients/KodiSend/kodi-send.py \
@@ -140,9 +140,8 @@ RUN \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
 	/tmp/kodi-build/usr/lib/python3.6/xbmcclient.py
 
-FROM lsiobase/ubuntu:bionic
-
 ############## runtime stage ##############
+FROM lsiobase/ubuntu:bionic
 
 # set version label
 ARG BUILD_DATE
@@ -161,6 +160,7 @@ RUN \
 	--no-install-recommends \
 	samba-common-bin \
 	libass9 \
+	libbluray2 \
 	libegl1 \
 	libfstrcmp0 \
 	libgl1 \

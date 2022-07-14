@@ -1,0 +1,5 @@
+#!/bin/bash
+for var in "$@"
+do
+    /usr/bin/kodi-send --action="InstallAddon(${var})"
+done
