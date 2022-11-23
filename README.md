@@ -12,11 +12,10 @@ sudo docker run -d \
 --restart unless-stopped \
 -v <path to data>:/config/.kodi \
 -e PGID=<gid> -e PUID=<uid> \
--e TZ=<timezone> \
 -p 8080:8080 \
 -p 9090:9090 \
 -p 9777:9777/udp \
-matthuisman/kodi-headless:Matrix
+matthuisman/kodi-headless:<tag>
 ```
 **Parameters**
 
@@ -26,18 +25,33 @@ matthuisman/kodi-headless:Matrix
 * `-v /config/.kodi` - path for kodi configuration files
 * `-e PGID` for GroupID - see below for explanation
 * `-e PUID` for UserID - see below for explanation
-* `-e TZ` - for timezone information *eg Europe/London, etc*
 
-#### Tags
+## Tags
 + Leia
 + Matrix
++ Nexus
 
-#### Platforms
+## Platforms
 + amd64
-+ armv6 / armv7
++ armv7
 + armv8 / arm64
 
 Docker will automatically pull the correct version for your platform 
+
+## Install add-ons
+Any add-ons found in your config addons directory will automatically be enabled when Kodi starts. \
+Simply copy add-ons to the add-ons directory and then restart the docker container.
+
+You can also install add-ons (and all their dependencies) from enabled repositories using the below command
+```
+docker exec kodi-headless install_addon "<addon_id>" "<addon_id>" "<addon_id>"
+```
+eg. `docker exec kodi-headless install_addon "metadata.tvshows.thetvdb.com.v4.python" "another.addon.id"`
+
+## Python Versions
++ Leia - Python 2.7.17
++ Matrix - Python 3.6.5
++ Nexus - Python 3.10.4
 
 ## User / Group Identifiers
 
@@ -88,6 +102,7 @@ When it does find new items, they are correctly stored in the SQL using their sm
 
 ## Versions
 
++ **24.11.22:** Bump Nexus to 20.0b1
 + **10.03.22:** Bump Matrix to 19.4
 + **29.10.21:** Bump Matrix to 19.3
 + **10.10.21:** Bump Matrix to 19.2

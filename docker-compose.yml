@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  kodi:
+    image: matthuisman/kodi-headless:<tag>
+    environment:
+      - PUID=0
+      - PGID=0
+    volumes:
+      - ./config/:/config/.kodi
+    ports:
+      - 8080:8080
+      - 9090:9090
+      - 9777:9777/udp
+    restart: unless-stopped

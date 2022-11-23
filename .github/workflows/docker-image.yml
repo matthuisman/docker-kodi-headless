@@ -1,0 +1,4 @@
+name: kodi-headless
+
+on:
+  workflow_dispatch:
