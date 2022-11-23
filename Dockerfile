@@ -1,18 +1,14 @@
-FROM lsiobase/ubuntu:bionic as buildstage
-
 ############## build stage ##############
+FROM lsiobase/ubuntu:jammy as buildstage
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/19.4-Matrix.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.0b1-Nexus.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
-
-# copy patches and excludes
-COPY patches/ /patches/
 
 # install build packages
 RUN \
@@ -70,9 +66,15 @@ RUN \
 	uuid-dev \
 	yasm \
 	zip \
-	zlib1g-dev
+	zlib1g-dev \
+	patch \
+	libdrm-dev \
+	libunistring-dev
 
-# fetch source and apply any required patches
+# copy patches
+COPY patches/ /patches/
+
+# fetch source and apply any required patches
 RUN \
  set -ex && \
  mkdir -p \
@@ -86,7 +88,7 @@ RUN \
 	do git apply $i; \
  done
 
-# build package
+# build package
 RUN \
  cd /tmp/kodi-source/build && \
  cmake ../. \
@@ -120,36 +122,35 @@ RUN \
 	-DENABLE_LIRCCLIENT=OFF \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
- make -j$(nproc) && \
+ make -j4 && \
  make DESTDIR=/tmp/kodi-build install
 
-# build kodi addons
+# build kodi addons
 RUN \
  set -ex && \
  cd /tmp/kodi-source && \
- make -j$(nproc) \
+ make -j4 \
 	-C tools/depends/target/binary-addons \
 	ADDONS="$KODI_ADDONS" \
 	PREFIX=/tmp/kodi-build/usr
 
-# install kodi send
+# install kodi send
 RUN \
  install -Dm755 \
 	/tmp/kodi-source/tools/EventClients/Clients/KodiSend/kodi-send.py \
 	/tmp/kodi-build/usr/bin/kodi-send && \
  install -Dm644 \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
-	/tmp/kodi-build/usr/lib/python3.6/xbmcclient.py
-
-FROM lsiobase/ubuntu:bionic
+	/tmp/kodi-build/usr/lib/python3.10/xbmcclient.py
 
 ############## runtime stage ##############
+FROM lsiobase/ubuntu:jammy
 
 # set version label
 ARG BUILD_DATE
 ARG VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="sparklyballs"
+LABEL build_version="matthuisman.nz version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="matthuisman"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -168,16 +169,17 @@ RUN \
 	libgl1 \
 	liblzo2-2 \
 	libmicrohttpd12 \
-	libmysqlclient20 \
-	libnfs11 \
+	libmysqlclient21 \
+	libnfs13 \
 	libpcrecpp0v5 \
-	libpython3.6 \
+	libpython3.10 \
 	libsmbclient \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
 	libxrandr2 \
 	libxslt1.1 \
-	libplist3 && \
+	libplist3 \
+	libdrm2 && \
 	\
 # cleanup
 	\

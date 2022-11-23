@@ -5,6 +5,8 @@ mkdir -p \
 	/config/.kodi/userdata \
 	/var/cache/samba
 
+chmod +x /usr/bin/install_addon
+
 # copy configs
 [[ ! -e /config/.kodi/userdata/advancedsettings.xml ]] && \
 	cp /defaults/advancedsettings.xml /config/.kodi/userdata/advancedsettings.xml

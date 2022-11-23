@@ -1,65 +1,196 @@
-diff --git a/xbmc/Application.cpp b/xbmc/Application.cpp
-index ad22f17890..dab887dec5 100644
---- a/xbmc/Application.cpp
-+++ b/xbmc/Application.cpp
-@@ -348,7 +348,7 @@ bool CApplication::Create(const CAppParamParser &params)
-   m_bPlatformDirectories = params.m_platformDirectories;
-   m_bTestMode = params.m_testmode;
-   m_bStandalone = params.m_standAlone;
--  m_windowing = params.m_windowing;
-+  m_windowing = "headless";
- 
-   CServiceBroker::CreateLogging();
- 
-@@ -526,7 +526,8 @@ bool CApplication::Create(const CAppParamParser &params)
-   }
- 
-   m_pActiveAE.reset(new ActiveAE::CActiveAE());
--  m_pActiveAE->Start();
-+  if (m_windowing != "headless")
-+    m_pActiveAE->Start();
-   CServiceBroker::RegisterAE(m_pActiveAE.get());
- 
-   // restore AE's previous volume state
-@@ -573,7 +574,7 @@ bool CApplication::CreateGUI()
- {
+diff --git a/xbmc/application/Application.cpp b/xbmc/application/Application.cpp
+index b3edbdf..56834ec 100644
+--- a/xbmc/application/Application.cpp
++++ b/xbmc/application/Application.cpp
+@@ -465,11 +465,11 @@ bool CApplication::CreateGUI()
    m_frameMoveGuard.lock();
  
--  m_renderGUI = true;
-+  m_renderGUI = m_windowing != "headless";
+   const auto appPower = GetComponent<CApplicationPowerHandling>();
+-  appPower->SetRenderGUI(true);
++  appPower->SetRenderGUI(false);
  
    auto windowSystems = KODI::WINDOWING::CWindowSystemFactory::GetWindowSystems();
  
-@@ -764,7 +765,7 @@ bool CApplication::Initialize()
+-  const std::string& windowing = CServiceBroker::GetAppParams()->GetWindowing();
++  const std::string& windowing = "headless";
  
-   bool uiInitializationFinished = false;
+   if (!windowing.empty())
+     windowSystems = {windowing};
+@@ -607,9 +607,6 @@ bool CApplication::InitWindow(RESOLUTION res)
  
+ bool CApplication::Initialize()
+ {
+-  m_pActiveAE->Start();
+-  // restore AE's previous volume state
+-
+   const auto appVolume = GetComponent<CApplicationVolumeHandling>();
+   const auto level = appVolume->GetVolumeRatio();
+   const auto muted = appVolume->IsMuted();
+@@ -688,116 +685,50 @@ bool CApplication::Initialize()
+ 
+   const auto skinHandling = GetComponent<CApplicationSkinHandling>();
+ 
+-  bool uiInitializationFinished = false;
+-
 -  if (CServiceBroker::GetGUI()->GetWindowManager().Initialized())
-+  if (m_windowing != "headless" && CServiceBroker::GetGUI()->GetWindowManager().Initialized())
-   {
-     const std::shared_ptr<CSettings> settings = CServiceBroker::GetSettingsComponent()->GetSettings();
+-  {
+-    const auto settings = CServiceBroker::GetSettingsComponent()->GetSettings();
+-
+-    CServiceBroker::GetGUI()->GetWindowManager().CreateWindows();
+-
+-    skinHandling->m_confirmSkinChange = false;
++  bool uiInitializationFinished = true;
  
-@@ -899,9 +900,12 @@ bool CApplication::Initialize()
+-    std::vector<AddonInfoPtr> incompatibleAddons;
+-    event.Reset();
++  const auto settings = CServiceBroker::GetSettingsComponent()->GetSettings();
+ 
+-    // Addon migration
+-    if (CServiceBroker::GetAddonMgr().GetIncompatibleEnabledAddonInfos(incompatibleAddons))
+-    {
+-      if (CAddonSystemSettings::GetInstance().GetAddonAutoUpdateMode() == AUTO_UPDATES_ON)
+-      {
+-        CServiceBroker::GetJobManager()->Submit(
+-            [&event, &incompatibleAddons]() {
+-              if (CServiceBroker::GetRepositoryUpdater().CheckForUpdates())
+-                CServiceBroker::GetRepositoryUpdater().Await();
+-
+-              incompatibleAddons = CServiceBroker::GetAddonMgr().MigrateAddons();
+-              event.Set();
+-            },
+-            CJob::PRIORITY_DEDICATED);
+-        localizedStr = g_localizeStrings.Get(24151);
+-        iDots = 1;
+-        while (!event.Wait(1000ms))
+-        {
+-          CServiceBroker::GetRenderSystem()->ShowSplash(std::string(iDots, ' ') + localizedStr +
+-                                                        std::string(iDots, '.'));
+-          if (iDots == 3)
+-            iDots = 1;
+-          else
+-            ++iDots;
+-        }
+-        m_incompatibleAddons = incompatibleAddons;
+-      }
+-      else
+-      {
+-        // If no update is active disable all incompatible addons during start
+-        m_incompatibleAddons =
+-            CServiceBroker::GetAddonMgr().DisableIncompatibleAddons(incompatibleAddons);
+-      }
+-    }
++  skinHandling->m_confirmSkinChange = true;
+ 
+-    // Start splashscreen and load skin
+-    CServiceBroker::GetRenderSystem()->ShowSplash("");
+-    skinHandling->m_confirmSkinChange = true;
++  std::vector<AddonInfoPtr> incompatibleAddons;
++  event.Reset();
+ 
+-    auto setting = settings->GetSetting(CSettings::SETTING_LOOKANDFEEL_SKIN);
+-    if (!setting)
++  // Addon migration
++  if (CServiceBroker::GetAddonMgr().GetIncompatibleEnabledAddonInfos(incompatibleAddons))
++  {
++    if (CAddonSystemSettings::GetInstance().GetAddonAutoUpdateMode() == AUTO_UPDATES_ON)
+     {
+-      CLog::Log(LOGFATAL, "Failed to load setting for: {}", CSettings::SETTING_LOOKANDFEEL_SKIN);
+-      return false;
+-    }
+-
+-    CServiceBroker::RegisterTextureCache(std::make_shared<CTextureCache>());
++      CServiceBroker::GetJobManager()->Submit(
++          [&event, &incompatibleAddons]() {
++            if (CServiceBroker::GetRepositoryUpdater().CheckForUpdates())
++              CServiceBroker::GetRepositoryUpdater().Await();
+ 
+-    std::string skinId = settings->GetString(CSettings::SETTING_LOOKANDFEEL_SKIN);
+-    if (!skinHandling->LoadSkin(skinId))
+-    {
+-      CLog::Log(LOGERROR, "Failed to load skin '{}'", skinId);
+-      std::string defaultSkin =
+-          std::static_pointer_cast<const CSettingString>(setting)->GetDefault();
+-      if (!skinHandling->LoadSkin(defaultSkin))
++            incompatibleAddons = CServiceBroker::GetAddonMgr().MigrateAddons();
++            event.Set();
++          },
++          CJob::PRIORITY_DEDICATED);
++      localizedStr = g_localizeStrings.Get(24151);
++      CLog::Log(LOGINFO, localizedStr);
++      iDots = 1;
++      while (!event.Wait(1000ms))
+       {
+-        CLog::Log(LOGFATAL, "Default skin '{}' could not be loaded! Terminating..", defaultSkin);
+-        return false;
++        if (iDots == 3)
++          iDots = 1;
++        else
++          ++iDots;
+       }
+-    }
+-
+-    // initialize splash window after splash screen disappears
+-    // because we need a real window in the background which gets
+-    // rendered while we load the main window or enter the master lock key
+-    CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(WINDOW_SPLASH);
+-
+-    if (settings->GetBool(CSettings::SETTING_MASTERLOCK_STARTUPLOCK) &&
+-        profileManager->GetMasterProfile().getLockMode() != LOCK_MODE_EVERYONE &&
+-        !profileManager->GetMasterProfile().getLockCode().empty())
+-    {
+-      g_passwordManager.CheckStartUpLock();
+-    }
+-
+-    // check if we should use the login screen
+-    if (profileManager->UsingLoginScreen())
+-    {
+-      CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(WINDOW_LOGIN_SCREEN);
++      m_incompatibleAddons = incompatibleAddons;
+     }
+     else
+     {
+-      // activate the configured start window
+-      int firstWindow = g_SkinInfo->GetFirstWindow();
+-      CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(firstWindow);
+-
+-      if (CServiceBroker::GetGUI()->GetWindowManager().IsWindowActive(WINDOW_STARTUP_ANIM))
+-      {
+-        CLog::Log(LOGWARNING, "CApplication::Initialize - startup.xml taints init process");
+-      }
+-
+-      // the startup window is considered part of the initialization as it most likely switches to the final window
+-      uiInitializationFinished = firstWindow != WINDOW_STARTUP_ANIM;
++      // If no update is active disable all incompatible addons during start
++      m_incompatibleAddons =
++          CServiceBroker::GetAddonMgr().DisableIncompatibleAddons(incompatibleAddons);
+     }
+   }
+-  else //No GUI Created
+-  {
+-    uiInitializationFinished = true;
+-  }
++
++  CServiceBroker::RegisterTextureCache(std::make_shared<CTextureCache>());
+ 
+   CJSONRPC::Initialize();
+ 
+@@ -833,11 +764,6 @@ bool CApplication::Initialize()
  
    CLog::Log(LOGINFO, "initialize done");
  
--  CheckOSScreenSaverInhibitionSetting();
+-  const auto appPower = GetComponent<CApplicationPowerHandling>();
+-  appPower->CheckOSScreenSaverInhibitionSetting();
 -  // reset our screensaver (starts timers etc.)
--  ResetScreenSaver();
-+  if (m_windowing != "headless")
-+  {
-+    CheckOSScreenSaverInhibitionSetting();
-+    // reset our screensaver (starts timers etc.)
-+    ResetScreenSaver();
-+  }
- 
+-  appPower->ResetScreenSaver();
+-
    // if the user interfaces has been fully initialized let everyone know
    if (uiInitializationFinished)
+   {
 diff --git a/xbmc/platform/linux/PlatformLinux.cpp b/xbmc/platform/linux/PlatformLinux.cpp
-index 3f66962112..ba980e3954 100644
+index a7af098..d81905c 100644
 --- a/xbmc/platform/linux/PlatformLinux.cpp
 +++ b/xbmc/platform/linux/PlatformLinux.cpp
-@@ -12,6 +12,8 @@
+@@ -21,6 +21,8 @@
  
  #include "platform/linux/powermanagement/LinuxPowerSyscall.h"
  
@@ -68,7 +199,7 @@ index 3f66962112..ba980e3954 100644
  // clang-format off
  #if defined(HAS_GLES)
  #if defined(HAVE_WAYLAND)
-@@ -52,6 +54,8 @@ bool CPlatformLinux::Init()
+@@ -61,6 +63,8 @@ bool CPlatformLinux::InitStageOne()
  
    setenv("OS", "Linux", true); // for python scripts that check the OS
  
@@ -78,7 +209,7 @@ index 3f66962112..ba980e3954 100644
  #if defined(HAVE_WAYLAND)
    KODI::WINDOWING::WAYLAND::CWinSystemWaylandEGLContextGLES::Register();
 diff --git a/xbmc/windowing/CMakeLists.txt b/xbmc/windowing/CMakeLists.txt
-index 21c7611912..1e58f1b6d1 100644
+index 21c7611..1e58f1b 100644
 --- a/xbmc/windowing/CMakeLists.txt
 +++ b/xbmc/windowing/CMakeLists.txt
 @@ -2,6 +2,7 @@ set(SOURCES GraphicContext.cpp
@@ -99,7 +230,7 @@ index 21c7611912..1e58f1b6d1 100644
              VideoSync.h)
 diff --git a/xbmc/windowing/WinSystemHeadless.cpp b/xbmc/windowing/WinSystemHeadless.cpp
 new file mode 100644
-index 0000000000..b3d7ae5417
+index 0000000..b3d7ae5
 --- /dev/null
 +++ b/xbmc/windowing/WinSystemHeadless.cpp
 @@ -0,0 +1,69 @@
@@ -174,7 +305,7 @@ index 0000000000..b3d7ae5417
 +};
 diff --git a/xbmc/windowing/WinSystemHeadless.h b/xbmc/windowing/WinSystemHeadless.h
 new file mode 100644
-index 0000000000..b7708ccbdf
+index 0000000..f15f571
 --- /dev/null
 +++ b/xbmc/windowing/WinSystemHeadless.h
 @@ -0,0 +1,80 @@
@@ -238,7 +369,7 @@ index 0000000000..b7708ccbdf
 +  bool BeginRender() override { return true;} ;
 +  bool EndRender() override { return true;} ;
 +  void PresentRender(bool rendered, bool videoLayer) override {} ;
-+  bool ClearBuffers(UTILS::Color color) override { return true;} ;
++  bool ClearBuffers(UTILS::COLOR::Color color) override { return true;} ;
 +  bool IsExtSupported(const char* extension) const override { return false;} ;
 +
 +  void SetViewPort(const CRect& viewPort) override {} ;
