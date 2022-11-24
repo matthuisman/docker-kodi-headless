@@ -1,19 +1,14 @@
+############## build stage ##############
 FROM lsiobase/ubuntu:bionic as buildstage
 
-############## build stage ##############
-
-# package versions
-ARG KODI_NAME="Leia"
-ARG KODI_VER="18.9"
+# package source
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/18.9-Leia.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
-
-# copy patches and excludes
-COPY patches/ /patches/
 
 # install build packages
 RUN \
@@ -74,14 +69,16 @@ RUN \
 	zip \
 	zlib1g-dev
 
-# fetch source and apply any required patches
+# copy patches and excludes
+COPY patches/ /patches/
+
+# fetch source and apply any required patches
 RUN \
  set -ex && \
  mkdir -p \
 	/tmp/kodi-source/build && \
  curl -o \
- /tmp/kodi.tar.gz -L \
-	"https://github.com/xbmc/xbmc/archive/${KODI_VER}-${KODI_NAME}.tar.gz" && \
+ /tmp/kodi.tar.gz -L "$SOURCE" && \
  tar xf /tmp/kodi.tar.gz -C \
 	/tmp/kodi-source --strip-components=1 && \
  cd /tmp/kodi-source && \
@@ -89,7 +86,7 @@ RUN \
 	do git apply $i; \
  done
 
-# build package
+# build package
 RUN \
  cd /tmp/kodi-source/build && \
  cmake ../. \
@@ -116,19 +113,19 @@ RUN \
 	-DENABLE_UPNP=ON \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
- make -j$(nproc) && \
+ make -j4 && \
  make DESTDIR=/tmp/kodi-build install
 
-# build kodi addons
+# build kodi addons
 RUN \
  set -ex && \
  cd /tmp/kodi-source && \
- make -j$(nproc) \
+ make -j4 \
 	-C tools/depends/target/binary-addons \
 	ADDONS="$KODI_ADDONS" \
 	PREFIX=/tmp/kodi-build/usr
 
-# install kodi send
+# install kodi send
 RUN \
  install -Dm755 \
 	/tmp/kodi-source/tools/EventClients/Clients/KodiSend/kodi-send.py \
@@ -137,15 +134,14 @@ RUN \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
 	/tmp/kodi-build/usr/lib/python2.7/xbmcclient.py
 
-FROM lsiobase/ubuntu:bionic
-
 ############## runtime stage ##############
+FROM lsiobase/ubuntu:bionic
 
 # set version label
 ARG BUILD_DATE
 ARG VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="sparklyballs"
+LABEL build_version="matthuisman.nz version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="matthuisman"
 
 # environment settings
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -174,7 +170,7 @@ RUN \
 	libxrandr2 \
 	libxslt1.1 && \
 	\
-# cleanup 
+# cleanup
 	\
  rm -rf \
 	/tmp/* \

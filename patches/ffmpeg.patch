@@ -1,0 +1,14 @@
+diff --git a/tools/depends/target/ffmpeg/CMakeLists.txt b/tools/depends/target/ffmpeg/CMakeLists.txt
+index 4a26222..47c8a8a 100644
+--- a/tools/depends/target/ffmpeg/CMakeLists.txt
++++ b/tools/depends/target/ffmpeg/CMakeLists.txt
+@@ -88,6 +88,9 @@ if(GNUTLS_FOUND)
+   list(APPEND ffmpeg_conf --enable-gnutls)
+ endif()
+ 
++set(CONFIGARCH --arch=${CPU})
++list(APPEND ffmpeg_conf ${CONFIGARCH})
++
+ message(STATUS "FFMPEG_CONF: ${ffmpeg_conf}")
+ 
+ include(ExternalProject)

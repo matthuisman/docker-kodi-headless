@@ -1,0 +1,23 @@
+diff --git a/xbmc/addons/AddonInstaller.cpp b/xbmc/addons/AddonInstaller.cpp
+index e97cc22..27d5dd0 100644
+--- a/xbmc/addons/AddonInstaller.cpp
++++ b/xbmc/addons/AddonInstaller.cpp
+@@ -166,17 +166,7 @@ bool CAddonInstaller::InstallModal(const std::string &addonID, ADDON::AddonPtr &
+   if (!database.GetAddon(addonID, addon))
+     return false;
+ 
+-  // if specified ask the user if he wants it installed
+-  if (promptForInstall)
+-  {
+-    if (HELPERS::ShowYesNoDialogLines(CVariant{24076}, CVariant{24100}, CVariant{addon->Name()}, CVariant{24101}) !=
+-      DialogResponse::YES)
+-    {
+-      return false;
+-    }
+-  }
+-
+-  if (!InstallOrUpdate(addonID, false, true))
++  if (!InstallOrUpdate(addonID, false, false))
+     return false;
+ 
+   return CServiceBroker::GetAddonMgr().GetAddon(addonID, addon);
