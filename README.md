@@ -76,10 +76,6 @@ If you intend to use this kodi instance to perform library tasks other than mere
 * Shell access whilst the container is running: `docker exec -it kodi-headless /bin/bash`
 * To monitor the logs of the container in realtime: `docker logs -f kodi-headless`
 
-## Credits
-
-+ [linuxserver](https://github.com/linuxserver/docker-kodi-headless/) (original headless container)
-
 ## Fast Scanning
 The below works if your media is stored on the same machine as this docker container and your using smb:// to share that media on the network.
 
