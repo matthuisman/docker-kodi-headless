@@ -100,7 +100,11 @@ That's it.
 Now instead of always needing to scan over smb://, it will replace that with /media and scan much quicker.
 When it does find new items, they are correctly stored in the SQL using their smb:// path
 
-## Versions
+## Credits
+
++ [linuxserver](https://github.com/linuxserver/docker-kodi-headless/) (original headless container)
+
+## Changelog
 
 + **24.11.22:** Bump Nexus to 20.0b1
 + **10.03.22:** Bump Matrix to 19.4
