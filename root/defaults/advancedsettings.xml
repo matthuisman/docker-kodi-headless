@@ -1,18 +1,18 @@
 <advancedsettings>
-    <!-- <videodatabase>
-        <host>192.168.20.3</host>
-        <user>kodi</user>
-        <pass>password</pass>
+    <videodatabase>
+        <host></host>
+        <user></user>
+        <pass></pass>
         <type>mysql</type>
         <port>3306</port>
-    </videodatabase> -->
-    <!-- <musicdatabase>
-        <host>192.168.20.3</host>
-        <user>kodi</user>
-        <pass>password</pass>
+    </videodatabase>
+    <musicdatabase>
+        <host></host>
+        <user></user>
+        <pass></pass>
         <type>mysql</type>
         <port>3306</port>
-    </musicdatabase> -->
+    </musicdatabase>
     <!-- <pathsubstitution>
       <substitute>
         <from>smb://192.168.20.3/pool/</from>
