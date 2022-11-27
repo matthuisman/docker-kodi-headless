@@ -71,14 +71,14 @@ jobs:
     - name: build
       uses: docker/build-push-action@v2
       with:
-       # file: ./Dockerfile.arm
+        file: ./Dockerfile.arm
         context: .
         pull: true
         push: true
         platforms: linux/arm/v7
         tags: matthuisman/kodi-headless:${{ github.ref_name }}-arm
-        build-args: |
-          CMAKE_ARGS=-DWITH_CPU=arm|-DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad"|-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad"
+        # build-args: |
+        #   CMAKE_ARGS=-DWITH_CPU=arm|-DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad"|-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad"
 
   combine:
     needs: [build_amd64, build_arm64, build_arm]

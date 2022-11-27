@@ -1,6 +1,5 @@
 ############## build stage ##############
 FROM lsiobase/ubuntu:jammy as buildstage
-ARG CMAKE_ARGS=""
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.0b1-Nexus.tar.gz"
@@ -92,9 +91,8 @@ RUN \
 # build package
 RUN \
  cd /tmp/kodi-source/build && \
- IFS='|' && set -o noglob && \
  cmake ../. \
-	-DCMAKE_INSTALL_LIBDIR=/usr/lib $CMAKE_ARGS \
+	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DAPP_RENDER_SYSTEM=gl \
 	-DCORE_PLATFORM_NAME=x11 \
@@ -174,7 +172,7 @@ RUN \
 	libmysqlclient21 \
 	libnfs13 \
 	libpcrecpp0v5 \
-	libpython3.10 \
+	python3 \
 	libsmbclient \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
@@ -193,6 +191,8 @@ RUN \
 # copy local files and artifacts of build stages.
 COPY root/ /
 COPY --from=buildstage /tmp/kodi-build/usr/ /usr/
+
+RUN chmod +x /usr/bin/install_addon
 
 # ports and volumes
 VOLUME /config/.kodi
