@@ -113,14 +113,14 @@ RUN \
 	-DENABLE_UPNP=ON \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
- make -j4 && \
+ make -j2 && \
  make DESTDIR=/tmp/kodi-build install
 
 # build kodi addons
 RUN \
  set -ex && \
  cd /tmp/kodi-source && \
- make -j4 \
+ make -j2 \
 	-C tools/depends/target/binary-addons \
 	ADDONS="$KODI_ADDONS" \
 	PREFIX=/tmp/kodi-build/usr
@@ -163,7 +163,7 @@ RUN \
 	libmysqlclient20 \
 	libnfs11 \
 	libpcrecpp0v5 \
-	libpython2.7 \
+	python2 \
 	libsmbclient \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
