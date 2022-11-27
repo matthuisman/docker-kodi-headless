@@ -164,7 +164,7 @@ RUN \
 	libmysqlclient20 \
 	libnfs11 \
 	libpcrecpp0v5 \
-	python2 \
+	python \
 	libsmbclient \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
