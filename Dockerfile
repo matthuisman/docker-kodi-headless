@@ -92,7 +92,7 @@ RUN \
 # build package
 RUN \
  cd /tmp/kodi-source/build && \
- && IFS='|' && set -o noglob && \
+ IFS='|' && set -o noglob && \
  cmake ../. \
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib $CMAKE_ARGS \
 	-DCMAKE_INSTALL_PREFIX=/usr \
