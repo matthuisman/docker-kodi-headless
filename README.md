@@ -76,10 +76,6 @@ If you intend to use this kodi instance to perform library tasks other than mere
 * Shell access whilst the container is running: `docker exec -it kodi-headless /bin/bash`
 * To monitor the logs of the container in realtime: `docker logs -f kodi-headless`
 
-## Credits
-
-+ [linuxserver](https://github.com/linuxserver/docker-kodi-headless/) (original headless container)
-
 ## Fast Scanning
 The below works if your media is stored on the same machine as this docker container and your using smb:// to share that media on the network.
 
@@ -100,7 +96,11 @@ That's it.
 Now instead of always needing to scan over smb://, it will replace that with /media and scan much quicker.
 When it does find new items, they are correctly stored in the SQL using their smb:// path
 
-## Versions
+## Credits
+
++ [linuxserver](https://github.com/linuxserver/docker-kodi-headless/) (original headless container)
+
+## Changelog
 
 + **24.11.22:** Bump Nexus to 20.0b1
 + **10.03.22:** Bump Matrix to 19.4
