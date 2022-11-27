@@ -1,5 +1,6 @@
 ############## build stage ##############
 FROM lsiobase/ubuntu:jammy as buildstage
+ARG CMAKE_ARGS=""
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.0b1-Nexus.tar.gz"
@@ -91,8 +92,9 @@ RUN \
 # build package
 RUN \
  cd /tmp/kodi-source/build && \
+ && IFS='|' && set -o noglob && \
  cmake ../. \
-	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
+	-DCMAKE_INSTALL_LIBDIR=/usr/lib $CMAKE_ARGS \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DAPP_RENDER_SYSTEM=gl \
 	-DCORE_PLATFORM_NAME=x11 \
@@ -122,14 +124,14 @@ RUN \
 	-DENABLE_LIRCCLIENT=OFF \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
- make -j4 && \
+ make -j2 && \
  make DESTDIR=/tmp/kodi-build install
 
 # build kodi addons
 RUN \
  set -ex && \
  cd /tmp/kodi-source && \
- make -j4 \
+ make -j2 \
 	-C tools/depends/target/binary-addons \
 	ADDONS="$KODI_ADDONS" \
 	PREFIX=/tmp/kodi-build/usr
