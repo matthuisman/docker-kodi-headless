@@ -181,6 +181,8 @@ RUN \
 COPY root/ /
 COPY --from=buildstage /tmp/kodi-build/usr/ /usr/
 
+RUN chmod +x /usr/bin/install_addon
+
 # ports and volumes
 VOLUME /config/.kodi
 EXPOSE 8080 9090 9777/udp
