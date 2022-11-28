@@ -34,7 +34,7 @@ There is also an example [docker-compose.yml](https://github.com/matthuisman/doc
 + Nexus
 
 ## Platforms
-+ amd64
++ x86_64 / amd64
 + armv7
 + armv8 / arm64
 
