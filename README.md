@@ -7,7 +7,7 @@ https://hub.docker.com/r/matthuisman/kodi-headless
 ## Usage
 
 ```
-sudo docker run -d \
+docker run -d \
 --name=kodi-headless \
 --restart unless-stopped \
 -v <path to data>:/config/.kodi \
