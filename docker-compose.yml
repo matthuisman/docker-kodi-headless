@@ -3,6 +3,7 @@ version: '3.5'
 services:
   mariadb:
     image: linuxserver/mariadb
+    container_name: kodi-mariadb
     environment:
       - PUID=0
       - PGID=0
@@ -15,6 +16,7 @@ services:
 
   kodi:
     image: matthuisman/kodi-headless:Matrix
+    container_name: kodi-headless
     environment:
       - PUID=0
       - PGID=0
