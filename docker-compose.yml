@@ -24,6 +24,7 @@ services:
       - MYSQL_HOST=kodi-mariadb
       - MYSQL_USER=root
       - MYSQL_PASSWORD=kodi
+      - TZ=Pacific/Auckland
     volumes:
       - ./kodi/:/config/.kodi
     ports:
