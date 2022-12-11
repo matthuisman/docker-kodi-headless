@@ -2,7 +2,7 @@
 FROM lsiobase/ubuntu:jammy as buildstage
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.0b1-Nexus.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.0rc1-Nexus.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
