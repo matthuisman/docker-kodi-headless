@@ -2,7 +2,7 @@
 FROM lsiobase/ubuntu:bionic as buildstage
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/19.4-Matrix.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/19.5-Matrix.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
