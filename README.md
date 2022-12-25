@@ -106,6 +106,7 @@ When it does find new items, they are correctly stored in the SQL using their sm
 
 ## Changelog
 
++ **25.12.22:** Bump Matrix to 19.5
 + **21.12.22:** Bump Nexus to 20.0rc2
 + **11.12.22:** Bump Nexus to 20.0rc1
 + **24.11.22:** Bump Nexus to 20.0b1
