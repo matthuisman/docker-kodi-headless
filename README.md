@@ -5,7 +5,6 @@ Commonly used with MySQL Kodi setup to allow library updates via web interface.
 https://hub.docker.com/r/matthuisman/kodi-headless
 
 ## Usage
-
 ```
 docker run -d \
 --name=kodi-headless \
