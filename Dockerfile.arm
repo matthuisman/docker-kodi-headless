@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM lsiobase/ubuntu:bionic as buildstage
+FROM lsiobase/ubuntu:arm32v7-bionic as buildstage
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/19.5-Matrix.tar.gz"
@@ -89,7 +89,8 @@ RUN \
 RUN \
  cd /tmp/kodi-source/build && \
  cmake ../. \
-	-DWITH_CPU=arm -DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" -DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
+	-DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
+	-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DAPP_RENDER_SYSTEM=gl \
@@ -142,7 +143,7 @@ RUN \
 	/tmp/kodi-build/usr/lib/python3.6/xbmcclient.py
 
 ############## runtime stage ##############
-FROM lsiobase/ubuntu:bionic
+FROM lsiobase/ubuntu:arm32v7-bionic
 
 # set version label
 ARG BUILD_DATE
