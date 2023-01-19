@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM lsiobase/ubuntu:arm32v7-jammy as buildstage
+FROM lsiobase/ubuntu:arm32v7-focal as buildstage
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.0-Nexus.tar.gz"
@@ -147,7 +147,7 @@ RUN \
 	/tmp/kodi-build/usr/lib/python3.10/xbmcclient.py
 
 ############## runtime stage ##############
-FROM lsiobase/ubuntu:arm32v7-jammy
+FROM lsiobase/ubuntu:arm32v7-focal
 
 # set version label
 ARG BUILD_DATE
@@ -175,7 +175,7 @@ RUN \
 	libmysqlclient21 \
 	libnfs13 \
 	libpcrecpp0v5 \
-	libpython3.10 \
+	libpython3.8 \
 	python3-minimal \
 	libsmbclient \
 	libtag1v5 \
