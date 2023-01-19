@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM lsiobase/ubuntu:arm32v7-focal as buildstage
+FROM lsiobase/ubuntu:arm32v7-jammy as buildstage
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.0-Nexus.tar.gz"
@@ -146,7 +146,7 @@ RUN \
 	/tmp/kodi-build/usr/lib/python3.10/xbmcclient.py
 
 ############## runtime stage ##############
-FROM lsiobase/ubuntu:arm32v7-focal
+FROM lsiobase/ubuntu:arm32v7-jammy
 
 # set version label
 ARG BUILD_DATE
