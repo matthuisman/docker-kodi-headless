@@ -92,7 +92,6 @@ RUN \
 RUN \
  cd /tmp/kodi-source/build && \
  cmake ../. \
-	-DWITH_CPU=arm \
 	-DCMAKE_C_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
 	-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
