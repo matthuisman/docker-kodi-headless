@@ -5,8 +5,8 @@ services:
     image: linuxserver/mariadb
     container_name: kodi-mariadb
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
       - MYSQL_ROOT_PASSWORD=kodi
       - TZ=Pacific/Auckland
     volumes:
@@ -19,8 +19,8 @@ services:
     image: matthuisman/kodi-headless:Nexus
     container_name: kodi-headless
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
       - MYSQL_HOST=kodi-mariadb
       - MYSQL_USER=root
       - MYSQL_PASSWORD=kodi
