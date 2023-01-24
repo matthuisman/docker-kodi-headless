@@ -81,9 +81,6 @@
         <enablemouse>false</enablemouse>
         <remoteaskeyboard>false</remoteaskeyboard>
     </input>
-    <locale>
-        <timezone></timezone>
-    </locale>
     <general>
         <addonnotifications>false</addonnotifications>
     </general>
