@@ -26,6 +26,6 @@ if [ -n "$MYSQL_PASSWORD" ]; then
 fi
 
 # permissions
-chown -R abc:abc \
+lsiown abc:abc \
 	/config \
 	/var/cache/samba
