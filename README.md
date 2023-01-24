@@ -10,8 +10,8 @@ docker run -d \
 --name=kodi-headless \
 --restart unless-stopped \
 -v <path to data>:/config/.kodi \
--e PGID=<gid> \
 -e PUID=<uid> \
+-e PGID=<gid> \
 -e TZ=<timezone> \
 -p 8080:8080 \
 -p 9090:9090 \
@@ -24,8 +24,8 @@ matthuisman/kodi-headless:Matrix
 * `-p 9090` - websockets port
 * `-p 9777/udp` - esall interface port
 * `-v /config/.kodi` - path for kodi configuration files
-* `-e PGID` for GroupID - see below for explanation
 * `-e PUID` for UserID - see below for explanation
+* `-e PGID` for GroupID - see below for explanation
 * `-e TZ` to set the timezone eg. Europe/London, etc
 
 There is also an example [docker-compose.yml](https://github.com/matthuisman/docker-kodi-headless/blob/master/docker-compose.yml) file which will setup a SQL db and set Kodi up to use it.
