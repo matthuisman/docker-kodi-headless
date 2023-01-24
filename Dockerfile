@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM lsiobase/ubuntu:bionic as buildstage
+FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic as buildstage
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/18.9-Leia.tar.gz"
@@ -135,7 +135,7 @@ RUN \
 	/tmp/kodi-build/usr/lib/python2.7/xbmcclient.py
 
 ############## runtime stage ##############
-FROM lsiobase/ubuntu:bionic
+FROM ghcr.io/linuxserver/baseimage-ubuntu:bionic
 
 # set version label
 ARG BUILD_DATE
