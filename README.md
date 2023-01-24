@@ -25,7 +25,7 @@ matthuisman/kodi-headless:Matrix
 * `-v /config/.kodi` - path for kodi configuration files
 * `-e PGID` for GroupID - see below for explanation
 * `-e PUID` for UserID - see below for explanation
-* `-e TZ` for timezone information eg Europe/London, etc
+* `-e TZ` to set the timezone eg. Europe/London, etc
 
 There is also an example [docker-compose.yml](https://github.com/matthuisman/docker-kodi-headless/blob/master/docker-compose.yml) file which will setup a SQL db and set Kodi up to use it.
 
