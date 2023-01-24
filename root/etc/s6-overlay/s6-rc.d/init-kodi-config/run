@@ -25,11 +25,10 @@ if [ -n "$MYSQL_PASSWORD" ]; then
 	sed -i -E "s/<pass>.*?<\/pass>/<pass>$MYSQL_PASSWORD<\/pass>/g" /config/.kodi/userdata/advancedsettings.xml
 fi
 
-if [ -n "$TZ" ]; then
-	echo "Setting timezone to ${TZ}..."
-	ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
-	echo ${TZ} > /etc/timezone
-fi
+TZ=${TZ:-UTC}
+echo "Setting timezone to ${TZ}..."
+ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
+echo ${TZ} > /etc/timezone
 
 # permissions
 lsiown -R abc:abc \
