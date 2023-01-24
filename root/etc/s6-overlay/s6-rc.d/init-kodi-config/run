@@ -25,6 +25,10 @@ if [ -n "$MYSQL_PASSWORD" ]; then
 	sed -i -E "s/<pass>.*?<\/pass>/<pass>$MYSQL_PASSWORD<\/pass>/g" /config/.kodi/userdata/advancedsettings.xml
 fi
 
+if [ -n "$TZ" ]; then
+	sed -i -E "s/<timezone>.*?<\/timezone>/<timezone>$TZ<\/timezone>/g" /config/.kodi/userdata/advancedsettings.xml
+fi
+
 # permissions
 lsiown -R abc:abc \
 	/config \
