@@ -100,6 +100,17 @@ That's it.
 Now instead of always needing to scan over smb://, it will replace that with /media and scan much quicker.
 When it does find new items, they are correctly stored in the SQL using their smb:// path
 
+## Known Issues
+**Nexus**
+
+If you receive errors like `unable to iopause`, `what(): Operation not permitted`,`/usr/lib/kodi/kodi-x11 not found` then you may need to
+- update docker
+- update libseccomp
+- use --privileged with docker
+
+More info here:
+https://github.com/matthuisman/docker-kodi-headless/issues/30
+
 ## Credits
 
 + [linuxserver](https://github.com/linuxserver/docker-kodi-headless/) (original headless container)
