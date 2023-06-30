@@ -117,6 +117,7 @@ https://github.com/matthuisman/docker-kodi-headless/issues/30
 
 ## Changelog
 
++ **30.06.23:** Bump Nexus to 20.2
 + **12.03.23:** Bump Nexus to 20.1
 + **16.01.23:** Bump Nexus to 20.0
 + **25.12.22:** Bump Matrix to 19.5
