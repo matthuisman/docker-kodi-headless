@@ -102,8 +102,7 @@ When it does find new items, they are correctly stored in the SQL using their sm
 
 ## Known Issues
 
-If you receive errors like `unable to iopause`, `what(): Operation not permitted`,`/usr/lib/kodi/kodi-x11 not found` then see link below:
-https://github.com/sdr-enthusiasts/Buster-Docker-Fixes#the-situation
+If you receive errors like `unable to iopause`, `what(): Operation not permitted`,`/usr/lib/kodi/kodi-x11 not found` then see: https://github.com/sdr-enthusiasts/Buster-Docker-Fixes#the-situation
 
 ## Credits
 
