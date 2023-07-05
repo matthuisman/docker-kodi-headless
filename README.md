@@ -1,5 +1,3 @@
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L4L76CYCW)
-
 # matthuisman/kodi-headless
 A headless install of kodi in a docker container.
 Commonly used with MySQL Kodi setup to allow library updates via web interface.
