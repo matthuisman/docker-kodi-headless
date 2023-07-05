@@ -101,14 +101,8 @@ Now instead of always needing to scan over smb://, it will replace that with /me
 When it does find new items, they are correctly stored in the SQL using their smb:// path
 
 ## Known Issues
-**Nexus**
 
-If you receive errors like `unable to iopause`, `what(): Operation not permitted`,`/usr/lib/kodi/kodi-x11 not found` then you may need to
-- update docker
-- update libseccomp
-- use --privileged with docker (not recommended)
-
-More info here:
+If you receive errors like `unable to iopause`, `what(): Operation not permitted`,`/usr/lib/kodi/kodi-x11 not found` then see link below:
 https://github.com/sdr-enthusiasts/Buster-Docker-Fixes#the-situation
 
 ## Credits
