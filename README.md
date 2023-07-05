@@ -106,10 +106,10 @@ When it does find new items, they are correctly stored in the SQL using their sm
 If you receive errors like `unable to iopause`, `what(): Operation not permitted`,`/usr/lib/kodi/kodi-x11 not found` then you may need to
 - update docker
 - update libseccomp
-- use --privileged with docker
+- use --privileged with docker (not recommended)
 
 More info here:
-https://github.com/matthuisman/docker-kodi-headless/issues/30
+https://github.com/sdr-enthusiasts/Buster-Docker-Fixes#the-situation
 
 ## Credits
 
