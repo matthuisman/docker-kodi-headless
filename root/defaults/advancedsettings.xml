@@ -38,6 +38,9 @@
         <webserverauthentication>false</webserverauthentication>
         <zeroconf>false</zeroconf>
     </services>
+    <jsonrpc>
+        <tcpport>9090</tcpport>
+    </jsonrpc>
     <fanartres>360</fanartres>
     <imageres>360</imageres>
     <videolibrary>
