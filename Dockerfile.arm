@@ -72,10 +72,7 @@ RUN \
 	libdrm-dev \
 	libunistring-dev
 
-# copy patches
-COPY patches/ /patches/
-
-# fetch source and apply any required patches
+# fetch and extact source
 RUN \
  set -ex && \
  mkdir -p \
@@ -83,11 +80,15 @@ RUN \
  curl -o \
  /tmp/kodi.tar.gz -L "$SOURCE" && \
  tar xf /tmp/kodi.tar.gz -C \
-	/tmp/kodi-source --strip-components=1 && \
- cd /tmp/kodi-source && \
- for i in /patches/*.patch; \
-	do git apply $i; \
- done
+	/tmp/kodi-source --strip-components=1
+
+# copy and apply patches
+# COPY patches/ /patches/
+# RUN \
+#  cd /tmp/kodi-source && \
+#  for i in /patches/*.patch; \
+# 	do git apply $i; \
+#  done
 
 # build package
 RUN \
