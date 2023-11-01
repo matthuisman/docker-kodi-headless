@@ -34,6 +34,7 @@ There is also an example [docker-compose.yml](https://github.com/matthuisman/doc
 + Leia
 + Matrix
 + Nexus
++ Omega
 
 ## Platforms
 + x86_64 / amd64
@@ -56,6 +57,7 @@ eg. `docker exec kodi-headless install_addon "metadata.tvshows.thetvdb.com.v4.py
 + Leia - Python 2.7.17
 + Matrix - Python 3.6.5
 + Nexus - Python 3.10.4
++ Omega - Python 3.10.4
 
 ## User / Group Identifiers
 
@@ -110,6 +112,7 @@ If you receive errors like `unable to iopause`, `what(): Operation not permitted
 
 ## Changelog
 
++ **01.11.23:** Bump Omega to 21.0b1
 + **30.06.23:** Bump Nexus to 20.2
 + **12.03.23:** Bump Nexus to 20.1
 + **16.01.23:** Bump Nexus to 20.0
