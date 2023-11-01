@@ -1,5 +1,5 @@
 diff --git a/xbmc/addons/AddonDatabase.cpp b/xbmc/addons/AddonDatabase.cpp
-index dbbf204..6b44543 100644
+index 29837be..e455101 100644
 --- a/xbmc/addons/AddonDatabase.cpp
 +++ b/xbmc/addons/AddonDatabase.cpp
 @@ -417,7 +417,7 @@ void CAddonDatabase::SyncInstalled(const std::set<std::string>& ids,
