@@ -83,12 +83,12 @@ RUN \
 	/tmp/kodi-source --strip-components=1
 
 # copy and apply patches
-# COPY patches/ /patches/
-# RUN \
-#  cd /tmp/kodi-source && \
-#  for i in /patches/*.patch; \
-# 	do git apply $i; \
-#  done
+COPY patches/ /patches/
+RUN \
+ cd /tmp/kodi-source && \
+ for i in /patches/*.patch; \
+	do git apply $i; \
+ done
 
 # build package
 RUN \

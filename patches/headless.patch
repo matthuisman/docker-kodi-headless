@@ -1,8 +1,8 @@
 diff --git a/xbmc/application/Application.cpp b/xbmc/application/Application.cpp
-index b3edbdf..56834ec 100644
+index bf1feb6..020e9f4 100644
 --- a/xbmc/application/Application.cpp
 +++ b/xbmc/application/Application.cpp
-@@ -465,11 +465,11 @@ bool CApplication::CreateGUI()
+@@ -445,11 +445,11 @@ bool CApplication::CreateGUI()
    m_frameMoveGuard.lock();
  
    const auto appPower = GetComponent<CApplicationPowerHandling>();
@@ -16,7 +16,7 @@ index b3edbdf..56834ec 100644
  
    if (!windowing.empty())
      windowSystems = {windowing};
-@@ -607,9 +607,6 @@ bool CApplication::InitWindow(RESOLUTION res)
+@@ -587,9 +587,6 @@ bool CApplication::InitWindow(RESOLUTION res)
  
  bool CApplication::Initialize()
  {
@@ -26,84 +26,51 @@ index b3edbdf..56834ec 100644
    const auto appVolume = GetComponent<CApplicationVolumeHandling>();
    const auto level = appVolume->GetVolumeRatio();
    const auto muted = appVolume->IsMuted();
-@@ -688,116 +685,50 @@ bool CApplication::Initialize()
+@@ -669,15 +666,13 @@ bool CApplication::Initialize()
  
    const auto skinHandling = GetComponent<CApplicationSkinHandling>();
  
 -  bool uiInitializationFinished = false;
--
++  bool uiInitializationFinished = true;
+ 
 -  if (CServiceBroker::GetGUI()->GetWindowManager().Initialized())
--  {
--    const auto settings = CServiceBroker::GetSettingsComponent()->GetSettings();
--
++  if (true)
+   {
+     const auto settings = CServiceBroker::GetSettingsComponent()->GetSettings();
+ 
 -    CServiceBroker::GetGUI()->GetWindowManager().CreateWindows();
 -
 -    skinHandling->m_confirmSkinChange = false;
-+  bool uiInitializationFinished = true;
++    skinHandling->m_confirmSkinChange = true;
  
--    std::vector<AddonInfoPtr> incompatibleAddons;
--    event.Reset();
-+  const auto settings = CServiceBroker::GetSettingsComponent()->GetSettings();
- 
--    // Addon migration
--    if (CServiceBroker::GetAddonMgr().GetIncompatibleEnabledAddonInfos(incompatibleAddons))
--    {
--      if (CAddonSystemSettings::GetInstance().GetAddonAutoUpdateMode() == AUTO_UPDATES_ON)
--      {
--        CServiceBroker::GetJobManager()->Submit(
--            [&event, &incompatibleAddons]() {
--              if (CServiceBroker::GetRepositoryUpdater().CheckForUpdates())
--                CServiceBroker::GetRepositoryUpdater().Await();
--
--              incompatibleAddons = CServiceBroker::GetAddonMgr().MigrateAddons();
--              event.Set();
--            },
--            CJob::PRIORITY_DEDICATED);
--        localizedStr = g_localizeStrings.Get(24151);
--        iDots = 1;
--        while (!event.Wait(1000ms))
--        {
+     std::vector<AddonInfoPtr> incompatibleAddons;
+     event.Reset();
+@@ -700,8 +695,6 @@ bool CApplication::Initialize()
+         iDots = 1;
+         while (!event.Wait(1000ms))
+         {
 -          CServiceBroker::GetRenderSystem()->ShowSplash(std::string(iDots, ' ') + localizedStr +
 -                                                        std::string(iDots, '.'));
--          if (iDots == 3)
--            iDots = 1;
--          else
--            ++iDots;
--        }
--        m_incompatibleAddons = incompatibleAddons;
--      }
--      else
--      {
--        // If no update is active disable all incompatible addons during start
--        m_incompatibleAddons =
--            CServiceBroker::GetAddonMgr().DisableIncompatibleAddons(incompatibleAddons);
--      }
--    }
-+  skinHandling->m_confirmSkinChange = true;
+           if (iDots == 3)
+             iDots = 1;
+           else
+@@ -717,63 +710,7 @@ bool CApplication::Initialize()
+       }
+     }
  
 -    // Start splashscreen and load skin
 -    CServiceBroker::GetRenderSystem()->ShowSplash("");
 -    skinHandling->m_confirmSkinChange = true;
-+  std::vector<AddonInfoPtr> incompatibleAddons;
-+  event.Reset();
- 
+-
 -    auto setting = settings->GetSetting(CSettings::SETTING_LOOKANDFEEL_SKIN);
 -    if (!setting)
-+  // Addon migration
-+  if (CServiceBroker::GetAddonMgr().GetIncompatibleEnabledAddonInfos(incompatibleAddons))
-+  {
-+    if (CAddonSystemSettings::GetInstance().GetAddonAutoUpdateMode() == AUTO_UPDATES_ON)
-     {
+-    {
 -      CLog::Log(LOGFATAL, "Failed to load setting for: {}", CSettings::SETTING_LOOKANDFEEL_SKIN);
 -      return false;
 -    }
 -
--    CServiceBroker::RegisterTextureCache(std::make_shared<CTextureCache>());
-+      CServiceBroker::GetJobManager()->Submit(
-+          [&event, &incompatibleAddons]() {
-+            if (CServiceBroker::GetRepositoryUpdater().CheckForUpdates())
-+              CServiceBroker::GetRepositoryUpdater().Await();
- 
+     CServiceBroker::RegisterTextureCache(std::make_shared<CTextureCache>());
+-
 -    std::string skinId = settings->GetString(CSettings::SETTING_LOOKANDFEEL_SKIN);
 -    if (!skinHandling->LoadSkin(skinId))
 -    {
@@ -111,22 +78,10 @@ index b3edbdf..56834ec 100644
 -      std::string defaultSkin =
 -          std::static_pointer_cast<const CSettingString>(setting)->GetDefault();
 -      if (!skinHandling->LoadSkin(defaultSkin))
-+            incompatibleAddons = CServiceBroker::GetAddonMgr().MigrateAddons();
-+            event.Set();
-+          },
-+          CJob::PRIORITY_DEDICATED);
-+      localizedStr = g_localizeStrings.Get(24151);
-+      CLog::Log(LOGINFO, localizedStr);
-+      iDots = 1;
-+      while (!event.Wait(1000ms))
-       {
+-      {
 -        CLog::Log(LOGFATAL, "Default skin '{}' could not be loaded! Terminating..", defaultSkin);
 -        return false;
-+        if (iDots == 3)
-+          iDots = 1;
-+        else
-+          ++iDots;
-       }
+-      }
 -    }
 -
 -    // initialize splash window after splash screen disappears
@@ -145,10 +100,9 @@ index b3edbdf..56834ec 100644
 -    if (profileManager->UsingLoginScreen())
 -    {
 -      CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(WINDOW_LOGIN_SCREEN);
-+      m_incompatibleAddons = incompatibleAddons;
-     }
-     else
-     {
+-    }
+-    else
+-    {
 -      // activate the configured start window
 -      int firstWindow = g_SkinInfo->GetFirstWindow();
 -      CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(firstWindow);
@@ -160,21 +114,11 @@ index b3edbdf..56834ec 100644
 -
 -      // the startup window is considered part of the initialization as it most likely switches to the final window
 -      uiInitializationFinished = firstWindow != WINDOW_STARTUP_ANIM;
-+      // If no update is active disable all incompatible addons during start
-+      m_incompatibleAddons =
-+          CServiceBroker::GetAddonMgr().DisableIncompatibleAddons(incompatibleAddons);
-     }
+-    }
    }
--  else //No GUI Created
--  {
--    uiInitializationFinished = true;
--  }
-+
-+  CServiceBroker::RegisterTextureCache(std::make_shared<CTextureCache>());
- 
-   CJSONRPC::Initialize();
- 
-@@ -833,11 +764,6 @@ bool CApplication::Initialize()
+   else //No GUI Created
+   {
+@@ -814,11 +751,6 @@ bool CApplication::Initialize()
  
    CLog::Log(LOGINFO, "initialize done");
  
@@ -187,27 +131,25 @@ index b3edbdf..56834ec 100644
    if (uiInitializationFinished)
    {
 diff --git a/xbmc/platform/linux/PlatformLinux.cpp b/xbmc/platform/linux/PlatformLinux.cpp
-index a7af098..d81905c 100644
+index a99ceef..dea8d1f 100644
 --- a/xbmc/platform/linux/PlatformLinux.cpp
 +++ b/xbmc/platform/linux/PlatformLinux.cpp
-@@ -21,6 +21,8 @@
+@@ -24,6 +24,7 @@
+ #endif
  
  #include "platform/linux/powermanagement/LinuxPowerSyscall.h"
- 
 +#include "windowing/WinSystemHeadless.h"
-+
+ 
  // clang-format off
  #if defined(HAS_GLES)
- #if defined(HAVE_WAYLAND)
-@@ -61,6 +63,8 @@ bool CPlatformLinux::InitStageOne()
+@@ -64,6 +65,7 @@ bool CPlatformLinux::InitStageOne()
+     return false;
  
    setenv("OS", "Linux", true); // for python scripts that check the OS
- 
 +  CWinSystemHeadless::RegisterMe();
-+
- #if defined(HAS_GLES)
- #if defined(HAVE_WAYLAND)
-   KODI::WINDOWING::WAYLAND::CWinSystemWaylandEGLContextGLES::Register();
+ 
+ #if defined(TARGET_WEBOS)
+   // WebOS ipks run in a chroot like environment. $HOME is set to the ipk dir and $LD_LIBRARY_PATH is lib
 diff --git a/xbmc/windowing/CMakeLists.txt b/xbmc/windowing/CMakeLists.txt
 index 21c7611..1e58f1b 100644
 --- a/xbmc/windowing/CMakeLists.txt
