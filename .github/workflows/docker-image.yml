@@ -2,3 +2,11 @@ name: kodi-headless
 
 on:
   workflow_dispatch:
+
+jobs:
+  do_nothing:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Do nothing
+      uses: alex-sandri/nothing-action@v1
