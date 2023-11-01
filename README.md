@@ -33,7 +33,7 @@ There is also an example [docker-compose.yml](https://github.com/matthuisman/doc
 ## Tags
 + Leia
 + Matrix
-+ [![Nexus](https://github.com/matthuisman/docker-kodi-headless/actions/workflows/docker-image.yml/badge.svg?branch=Nexus)](https://github.com/matthuisman/docker-kodi-headless/actions/workflows/docker-image.yml)
++ Nexus
 + Omega
 
 ## Platforms
