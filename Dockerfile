@@ -2,7 +2,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy as buildstage
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.2-Nexus.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/21.0b1-Omega.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
@@ -54,6 +54,7 @@ RUN \
 	libtag1-dev \
 	libtiff5-dev \
 	libtinyxml-dev \
+	libtinyxml2-dev \
 	libtool \
 	libvorbis-dev \
 	libxrandr-dev \
@@ -82,11 +83,12 @@ RUN \
  curl -o \
  /tmp/kodi.tar.gz -L "$SOURCE" && \
  tar xf /tmp/kodi.tar.gz -C \
-	/tmp/kodi-source --strip-components=1 && \
- cd /tmp/kodi-source && \
- for i in /patches/*.patch; \
-	do git apply $i; \
- done
+	/tmp/kodi-source --strip-components=1 
+# && \
+# cd /tmp/kodi-source && \
+#  for i in /patches/*.patch; \
+# 	do git apply $i; \
+#  done
 
 # build package
 RUN \
@@ -177,6 +179,7 @@ RUN \
 	libsmbclient \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
+	libtinyxml2-9 \
 	libxrandr2 \
 	libxslt1.1 \
 	libplist3 \
