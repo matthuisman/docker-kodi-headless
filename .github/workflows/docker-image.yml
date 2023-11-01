@@ -16,7 +16,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Create and push manifest images
-      uses: int128/docker-manifest-create-action@master
+      uses: int128/docker-manifest-create-action
       with:
         builder: buildx
         tags: matthuisman/kodi-headless:${{ github.ref_name }}
