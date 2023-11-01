@@ -90,8 +90,11 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Create and push manifest images
-      uses: Noelware/docker-manifest-action@master
+      uses: int128/docker-manifest-create-action@v1
       with:
-        inputs: matthuisman/kodi-headless:${{ github.ref_name }}
-        images: matthuisman/kodi-headless:${{ github.ref_name }}-amd64,matthuisman/kodi-headless:${{ github.ref_name }}-arm64,matthuisman/kodi-headless:${{ github.ref_name }}-arm
-        push: true
+        builder: buildx
+        tags: matthuisman/kodi-headless:${{ github.ref_name }}
+        suffixes: |
+          -amd64
+          -arm64
+          -arm
