@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
   kodi-headless:
-    image: matthuisman/kodi-headless:Nexus
+    image: matthuisman/kodi-headless:Omega
     container_name: kodi-headless
     environment:
       - PUID=1000
