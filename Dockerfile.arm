@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM ghcr.io/linuxserver/baseimage-ubuntu:arm32v7-jammy as buildstage
+FROM lsiobase/ubuntu:arm32v7-jammy as buildstage
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.2-Nexus.tar.gz"
@@ -147,7 +147,7 @@ RUN \
 	/tmp/kodi-build/usr/lib/python3.10/xbmcclient.py
 
 ############## runtime stage ##############
-FROM ghcr.io/linuxserver/baseimage-ubuntu:arm32v7-jammy
+FROM lsiobase/ubuntu:arm32v7-jammy
 
 # set version label
 ARG BUILD_DATE
