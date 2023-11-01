@@ -5,6 +5,27 @@ on:
   workflow_dispatch:
 
 jobs:
+  combine:
+  #  needs: [build_amd64, build_arm64, build_arm]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: hub login
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # - name: Create and push manifest images
+    #   - uses: int128/docker-manifest-create-action@master
+    #     with:
+    #       builder: buildx
+    #       tags: matthuisman/kodi-headless:${{ github.ref_name }}
+    #       suffixes: |
+    #         -amd64
+    #         -arm64
+    #         -arm
+
   # build_amd64:
   #   runs-on: ubuntu-latest
 
