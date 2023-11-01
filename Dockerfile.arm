@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM lsiobase/ubuntu:arm32v7-jammy as buildstage
+FROM lsiobase/ubuntu:arm32v7-jammy-version-05e08486 as buildstage
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/21.0b1-Omega.tar.gz"
@@ -149,7 +149,7 @@ RUN \
 	/tmp/kodi-build/usr/lib/python3.10/xbmcclient.py
 
 ############## runtime stage ##############
-FROM lsiobase/ubuntu:arm32v7-jammy
+FROM lsiobase/ubuntu:arm32v7-jammy-version-05e08486
 
 # set version label
 ARG BUILD_DATE
