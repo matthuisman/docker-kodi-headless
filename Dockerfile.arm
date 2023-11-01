@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM ghcr.io/linuxserver/baseimage-ubuntu:arm32v7-jammy as buildstage
+FROM lsiobase/ubuntu:arm32v7-jammy as buildstage
 
 # package source
 ARG SOURCE="https://github.com/xbmc/xbmc/archive/21.0b1-Omega.tar.gz"
