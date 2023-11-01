@@ -146,7 +146,6 @@ RUN \
 	/tmp/kodi-build/usr/lib/python3.10/xbmcclient.py
 
 ############## runtime stage ##############
-FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy as buildstage
 FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 
 # set version label
