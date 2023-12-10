@@ -2,7 +2,7 @@
 FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy as buildstage
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/21.0b1-Omega.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/21.0b2-Omega.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
