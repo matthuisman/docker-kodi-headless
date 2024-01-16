@@ -26,7 +26,7 @@ matthuisman/kodi-headless:Matrix
 * `-v /config/.kodi` - path for kodi configuration files
 * `-e PUID` for UserID - see below for explanation
 * `-e PGID` for GroupID - see below for explanation
-* `-e TZ` to set the timezone eg. Europe/London, etc
+* `-e TZ` to set the timezone eg. Europe/London, etc.
 
 There is also an example [docker-compose.yml](https://github.com/matthuisman/docker-kodi-headless/blob/master/docker-compose.yml) file which will setup a SQL db and set Kodi up to use it.
 
@@ -73,7 +73,7 @@ In this instance `PUID=1001` and `PGID=1001`. To find yours use `id user` as bel
 ## Setting up the application
 
 SQL settings are entered by editing the file advancedsettings.xml which is found in the userdata folder of your /config/.kodi mapping. 
-Many other settings are within this file also.
+Many other settings are within this file as well.
 
 If you intend to use this kodi instance to perform library tasks other than merely updating, eg. library cleaning etc, it is important to copy over the sources.xml from the host machine that you performed the initial library scan on to the userdata folder of this instance, otherwise database loss can and most likely will occur.
 
@@ -83,12 +83,12 @@ If you intend to use this kodi instance to perform library tasks other than mere
 * To monitor the logs of the container in realtime: `docker logs -f kodi-headless`
 
 ## Fast Scanning
-The below works if your media is stored on the same machine as this docker container and your using smb:// to share that media on the network.
+The below works if your media is stored on the same machine as this docker container and you're using smb:// to share that media on the network.
 
 First, mount your host media directory somewhere inside the container so Kodi can see it.  
 eg. ```--mount type=bind,source=/sharedfolders/pool,target=/media```
 
-Now, the below magic is done in Kodis advancedsettings.xml
+Now, the below magic is done in Kodi's advancedsettings.xml
 ```
 <pathsubstitution>
   <substitute>
