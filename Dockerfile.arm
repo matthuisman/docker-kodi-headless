@@ -13,6 +13,10 @@ ARG DEBIAN_FRONTEND="noninteractive"
 # install build packages
 RUN \
  apt-get update && \
+ apt-get install software-properties-common -y --no-install-recommends && \
+ add-apt-repository 'ppa:deadsnakes/ppa' -y && \
+ apt-get remove software-properties-common -y && apt autoremove -y && \
+ apt-get update && \
  apt-get install -y \
 	--no-install-recommends \
 	autoconf \
@@ -60,7 +64,7 @@ RUN \
 	libxslt-dev \
 	make \
 	nasm \
-	python3-dev \
+	python3.11-dev \
 	rapidjson-dev \
 	swig \
 	uuid-dev \
@@ -97,6 +101,7 @@ RUN \
 	-DCMAKE_CXX_FLAGS="-march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard -mvectorize-with-neon-quad" \
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DPYTHON_VER=3.11 \
 	-DAPP_RENDER_SYSTEM=gl \
 	-DCORE_PLATFORM_NAME=x11 \
 	-DENABLE_AIRTUNES=OFF \
@@ -144,7 +149,7 @@ RUN \
 	/tmp/kodi-build/usr/bin/kodi-send && \
  install -Dm644 \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
-	/tmp/kodi-build/usr/lib/python3.10/xbmcclient.py
+	/tmp/kodi-build/usr/lib/python3.11/xbmcclient.py
 
 ############## runtime stage ##############
 FROM lsiobase/ubuntu:arm32v7-jammy-version-05e08486
@@ -162,6 +167,10 @@ ENV HOME="/config"
 # install runtime packages
 RUN \
  apt-get update && \
+ apt-get install software-properties-common -y --no-install-recommends && \
+ add-apt-repository 'ppa:deadsnakes/ppa' -y && \
+ apt-get remove software-properties-common -y && apt autoremove -y && \
+ apt-get update && \
  apt-get install -y \
 	--no-install-recommends \
 	samba-common-bin \
@@ -175,8 +184,8 @@ RUN \
 	libmysqlclient21 \
 	libnfs13 \
 	libpcrecpp0v5 \
-	libpython3.8 \
-	python3-minimal \
+	libpython3.11 \
+	python3.11-minimal \
 	libsmbclient \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
