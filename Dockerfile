@@ -13,10 +13,6 @@ ARG DEBIAN_FRONTEND="noninteractive"
 # install build packages
 RUN \
  apt-get update && \
- apt-get install software-properties-common -y --no-install-recommends && \
- add-apt-repository 'ppa:deadsnakes/ppa' -y && \
- apt-get remove software-properties-common -y && apt autoremove -y && \
- apt-get update && \
  apt-get install -y \
 	--no-install-recommends \
 	autoconf \
@@ -64,7 +60,7 @@ RUN \
 	libxslt-dev \
 	make \
 	nasm \
-	python3.11-dev \
+	python3-dev \
 	rapidjson-dev \
 	swig \
 	uuid-dev \
@@ -98,7 +94,6 @@ RUN \
  cmake ../. \
 	-DCMAKE_INSTALL_LIBDIR=/usr/lib \
 	-DCMAKE_INSTALL_PREFIX=/usr \
-	-DPYTHON_VER=3.11 \
 	-DAPP_RENDER_SYSTEM=gl \
 	-DCORE_PLATFORM_NAME=x11 \
 	-DENABLE_AIRTUNES=OFF \
@@ -146,7 +141,7 @@ RUN \
 	/tmp/kodi-build/usr/bin/kodi-send && \
  install -Dm644 \
 	/tmp/kodi-source/tools/EventClients/lib/python/xbmcclient.py \
-	/tmp/kodi-build/usr/lib/python3.11/xbmcclient.py
+	/tmp/kodi-build/usr/lib/python3.10/xbmcclient.py
 
 ############## runtime stage ##############
 FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
@@ -164,10 +159,6 @@ ENV HOME="/config"
 # install runtime packages
 RUN \
  apt-get update && \
- apt-get install software-properties-common -y --no-install-recommends && \
- add-apt-repository 'ppa:deadsnakes/ppa' -y && \
- apt-get remove software-properties-common -y && apt autoremove -y && \
- apt-get update && \
  apt-get install -y \
 	--no-install-recommends \
 	samba-common-bin \
@@ -181,8 +172,8 @@ RUN \
 	libmysqlclient21 \
 	libnfs13 \
 	libpcrecpp0v5 \
-	libpython3.11 \
-	python3.11-minimal \
+	libpython3.10 \
+	python3-minimal \
 	libsmbclient \
 	libtag1v5 \
 	libtinyxml2.6.2v5 \
