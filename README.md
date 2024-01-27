@@ -54,10 +54,10 @@ docker exec kodi-headless install_addon "<addon_id>" "<addon_id>" "<addon_id>"
 eg. `docker exec kodi-headless install_addon "metadata.tvshows.thetvdb.com.v4.python" "another.addon.id"`
 
 ## Python Versions
-+ Leia - Python 2.7
-+ Matrix - Python 3.8
-+ Nexus - Python 3.11
-+ Omega - Python 3.11
++ Leia - Python 2.7.17
++ Matrix - Python 3.6.5
++ Nexus - Python 3.10.4
++ Omega - Python 3.10.4
 
 ## User / Group Identifiers
 
