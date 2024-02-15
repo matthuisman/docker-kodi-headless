@@ -1,137 +1,5 @@
-diff --git a/xbmc/application/Application.cpp b/xbmc/application/Application.cpp
-index bf1feb6..020e9f4 100644
---- a/xbmc/application/Application.cpp
-+++ b/xbmc/application/Application.cpp
-@@ -445,11 +445,11 @@ bool CApplication::CreateGUI()
-   m_frameMoveGuard.lock();
- 
-   const auto appPower = GetComponent<CApplicationPowerHandling>();
--  appPower->SetRenderGUI(true);
-+  appPower->SetRenderGUI(false);
- 
-   auto windowSystems = KODI::WINDOWING::CWindowSystemFactory::GetWindowSystems();
- 
--  const std::string& windowing = CServiceBroker::GetAppParams()->GetWindowing();
-+  const std::string& windowing = "headless";
- 
-   if (!windowing.empty())
-     windowSystems = {windowing};
-@@ -587,9 +587,6 @@ bool CApplication::InitWindow(RESOLUTION res)
- 
- bool CApplication::Initialize()
- {
--  m_pActiveAE->Start();
--  // restore AE's previous volume state
--
-   const auto appVolume = GetComponent<CApplicationVolumeHandling>();
-   const auto level = appVolume->GetVolumeRatio();
-   const auto muted = appVolume->IsMuted();
-@@ -669,15 +666,13 @@ bool CApplication::Initialize()
- 
-   const auto skinHandling = GetComponent<CApplicationSkinHandling>();
- 
--  bool uiInitializationFinished = false;
-+  bool uiInitializationFinished = true;
- 
--  if (CServiceBroker::GetGUI()->GetWindowManager().Initialized())
-+  if (true)
-   {
-     const auto settings = CServiceBroker::GetSettingsComponent()->GetSettings();
- 
--    CServiceBroker::GetGUI()->GetWindowManager().CreateWindows();
--
--    skinHandling->m_confirmSkinChange = false;
-+    skinHandling->m_confirmSkinChange = true;
- 
-     std::vector<AddonInfoPtr> incompatibleAddons;
-     event.Reset();
-@@ -700,8 +695,6 @@ bool CApplication::Initialize()
-         iDots = 1;
-         while (!event.Wait(1000ms))
-         {
--          CServiceBroker::GetRenderSystem()->ShowSplash(std::string(iDots, ' ') + localizedStr +
--                                                        std::string(iDots, '.'));
-           if (iDots == 3)
-             iDots = 1;
-           else
-@@ -717,63 +710,7 @@ bool CApplication::Initialize()
-       }
-     }
- 
--    // Start splashscreen and load skin
--    CServiceBroker::GetRenderSystem()->ShowSplash("");
--    skinHandling->m_confirmSkinChange = true;
--
--    auto setting = settings->GetSetting(CSettings::SETTING_LOOKANDFEEL_SKIN);
--    if (!setting)
--    {
--      CLog::Log(LOGFATAL, "Failed to load setting for: {}", CSettings::SETTING_LOOKANDFEEL_SKIN);
--      return false;
--    }
--
-     CServiceBroker::RegisterTextureCache(std::make_shared<CTextureCache>());
--
--    std::string skinId = settings->GetString(CSettings::SETTING_LOOKANDFEEL_SKIN);
--    if (!skinHandling->LoadSkin(skinId))
--    {
--      CLog::Log(LOGERROR, "Failed to load skin '{}'", skinId);
--      std::string defaultSkin =
--          std::static_pointer_cast<const CSettingString>(setting)->GetDefault();
--      if (!skinHandling->LoadSkin(defaultSkin))
--      {
--        CLog::Log(LOGFATAL, "Default skin '{}' could not be loaded! Terminating..", defaultSkin);
--        return false;
--      }
--    }
--
--    // initialize splash window after splash screen disappears
--    // because we need a real window in the background which gets
--    // rendered while we load the main window or enter the master lock key
--    CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(WINDOW_SPLASH);
--
--    if (settings->GetBool(CSettings::SETTING_MASTERLOCK_STARTUPLOCK) &&
--        profileManager->GetMasterProfile().getLockMode() != LOCK_MODE_EVERYONE &&
--        !profileManager->GetMasterProfile().getLockCode().empty())
--    {
--      g_passwordManager.CheckStartUpLock();
--    }
--
--    // check if we should use the login screen
--    if (profileManager->UsingLoginScreen())
--    {
--      CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(WINDOW_LOGIN_SCREEN);
--    }
--    else
--    {
--      // activate the configured start window
--      int firstWindow = g_SkinInfo->GetFirstWindow();
--      CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(firstWindow);
--
--      if (CServiceBroker::GetGUI()->GetWindowManager().IsWindowActive(WINDOW_STARTUP_ANIM))
--      {
--        CLog::Log(LOGWARNING, "CApplication::Initialize - startup.xml taints init process");
--      }
--
--      // the startup window is considered part of the initialization as it most likely switches to the final window
--      uiInitializationFinished = firstWindow != WINDOW_STARTUP_ANIM;
--    }
-   }
-   else //No GUI Created
-   {
-@@ -814,11 +751,6 @@ bool CApplication::Initialize()
- 
-   CLog::Log(LOGINFO, "initialize done");
- 
--  const auto appPower = GetComponent<CApplicationPowerHandling>();
--  appPower->CheckOSScreenSaverInhibitionSetting();
--  // reset our screensaver (starts timers etc.)
--  appPower->ResetScreenSaver();
--
-   // if the user interfaces has been fully initialized let everyone know
-   if (uiInitializationFinished)
-   {
 diff --git a/xbmc/platform/linux/PlatformLinux.cpp b/xbmc/platform/linux/PlatformLinux.cpp
-index a99ceef..dea8d1f 100644
+index 6be5163883..c423e1dddc 100644
 --- a/xbmc/platform/linux/PlatformLinux.cpp
 +++ b/xbmc/platform/linux/PlatformLinux.cpp
 @@ -24,6 +24,7 @@
@@ -142,16 +10,16 @@ index a99ceef..dea8d1f 100644
  
  // clang-format off
  #if defined(HAS_GLES)
-@@ -64,6 +65,7 @@ bool CPlatformLinux::InitStageOne()
-     return false;
+@@ -91,6 +92,7 @@ bool CPlatformLinux::InitStageOne()
+ #endif
+ #endif
  
-   setenv("OS", "Linux", true); // for python scripts that check the OS
-+  CWinSystemHeadless::RegisterMe();
++  CWinSystemHeadless::Register();
+   RegisterPowerManagement();
  
- #if defined(TARGET_WEBOS)
-   // WebOS ipks run in a chroot like environment. $HOME is set to the ipk dir and $LD_LIBRARY_PATH is lib
+   std::string_view sink = CServiceBroker::GetAppParams()->GetAudioBackend();
 diff --git a/xbmc/windowing/CMakeLists.txt b/xbmc/windowing/CMakeLists.txt
-index 21c7611..1e58f1b 100644
+index 21c7611912..1e58f1b6d1 100644
 --- a/xbmc/windowing/CMakeLists.txt
 +++ b/xbmc/windowing/CMakeLists.txt
 @@ -2,6 +2,7 @@ set(SOURCES GraphicContext.cpp
@@ -172,10 +40,10 @@ index 21c7611..1e58f1b 100644
              VideoSync.h)
 diff --git a/xbmc/windowing/WinSystemHeadless.cpp b/xbmc/windowing/WinSystemHeadless.cpp
 new file mode 100644
-index 0000000..b3d7ae5
+index 0000000000..7545e82c97
 --- /dev/null
 +++ b/xbmc/windowing/WinSystemHeadless.cpp
-@@ -0,0 +1,69 @@
+@@ -0,0 +1,68 @@
 +/*
 + *  Copyright (C) 2005-2018 Team Kodi
 + *  This file is part of Kodi - https://kodi.tv
@@ -193,12 +61,11 @@ index 0000000..b3d7ae5
 +#include <vector>
 +#include <string>
 +
-+//using namespace KODI::MESSAGING;
 +using namespace KODI::WINDOWING;
 +
 +#define EGL_NO_CONFIG (EGLConfig)0
 +
-+void CWinSystemHeadless::RegisterMe()
++void CWinSystemHeadless::Register()
 +{
 +  KODI::WINDOWING::CWindowSystemFactory::RegisterWindowSystem(CreateWinSystem, "headless");
 +}
@@ -247,7 +114,7 @@ index 0000000..b3d7ae5
 +};
 diff --git a/xbmc/windowing/WinSystemHeadless.h b/xbmc/windowing/WinSystemHeadless.h
 new file mode 100644
-index 0000000..f15f571
+index 0000000000..51e9e5156b
 --- /dev/null
 +++ b/xbmc/windowing/WinSystemHeadless.h
 @@ -0,0 +1,80 @@
@@ -273,7 +140,7 @@ index 0000000..f15f571
 +  CWinSystemHeadless();
 +  ~CWinSystemHeadless() override;
 +
-+  static void RegisterMe();
++  static void Register();
 +  static std::unique_ptr<CWinSystemBase> CreateWinSystem();
 +
 +  // CWinSystemBase

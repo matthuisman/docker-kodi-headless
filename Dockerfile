@@ -1,15 +1,6 @@
 ############## build stage ##############
 FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy as buildstage
 
-# package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/21.0b2-Omega.tar.gz"
-
-# defines which addons to build
-ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
-
-# environment settings
-ARG DEBIAN_FRONTEND="noninteractive"
-
 # install build packages
 RUN \
  apt-get update && \
@@ -72,6 +63,15 @@ RUN \
 	libdrm-dev \
 	libunistring-dev
 
+# package source
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/21.0b3-Omega.tar.gz"
+
+# defines which addons to build
+ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
+
+# environment settings
+ARG DEBIAN_FRONTEND="noninteractive"
+
 # fetch and extact source
 RUN \
  set -ex && \
@@ -86,9 +86,7 @@ RUN \
 COPY patches/ /patches/
 RUN \
  cd /tmp/kodi-source && \
- for i in /patches/*.patch; \
-	do git apply $i; \
- done
+ git apply --ignore-whitespace /patches/*.patch
 
 # build package
 RUN \
