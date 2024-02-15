@@ -112,6 +112,7 @@ If you receive errors like `unable to iopause`, `what(): Operation not permitted
 
 ## Changelog
 
++ **15.02.24:** Bump Omega to 21.0b3
 + **13.02.24:** Bump Nexus to 20.4
 + **10.01.24:** Bump Nexus to 20.3
 + **10.12.23:** Bump Omega to 21.0b2
