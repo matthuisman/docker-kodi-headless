@@ -16,7 +16,7 @@ docker run -d \
 -p 8080:8080 \
 -p 9090:9090 \
 -p 9777:9777/udp \
-matthuisman/kodi-headless:Nexus
+matthuisman/kodi-headless:<tag>
 ```
 **Parameters**
 
