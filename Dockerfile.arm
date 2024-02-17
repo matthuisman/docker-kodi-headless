@@ -1,15 +1,6 @@
 ############## build stage ##############
 FROM lsiobase/ubuntu:arm32v7-jammy-version-05e08486 as buildstage
 
-# package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.4-Nexus.tar.gz"
-
-# defines which addons to build
-ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
-
-# environment settings
-ARG DEBIAN_FRONTEND="noninteractive"
-
 # install build packages
 RUN \
  apt-get update && \
@@ -71,10 +62,16 @@ RUN \
 	libdrm-dev \
 	libunistring-dev
 
-# copy patches
-COPY patches/ /patches/
+# package source
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.4-Nexus.tar.gz"
 
-# fetch source and apply any required patches
+# defines which addons to build
+ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
+
+# environment settings
+ARG DEBIAN_FRONTEND="noninteractive"
+
+# fetch and extact source
 RUN \
  set -ex && \
  mkdir -p \
@@ -82,11 +79,13 @@ RUN \
  curl -o \
  /tmp/kodi.tar.gz -L "$SOURCE" && \
  tar xf /tmp/kodi.tar.gz -C \
-	/tmp/kodi-source --strip-components=1 && \
+	/tmp/kodi-source --strip-components=1
+
+# copy and apply patches
+COPY patches/ /patches/
+RUN \
  cd /tmp/kodi-source && \
- for i in /patches/*.patch; \
-	do git apply $i; \
- done
+ git apply --ignore-whitespace /patches/*.patch
 
 # build package
 RUN \
