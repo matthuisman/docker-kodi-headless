@@ -63,7 +63,7 @@ RUN \
 	libunistring-dev
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.4-Nexus.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/20.5-Nexus.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
