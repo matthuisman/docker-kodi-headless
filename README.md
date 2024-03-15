@@ -19,10 +19,12 @@ docker run -d \
 matthuisman/kodi-headless:<tag>
 ```
 **Parameters**
+For simplicity, if changing ports - keep the external ports and internal ports the same.
+Also remember to update / override the default advancedsettings.xml with the new ports.
 
-* `-p 8080` - webui port (remember to change advancedsettings.xml "webserverport" to match chosen port)
-* `-p 9090` - websockets port (remember to change advancedsettings.xml "tcpport" to match chosen port)
-* `-p 9777/udp` - esall interface port (remember to change advancedsettings.xml "esport" to match chosen port)
+* `-p 8080:8080` - webui port (change advancedsettings.xml "webserverport" to match port)
+* `-p 9090:9090` - websockets port (change advancedsettings.xml "tcpport" to match port)
+* `-p 9777:9777/udp` - esall interface port (change advancedsettings.xml "esport" to match port)
 * `-v /config/.kodi` - path for kodi configuration files
 * `-e PUID` for UserID - see below for explanation
 * `-e PGID` for GroupID - see below for explanation
