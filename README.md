@@ -19,6 +19,7 @@ docker run -d \
 matthuisman/kodi-headless:<tag>
 ```
 **Parameters**
+
 For simplicity, if changing ports - keep the external ports and internal ports the same.
 Also remember to update / override the default advancedsettings.xml with the new ports.
 
