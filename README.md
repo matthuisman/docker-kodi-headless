@@ -20,9 +20,9 @@ matthuisman/kodi-headless:<tag>
 ```
 **Parameters**
 
-* `-p 8080` - webui port
-* `-p 9090` - websockets port
-* `-p 9777/udp` - esall interface port
+* `-p 8080` - webui port (remember to change advancedsettings.xml <webserverport> to match chosen port)
+* `-p 9090` - websockets port (remember to change advancedsettings.xml <tcpport> to match chosen port)
+* `-p 9777/udp` - esall interface port (remember to change advancedsettings.xml <esport> to match chosen port)
 * `-v /config/.kodi` - path for kodi configuration files
 * `-e PUID` for UserID - see below for explanation
 * `-e PGID` for GroupID - see below for explanation
