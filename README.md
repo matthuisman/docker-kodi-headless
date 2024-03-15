@@ -20,7 +20,7 @@ matthuisman/kodi-headless:<tag>
 ```
 **Parameters**
 
-For simplicity, if changing ports - keep the external ports and internal ports the same.
+For simplicity, if changing ports - keep the external ports and internal ports the same. \
 Also remember to update / override the default advancedsettings.xml with the new ports.
 
 * `-p 8080:8080` - webui port (change advancedsettings.xml "webserverport" to match port)
