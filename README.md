@@ -105,6 +105,22 @@ That's it.
 Now instead of always needing to scan over smb://, it will replace that with /media and scan much quicker.
 When it does find new items, they are correctly stored in the SQL using their smb:// path
 
+
+## HTTPS Webserver
+The container includes a self-signed server.pem and server.key that expire in 2034. \
+Simply uncomment / add ```<webserverssl>true</webserverssl>``` to /config/userdata/advancedsettings.xml under ```<services>``` \
+Restart the container and you should now be able to access the webserver using https:// 
+
+You can also generate your own server key pair with something like below
+```
+openssl genrsa 1024 > server.key
+openssl req -new -x509 -nodes -sha1 -days 3650 -key server.key > server.pem
+```
+Copy the generated server.key and server.pem into your /config/userdata mount.
+
+Restart the container and you should now be able to access the webserver using https://
+
+
 ## Known Issues
 
 If you receive errors like `unable to iopause`, `what(): Operation not permitted`,`/usr/lib/kodi/kodi-x11 not found` then see: https://github.com/sdr-enthusiasts/Buster-Docker-Fixes#the-situation
