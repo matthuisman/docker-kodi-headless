@@ -32,6 +32,7 @@
         <upnprenderer>false</upnprenderer>
         <upnpserver>false</upnpserver>
         <webserver>true</webserver>
+        <!-- <webserverssl>true</webserverssl> -->
         <webserverpassword></webserverpassword>
         <webserverport>8080</webserverport>
         <webserverusername>kodi</webserverusername>
@@ -41,6 +42,7 @@
     <jsonrpc>
         <tcpport>9090</tcpport>
     </jsonrpc>
+    <!-- <loglevel>2</loglevel> -->
     <fanartres>360</fanartres>
     <imageres>360</imageres>
     <videolibrary>
@@ -91,5 +93,4 @@
         <setting type="bool" name="skin.estuary.FirstTimeRun">false</setting>
         <setting type="bool" name="skin.confluence.FirstTimeRun">false</setting>
     </skinsettings>
-    <loglevel>0</loglevel>
 </advancedsettings>
