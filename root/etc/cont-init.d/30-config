@@ -5,9 +5,8 @@ mkdir -p \
 	/config/.kodi/userdata \
 	/var/cache/samba
 
-# copy configs
-[[ ! -e /config/.kodi/userdata/advancedsettings.xml ]] && \
-	cp /defaults/advancedsettings.xml /config/.kodi/userdata/advancedsettings.xml
+# copy defaults if not already present
+cp -n -R /defaults/. /config/.kodi/userdata
 
 if [ -n "$MYSQL_HOST" ]; then
 	sed -i -E "s/<host>.*?<\/host>/<host>$MYSQL_HOST<\/host>/g" /config/.kodi/userdata/advancedsettings.xml
