@@ -1,2 +1,8 @@
 #!/usr/bin/with-contenv bash
+if [ -n "$KODI_DELAY" ]; then
+    echo "Waiting for ${KODI_DELAY}s before starting Kodi.."
+    sleep $KODI_DELAY
+fi
+echo "Starting Kodi.."
 s6-setuidgid abc /usr/bin/kodi --headless
+echo "Kodi finished"
