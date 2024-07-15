@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM lsiobase/ubuntu:arm32v7-jammy-version-05e08486 as buildstage
+FROM lsiobase/ubuntu:arm32v7-jammy-version-05e08486 AS buildstage
 
 # install build packages
 RUN \
