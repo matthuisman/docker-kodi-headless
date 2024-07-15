@@ -13,6 +13,11 @@ docker run -d \
 -e PUID=<uid> \
 -e PGID=<gid> \
 -e TZ=<timezone> \
+-e MYSQL_HOST=127.0.0.1 \
+-e MYSQL_PORT=3306 \
+-e MYSQL_USER=root \
+-e MYSQL_PASSWORD=kodi \
+-e KODI_DELAY=10 \
 -p 8080:8080 \
 -p 9090:9090 \
 -p 9777:9777/udp \
@@ -30,6 +35,7 @@ Also remember to update / override the default advancedsettings.xml with the new
 * `-e PUID` for UserID - see below for explanation
 * `-e PGID` for GroupID - see below for explanation
 * `-e TZ` to set the timezone eg. Europe/London, etc.
+* `-e KODI_DELAY` when present, container will wait this many seconds before starting Kodi
 
 There is also an example [docker-compose.yml](https://github.com/matthuisman/docker-kodi-headless/blob/master/docker-compose.yml) file which will setup a SQL db and set Kodi up to use it.
 
