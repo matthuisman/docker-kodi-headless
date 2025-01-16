@@ -64,7 +64,7 @@ RUN \
 	libunistring-dev
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/21.1-Omega.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/21.2-Omega.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
