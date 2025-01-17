@@ -28,7 +28,7 @@ jobs:
         tags: matthuisman/kodi-headless:${{ github.ref_name }}-amd64
 
   build_arm64:
-    runs-on: buildjet-2vcpu-ubuntu-2204-arm
+    runs-on: ubuntu-24.04-arm
 
     steps:
     - name: Checkout
@@ -53,7 +53,7 @@ jobs:
         tags: matthuisman/kodi-headless:${{ github.ref_name }}-arm64
 
   build_arm:
-    runs-on: buildjet-2vcpu-ubuntu-2204-arm
+    runs-on: ubuntu-24.04-arm
 
     steps:
     - name: Checkout
