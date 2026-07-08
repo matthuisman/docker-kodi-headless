@@ -1,5 +1,5 @@
 ############## build stage ##############
-FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy as buildstage
+FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy AS buildstage
 
 # install build packages
 RUN \
@@ -37,7 +37,6 @@ RUN \
 	libmicrohttpd-dev \
 	libmysqlclient-dev \
 	libnfs-dev \
-	libpcre3-dev \
 	libplist-dev \
 	libsmbclient-dev \
 	libsqlite3-dev \
@@ -50,10 +49,10 @@ RUN \
 	libvorbis-dev \
 	libxrandr-dev \
 	libxslt-dev \
+	libgtest-dev \
 	make \
 	nasm \
 	python3-dev \
-	rapidjson-dev \
 	swig \
 	uuid-dev \
 	yasm \
@@ -61,10 +60,13 @@ RUN \
 	zlib1g-dev \
 	patch \
 	libdrm-dev \
-	libunistring-dev
+	libunistring-dev \
+	libexiv2-dev \
+	libpcre2-dev \
+	nlohmann-json3-dev
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/21.3-Omega.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/22.0b1-Piers.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
@@ -109,7 +111,7 @@ RUN \
 	-DENABLE_INTERNAL_FLATBUFFERS=ON \
 	-DENABLE_INTERNAL_FMT=ON \
 	-DENABLE_INTERNAL_SPDLOG=ON \
-	-DENABLE_INTERNAL_GTEST=ON \
+	-DENABLE_INTERNAL_FFMPEG=ON \
 	-DENABLE_LIBUSB=OFF \
 	-DENABLE_NFS=ON \
 	-DENABLE_OPTICAL=OFF \
@@ -122,14 +124,14 @@ RUN \
 	-DENABLE_LIRCCLIENT=OFF \
 	-DENABLE_VAAPI=OFF \
 	-DENABLE_VDPAU=OFF && \
- make -j2 && \
+ make -j$(nproc) && \
  make DESTDIR=/tmp/kodi-build install
 
 # build kodi addons
 RUN \
  set -ex && \
  cd /tmp/kodi-source && \
- make -j2 \
+ make -j$(nproc) \
 	-C tools/depends/target/binary-addons \
 	ADDONS="$KODI_ADDONS" \
 	PREFIX=/tmp/kodi-build/usr
@@ -181,6 +183,7 @@ RUN \
 	libxrandr2 \
 	libxslt1.1 \
 	libplist3 \
+	libexiv2-27 \
 	libdrm2 && \
 	\
 # cleanup

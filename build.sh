@@ -9,11 +9,11 @@
 # docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 # docker buildx create --name multiarch --driver docker-container --use
 
-docker buildx build --push --pull --progress plain --platform linux/amd64 --tag matthuisman/kodi-headless:Nexus-amd64 . && \
-docker buildx build --push --pull --progress plain --platform linux/arm64/v8 --tag matthuisman/kodi-headless:Nexus-arm64 . && \
-docker buildx build --push --pull --progress plain --platform linux/arm/v7 --tag matthuisman/kodi-headless:Nexus-arm -f Dockerfile.arm . && \
-docker manifest create matthuisman/kodi-headless:matthuisman/kodi-headless:Nexus-amd64 matthuisman/kodi-headless:Nexus-arm64 Nexus matthuisman/kodi-headless:Nexus-arm && \
-docker manifest push --purge matthuisman/kodi-headless:Nexus
+docker buildx build --push --pull --progress plain --platform linux/amd64 --tag matthuisman/kodi-headless:Piers-amd64 . && \
+docker buildx build --push --pull --progress plain --platform linux/arm64/v8 --tag matthuisman/kodi-headless:Piers-arm64 . && \
+docker buildx build --push --pull --progress plain --platform linux/arm/v7 --tag matthuisman/kodi-headless:Piers-arm -f Dockerfile.arm . && \
+docker manifest create matthuisman/kodi-headless:matthuisman/kodi-headless:Piers-amd64 matthuisman/kodi-headless:Piers-arm64 matthuisman/kodi-headless:Piers-arm && \
+docker manifest push --purge matthuisman/kodi-headless:Piers
 echo "DONE!"
 
 # nohup ./build.sh &

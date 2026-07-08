@@ -1,8 +1,8 @@
 diff --git a/xbmc/addons/AddonInstaller.cpp b/xbmc/addons/AddonInstaller.cpp
-index 3343bf1..5a87bd6 100644
+index 6cdef9d3c8..1daefd46a1 100644
 --- a/xbmc/addons/AddonInstaller.cpp
 +++ b/xbmc/addons/AddonInstaller.cpp
-@@ -260,17 +260,7 @@ bool CAddonInstaller::InstallModal(const std::string& addonID,
+@@ -341,17 +341,7 @@ bool CAddonInstaller::InstallModal(const std::string& addonID,
    if (!CServiceBroker::GetAddonMgr().FindInstallableById(addonID, addon))
      return false;
  

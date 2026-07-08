@@ -1,5 +1,5 @@
 diff --git a/xbmc/platform/linux/PlatformLinux.cpp b/xbmc/platform/linux/PlatformLinux.cpp
-index 6be5163883..c423e1dddc 100644
+index e01f8216bf..da4f085324 100644
 --- a/xbmc/platform/linux/PlatformLinux.cpp
 +++ b/xbmc/platform/linux/PlatformLinux.cpp
 @@ -24,6 +24,7 @@
@@ -40,10 +40,10 @@ index 21c7611912..1e58f1b6d1 100644
              VideoSync.h)
 diff --git a/xbmc/windowing/WinSystemHeadless.cpp b/xbmc/windowing/WinSystemHeadless.cpp
 new file mode 100644
-index 0000000000..7545e82c97
+index 0000000000..a1d53ee4b3
 --- /dev/null
 +++ b/xbmc/windowing/WinSystemHeadless.cpp
-@@ -0,0 +1,68 @@
+@@ -0,0 +1,64 @@
 +/*
 + *  Copyright (C) 2005-2018 Team Kodi
 + *  This file is part of Kodi - https://kodi.tv
@@ -107,14 +107,10 @@ index 0000000000..7545e82c97
 +void CWinSystemHeadless::Unregister(IDispResource *resource) {};
 +bool CWinSystemHeadless::HasCalibration(const RESOLUTION_INFO &resInfo) {return true;};
 +bool CWinSystemHeadless::UseLimitedColor() {return true;};
-+
-+void CWinSystemHeadless::ShowSplash(const std::string& message)
-+{
-+  CLog::Log(LOGDEBUG, message.c_str());
-+};
++void CWinSystemHeadless::ShowSplash(const std::string& message) {};
 diff --git a/xbmc/windowing/WinSystemHeadless.h b/xbmc/windowing/WinSystemHeadless.h
 new file mode 100644
-index 0000000000..51e9e5156b
+index 0000000000..912a41acc0
 --- /dev/null
 +++ b/xbmc/windowing/WinSystemHeadless.h
 @@ -0,0 +1,80 @@
@@ -178,7 +174,7 @@ index 0000000000..51e9e5156b
 +  bool BeginRender() override { return true;} ;
 +  bool EndRender() override { return true;} ;
 +  void PresentRender(bool rendered, bool videoLayer) override {} ;
-+  bool ClearBuffers(UTILS::COLOR::Color color) override { return true;} ;
++  bool ClearBuffers(KODI::UTILS::COLOR::Color color) override { return true; } ;
 +  bool IsExtSupported(const char* extension) const override { return false;} ;
 +
 +  void SetViewPort(const CRect& viewPort) override {} ;
