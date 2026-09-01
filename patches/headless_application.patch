@@ -1,8 +1,8 @@
 diff --git a/xbmc/application/Application.cpp b/xbmc/application/Application.cpp
-index 3b3ec708e5..75a0b781ff 100644
+index f5251bfb38..d94fc8d0f8 100644
 --- a/xbmc/application/Application.cpp
 +++ b/xbmc/application/Application.cpp
-@@ -402,11 +402,11 @@ bool CApplication::CreateGUI()
+@@ -409,11 +409,11 @@ bool CApplication::CreateGUI()
    m_frameMoveGuard.lock();
  
    const auto appPower = GetComponent<CApplicationPowerHandling>();
@@ -16,7 +16,7 @@ index 3b3ec708e5..75a0b781ff 100644
  
    if (!windowing.empty())
      windowSystems = {windowing};
-@@ -544,9 +544,6 @@ bool CApplication::InitWindow(RESOLUTION res)
+@@ -551,9 +551,6 @@ bool CApplication::InitWindow(RESOLUTION res)
  
  bool CApplication::Initialize()
  {
@@ -26,14 +26,16 @@ index 3b3ec708e5..75a0b781ff 100644
    const auto appVolume = GetComponent<CApplicationVolumeHandling>();
    const auto level = appVolume->GetVolumeRatio();
    const auto muted = appVolume->IsMuted();
-@@ -658,15 +655,13 @@ bool CApplication::Initialize()
+@@ -665,16 +662,14 @@ bool CApplication::Initialize()
  
    const auto skinHandling = GetComponent<CApplicationSkinHandling>();
  
--  bool uiInitializationFinished = false;
+-  const bool guiCreated = CServiceBroker::GetGUI()->GetWindowManager().Initialized();
+-  bool uiInitializationFinished = !guiCreated;
++  const bool guiCreated = false;
 +  bool uiInitializationFinished = true;
  
--  if (CServiceBroker::GetGUI()->GetWindowManager().Initialized())
+-  if (guiCreated)
 +  if (true)
    {
      const auto settings = CServiceBroker::GetSettingsComponent()->GetSettings();
@@ -45,7 +47,7 @@ index 3b3ec708e5..75a0b781ff 100644
  
      std::vector<AddonInfoPtr> incompatibleAddons;
      event.Reset();
-@@ -689,8 +684,6 @@ bool CApplication::Initialize()
+@@ -697,8 +692,6 @@ bool CApplication::Initialize()
          iDots = 1;
          while (!event.Wait(1000ms))
          {
@@ -54,7 +56,7 @@ index 3b3ec708e5..75a0b781ff 100644
            if (iDots == 3)
              iDots = 1;
            else
-@@ -706,64 +699,7 @@ bool CApplication::Initialize()
+@@ -714,36 +707,7 @@ bool CApplication::Initialize()
        }
      }
  
@@ -88,38 +90,10 @@ index 3b3ec708e5..75a0b781ff 100644
 -    // because we need a real window in the background which gets
 -    // rendered while we load the main window or enter the master lock key
 -    CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(WINDOW_SPLASH);
--
--    if (settings->GetBool(CSettings::SETTING_MASTERLOCK_STARTUPLOCK) &&
--        profileManager->GetMasterProfile().getLockMode() != LockMode::EVERYONE &&
--        !profileManager->GetMasterProfile().getLockCode().empty())
--    {
--      g_passwordManager.CheckStartUpLock();
--    }
--
--    // check if we should use the login screen
--    if (profileManager->UsingLoginScreen())
--    {
--      CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(WINDOW_LOGIN_SCREEN);
--    }
--    else
--    {
--      // activate the configured start window
--      auto skin = CServiceBroker::GetGUI()->GetSkinInfo();
--      int firstWindow = skin ? skin->GetFirstWindow() : WINDOW_HOME;
--      CServiceBroker::GetGUI()->GetWindowManager().ActivateWindow(firstWindow);
--
--      if (CServiceBroker::GetGUI()->GetWindowManager().IsWindowActive(WINDOW_STARTUP_ANIM))
--      {
--        CLog::Log(LOGWARNING, "CApplication::Initialize - startup.xml taints init process");
--      }
--
--      // the startup window is considered part of the initialization as it most likely switches to the final window
--      uiInitializationFinished = firstWindow != WINDOW_STARTUP_ANIM;
--    }
    }
-   else //No GUI Created
-   {
-@@ -804,11 +740,6 @@ bool CApplication::Initialize()
+ 
+   // Must stay above the window activation below: that can raise a modal dialog, whose nested
+@@ -815,11 +779,6 @@ bool CApplication::Initialize()
  
    CLog::Log(LOGINFO, "initialize done");
  

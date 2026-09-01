@@ -63,10 +63,11 @@ RUN \
 	libunistring-dev \
 	libexiv2-dev \
 	libpcre2-dev \
-	nlohmann-json3-dev
+	nlohmann-json3-dev \
+	meson
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/22.0b1-Piers.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/22.0b2-Piers.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
