@@ -135,6 +135,7 @@ If you receive errors like `unable to iopause`, `what(): Operation not permitted
 
 ## Changelog
 
++ **15.10.26:** Bump Piers to 22.0rc1
 + **01.09.26:** Bump Piers to 22.0b2
 + **08.07.26:** Bump Piers to 22.0b1
 + **01.11.25:** Bump Omega to 21.3
