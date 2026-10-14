@@ -53,7 +53,7 @@ RUN \
 	make \
 	nasm \
 	python3-dev \
-	swig \
+	bison \
 	uuid-dev \
 	yasm \
 	zip \
@@ -67,7 +67,7 @@ RUN \
 	meson
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/22.0b2-Piers.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/22.0rc1-Piers.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
@@ -113,6 +113,7 @@ RUN \
 	-DENABLE_INTERNAL_FMT=ON \
 	-DENABLE_INTERNAL_SPDLOG=ON \
 	-DENABLE_INTERNAL_FFMPEG=ON \
+	-DENABLE_INTERNAL_SWIG=ON \
 	-DENABLE_LIBUSB=OFF \
 	-DENABLE_NFS=ON \
 	-DENABLE_OPTICAL=OFF \
