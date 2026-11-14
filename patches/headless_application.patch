@@ -1,5 +1,5 @@
 diff --git a/xbmc/application/Application.cpp b/xbmc/application/Application.cpp
-index f5251bfb38..d94fc8d0f8 100644
+index 28b48ffe8d..e310719e91 100644
 --- a/xbmc/application/Application.cpp
 +++ b/xbmc/application/Application.cpp
 @@ -409,11 +409,11 @@ bool CApplication::CreateGUI()
@@ -26,7 +26,7 @@ index f5251bfb38..d94fc8d0f8 100644
    const auto appVolume = GetComponent<CApplicationVolumeHandling>();
    const auto level = appVolume->GetVolumeRatio();
    const auto muted = appVolume->IsMuted();
-@@ -665,16 +662,14 @@ bool CApplication::Initialize()
+@@ -669,16 +666,14 @@ bool CApplication::Initialize()
  
    const auto skinHandling = GetComponent<CApplicationSkinHandling>();
  
@@ -46,17 +46,17 @@ index f5251bfb38..d94fc8d0f8 100644
 +    skinHandling->m_confirmSkinChange = true;
  
      std::vector<AddonInfoPtr> incompatibleAddons;
-     event.Reset();
-@@ -697,8 +692,6 @@ bool CApplication::Initialize()
+     event->Reset();
+@@ -702,8 +697,6 @@ bool CApplication::Initialize()
          iDots = 1;
-         while (!event.Wait(1000ms))
+         while (!event->Wait(1000ms))
          {
 -          CServiceBroker::GetRenderSystem()->ShowSplash(std::string(iDots, ' ') + localizedStr +
 -                                                        std::string(iDots, '.'));
            if (iDots == 3)
              iDots = 1;
            else
-@@ -714,36 +707,7 @@ bool CApplication::Initialize()
+@@ -719,36 +712,7 @@ bool CApplication::Initialize()
        }
      }
  
@@ -93,7 +93,7 @@ index f5251bfb38..d94fc8d0f8 100644
    }
  
    // Must stay above the window activation below: that can raise a modal dialog, whose nested
-@@ -815,11 +779,6 @@ bool CApplication::Initialize()
+@@ -820,11 +784,6 @@ bool CApplication::Initialize()
  
    CLog::Log(LOGINFO, "initialize done");
  

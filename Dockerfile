@@ -67,7 +67,7 @@ RUN \
 	meson
 
 # package source
-ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/22.0rc1-Piers.tar.gz"
+ARG SOURCE="https://github.com/xbmc/xbmc/archive/refs/tags/22.0rc2-Piers.tar.gz"
 
 # defines which addons to build
 ARG KODI_ADDONS="vfs.libarchive vfs.rar vfs.sftp"
